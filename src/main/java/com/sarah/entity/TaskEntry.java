@@ -5,6 +5,7 @@ import java.time.LocalDate;
 /**
  * Created by Sarah Omernik on 2/8/2017.
  * TaskEntry class
+ * Holds information for entries for individual tasks
  */
 public class TaskEntry {
     private double timeAdded;
