@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 /**
  * Created by Sarah Omernik on 2/8/2017.
+ * TaskEntry class
  */
 public class TaskEntry {
     private double timeAdded;
