@@ -31,4 +31,5 @@ public class SearchTasks extends HttpServlet {
         RequestDispatcher dispatcher = request.getRequestDispatcher("/searchTasks.jsp");
         dispatcher.forward(request, response);
     }
+
 }

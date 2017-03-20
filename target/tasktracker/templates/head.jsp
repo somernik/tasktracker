@@ -36,5 +36,5 @@
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 
-    <link href="../css/style7.css" rel="stylesheet">
+    <link href="../css/style8.css" rel="stylesheet">
 </head>

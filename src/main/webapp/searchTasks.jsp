@@ -13,39 +13,40 @@
             <c:if test="${empty tasks}">
                 <h3>No tasks matched your search or you do not have any tasks. <a href="addTask.jsp">Add a task?</a></h3>
             </c:if>
-            <form method="post" action="/searchTasks" class="form" id="searchForm">
+            <form method="get" action="/searchSpecificTasks" class="form" id="searchForm">
                 <h3 class="form-signin-heading formHeader">Search Filters</h3>
 
                 <label for="completion">Completion</label>
                 <select name="completion" id="completion" class="form-control filterForm">
-                    <option value="all">All</option>
-                    <option value="completed">Completed</option>
-                    <option value="notCompleted">Not Completed</option>
+                    <option value="all" <c:if test="${completion == 'all'}">selected</c:if>>All</option>
+                    <option value="completed" <c:if test="${completion == 'completed'}">selected</c:if>>Completed</option>
+                    <option value="notCompleted" <c:if test="${completion == 'notCompleted'}">selected</c:if>>Not Completed</option>
                 </select>
 
                 <label for="category">Category</label>
                 <select name="category" id="category" class="form-control filterForm">
-                    <option value="all">All</option>
+                    <option value="all" >All</option>
                     <option value="completed">populated values here</option>
                     <option value="notCompleted">populated values here</option>
                 </select>
-
+                <br />
                 <label for="type">Type</label>
                 <select name="type" id="type" class="form-control filterForm">
                     <option value="all">All</option>
                     <option value="completed">populated values here</option>
                     <option value="notCompleted">populated values here</option>
-                </select> <br />
+                </select>
 
                 <label for="timeOperator">Time Spent</label>
                 <select name="timeOperator" id="timeOperator" class="form-control filterForm">
-                    <option value="completed">Greater than or equal to</option>
-                    <option value="notCompleted">Less than or equal to</option>
+                    <option value="greaterThan" <c:if test="${timeOperator == 'greaterThan'}">selected</c:if>>Greater than or equal to</option>
+                    <option value="lessThan" <c:if test="${timeOperator == 'lessThan'}">selected</c:if>>Less than or equal to</option>
                 </select>
-                <input type="text" class="form-control filterForm" name="timeSpent" /> minutes
-
+                <input type="text" class="form-control filterForm" id="minutes" name="timeSpent" value="${time}" /> minutes
+                <br />
                 <button type="submit" name="submit" value="searchInfo" class="btn btn-success">Search</button>
             </form>
+            <br />
             <div class="table-responsive">
                 <table class="table table-striped" id="searchTable">
                     <thead>

@@ -80,6 +80,7 @@ public class TaskData {
             sql = "SELECT * FROM task INNER JOIN type ON task.typeId=type.typeId INNER JOIN user ON "
                     + "task.userID=user.userID WHERE email = '" + userEmail + "' AND " + search;
         }
+        System.out.print(sql);
         tasks = executeQuery(sql);
         for (Task task : tasks) {
             double estimatedTime = calculateEstimatedTime(task.getTaskType(), task.getTaskCategory());

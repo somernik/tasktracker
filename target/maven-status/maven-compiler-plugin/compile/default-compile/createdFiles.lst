@@ -6,6 +6,7 @@ com\sarah\persistence\TaskEntryData.class
 com\sarah\persistence\UserData.class
 com\sarah\persistence\Utility.class
 com\sarah\controllers\AddUser.class
+com\sarah\controllers\SearchSpecificTasks.class
 com\sarah\entity\User.class
 com\sarah\persistence\Database.class
 com\sarah\controllers\SearchTasks.class
