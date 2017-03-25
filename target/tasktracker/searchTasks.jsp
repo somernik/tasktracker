@@ -30,6 +30,7 @@
                     <option value="notCompleted">populated values here</option>
                 </select>
                 <br />
+                <br />
                 <label for="type">Type</label>
                 <select name="type" id="type" class="form-control filterForm">
                     <option value="all">All</option>
@@ -43,7 +44,7 @@
                     <option value="lessThan" <c:if test="${timeOperator == 'lessThan'}">selected</c:if>>Less than or equal to</option>
                 </select>
                 <input type="text" class="form-control filterForm" id="minutes" name="timeSpent" value="${time}" /> minutes
-                <br />
+                <br /><br />
                 <button type="submit" name="submit" value="searchInfo" class="btn btn-success">Search</button>
             </form>
             <br />

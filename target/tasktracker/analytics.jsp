@@ -17,15 +17,17 @@
     <div id="chart"></div>
     <div id="barChart"></div>
 </div>
-
 <script>
-
+    var types  = [];
+    <c:forEach var="type" items="${types}">
+        types.push('${type}');
+    </c:forEach>
     var donutChart = c3.generate({
         bindto: '#donutchart',
         data: {
             columns: [
-                ['data1', 30],
-                ['data2', 120],
+                [types[0], 30],
+                [types[3], 70],
             ],
             type : 'donut',
             onclick: function (d, i) { console.log("onclick", d, i); },
@@ -33,7 +35,7 @@
             onmouseout: function (d, i) { console.log("onmouseout", d, i); }
         },
         donut: {
-            title: "Iris Petal Width"
+            title: "% of Time Spent"
         }
     });
     var chart = c3.generate({

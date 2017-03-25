@@ -12,5 +12,6 @@ com\sarah\persistence\Database.class
 com\sarah\controllers\SearchTasks.class
 com\sarah\entity\TaskEntry.class
 com\sarah\entity\Task.class
+com\sarah\controllers\Analytics.class
 com\sarah\controllers\EditTask.class
 com\sarah\persistence\TaskData.class

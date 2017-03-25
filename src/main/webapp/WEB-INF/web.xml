@@ -63,6 +63,16 @@
     <servlet-name>com.sarah.controllers.SearchSpecificTasks</servlet-name>
     <url-pattern>/searchSpecificTasks</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>com.sarah.controllers.Analytics</display-name>
+    <servlet-name>com.sarah.controllers.Analytics</servlet-name>
+    <servlet-class>com.sarah.controllers.Analytics</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>com.sarah.controllers.Analytics</servlet-name>
+    <url-pattern>/analytics</url-pattern>
+  </servlet-mapping>
 
 
 </web-app>
