@@ -30,12 +30,15 @@ public class Analytics extends HttpServlet {
         String searchCriteria = "taskId = taskId";
         List<Task> tasks;
         List<String> types = new ArrayList<String>();
+        List<Double> value = new ArrayList<Double>();
         //Map<String, String> map = new HashMap<String, String>();
 
         //session.setAttribute("tasks", taskData.getUserTasks(session.getAttribute("email"), searchCriteria));
         tasks = taskData.getUserTasks(session.getAttribute("email"), searchCriteria);
         for (Task task : tasks) {
             types.add(task.getTaskType());
+            value.add(task.getTimeSpent());
+
             task.getTaskCategory();
         }
         System.out.print(types);
