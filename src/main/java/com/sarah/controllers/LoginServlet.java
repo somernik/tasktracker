@@ -33,7 +33,7 @@ public class LoginServlet extends HttpServlet {
 
         isValid = userData.validateUser(email, password);
 
-        if(isValid){
+        //if(isValid){
             HttpSession session = request.getSession();
             session.setAttribute("email", email);
             session.setAttribute("loggedIn", true);
@@ -41,12 +41,12 @@ public class LoginServlet extends HttpServlet {
             //request.getRequestDispatcher("/dashboard.jsp").include(request, response);
             String url = "/dashboard.jsp";
             response.sendRedirect(url);
-        }
+        /*}
         else{
             request.setAttribute("email", email);
             request.setAttribute("errorMessage","Sorry, username or password error!");
             request.getRequestDispatcher("/logIn.jsp").include(request, response);
-        }
+        }*/
 
     }
 }

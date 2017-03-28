@@ -9,11 +9,15 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.lang.Exception;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.*;
 
 import com.sarah.entity.Task;
+import com.sarah.entity.TaskEntry;
 import com.sarah.persistence.TaskData;
+import com.sarah.persistence.TaskEntryData;
+import com.sarah.persistence.Utility;
 
 /**
  * Created by Sarah Omernik on 3/22/2017.
@@ -29,23 +33,52 @@ public class Analytics extends HttpServlet {
         HttpSession session=request.getSession();
         String searchCriteria = "taskId = taskId";
         List<Task> tasks;
+        Map<String, Double> timePerDayOfWeek = new HashMap<String, Double>();
+
         List<String> types = new ArrayList<String>();
         List<Double> value = new ArrayList<Double>();
         //Map<String, String> map = new HashMap<String, String>();
 
         //session.setAttribute("tasks", taskData.getUserTasks(session.getAttribute("email"), searchCriteria));
         tasks = taskData.getUserTasks(session.getAttribute("email"), searchCriteria);
+        dayOfWeekSetUp(timePerDayOfWeek);
         for (Task task : tasks) {
+            calculateDaysOfWeek(task, timePerDayOfWeek);
             types.add(task.getTaskType());
             value.add(task.getTimeSpent());
 
             task.getTaskCategory();
         }
-        System.out.print(types);
+        System.out.print(timePerDayOfWeek);
         request.setAttribute("types", types);
+        request.setAttribute("timePerDay", timePerDayOfWeek);
 
         RequestDispatcher dispatcher = request.getRequestDispatcher("/analytics.jsp");
         dispatcher.forward(request, response);
+    }
+    private void dayOfWeekSetUp(Map<String, Double> timePerDayOfWeek) {
+        Double starter = 0.0;
+        timePerDayOfWeek.put("Monday", starter);
+        timePerDayOfWeek.put("Tuesday", starter);
+        timePerDayOfWeek.put("Wednesday", starter);
+        timePerDayOfWeek.put("Thursday", starter);
+        timePerDayOfWeek.put("Friday", starter);
+        timePerDayOfWeek.put("Saturday", starter);
+        timePerDayOfWeek.put("Sunday", starter);
+    }
+    private void calculateDaysOfWeek(Task task, Map<String, Double> timePerDayOfWeek) {
+        Utility utility = new Utility();
+        TaskEntryData taskEntryData = new TaskEntryData();
+        List<TaskEntry> taskEntries = taskEntryData.getUserTaskEntries(String.valueOf(task.getTaskId()));
+        for (TaskEntry entry : taskEntries) {
+            String day = utility.getDayFromLocalDate(entry.getDateEntered());
+            if (timePerDayOfWeek.containsKey(day)) {
+                Double newTotal = new Double(timePerDayOfWeek.get(day).intValue() + entry.getTimeAdded());
+                timePerDayOfWeek.put(day, newTotal);
+            } else {
+                timePerDayOfWeek.put(day, new Double(entry.getTimeAdded()));
+            }
+        }
     }
 
 }
