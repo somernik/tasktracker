@@ -5,6 +5,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.time.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
+import java.util.Locale;
 
 /**
  * Created by Sarah Omernik on 3/8/2017.
@@ -48,5 +52,13 @@ public class Utility {
         } finally {
             return inputDate;
         }*/
+    }
+
+    public String getDayFromLocalDate(LocalDate localDate) {
+
+        DayOfWeek dow = localDate.getDayOfWeek();  // Extracts a `DayOfWeek` enum object.
+        String output = dow.getDisplayName(TextStyle.FULL, Locale.US); // String = Tue
+
+        return output;
     }
 }
