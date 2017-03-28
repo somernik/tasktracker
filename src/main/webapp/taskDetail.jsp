@@ -82,19 +82,16 @@
     <c:forEach var="point" items="${plotPoints}">
         entries.push(${point});
     </c:forEach>
-    alert(entries);
 
     var dates = ['x'];
     <c:forEach var="entry" items="${taskEntries}">
         dates.push('${entry.dateEntered}');
     </c:forEach>
-    alert(dates);
 
     var estimatedCompletion = ['Estimated Completion Time'];
     for (index = 1; index < entries.length; index++) {
         estimatedCompletion.push(${singleTask.estimatedCompletionTime});
     }
-    alert(estimatedCompletion);
 
     var chart = c3.generate({
         bindto: '#burnUpChart',

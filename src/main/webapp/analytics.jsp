@@ -18,6 +18,7 @@
     <div id="barChart"></div>
 </div>
 <script>
+    // http://stackoverflow.com/questions/27659818/c3js-custom-date-for-each-line multiple  xs
     var types  = [];
     <c:forEach var="type" items="${types}">
         types.push('${type}');

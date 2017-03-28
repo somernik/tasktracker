@@ -38,7 +38,9 @@ public class LoginServlet extends HttpServlet {
             session.setAttribute("email", email);
             session.setAttribute("loggedIn", true);
             session.setAttribute("tasks", taskData.getUserTasks(session.getAttribute("email"), "active"));
-            request.getRequestDispatcher("/dashboard.jsp").include(request, response);
+            //request.getRequestDispatcher("/dashboard.jsp").include(request, response);
+            String url = "/dashboard.jsp";
+            response.sendRedirect(url);
         }
         else{
             request.setAttribute("email", email);
