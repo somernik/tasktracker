@@ -11,8 +11,18 @@
 <script src="c3/d3.v3.js" charset="utf-8"></script>
 <script src="c3/c3-0.4.11/c3.min.js"></script>
 
+<link href="css/slider.css" rel="stylesheet" type="text/css">
+
 <%@include file="templates/sideNav.jsp"%>
 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+    <div>
+        <h2 class="formHeader">Percentage of Time Spent by Type</h2>
+        Category
+            <label class="switch">
+                <input type="checkbox" checked>
+                <div class="slider round"></div>
+            </label>Type
+    </div>
     <div id="donutchart"></div>
     <div id="chart"></div>
     <div>
@@ -23,18 +33,18 @@
 </div>
 <script>
     // http://stackoverflow.com/questions/27659818/c3js-custom-date-for-each-line multiple  xs
-    var types  = [];
-    <c:forEach var="type" items="${types}">
-        types.push('${type}');
+    var types = [[],[],[],[],[],[],[]];
+    var index_percent = 0;
+    <c:forEach var="entry" items="${typePercentages}">
+        var percentages = ['${entry.key}', ${entry.value}];
+        types[index_percent] = percentages;
+        index_percent++;
     </c:forEach>
-
+    alert(types);
     var donutChart = c3.generate({
         bindto: '#donutchart',
         data: {
-            columns: [
-                [types[0], 30],
-                [types[3], 70],
-            ],
+            columns: types,
             type : 'donut',
             onclick: function (d, i) { console.log("onclick", d, i); },
             onmouseover: function (d, i) { console.log("onmouseover", d, i); },
@@ -89,6 +99,14 @@
         }
     });
 
+    function setGraph() {
+        checkBox = document.getElementById('compliance_AA');
+        if (checkBox.checked) {
+            document.getElementById('ComplianceSummary').innerHTML = "A compliance concern is found for Key Element I-A.";
+        } else {
+            document.getElementById('ComplianceSummary').innerHTML = "Key Element I-A is met.";
+        }
+    }
 </script>
 </body>
 </html>
