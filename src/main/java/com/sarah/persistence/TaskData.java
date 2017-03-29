@@ -49,7 +49,7 @@ public class TaskData {
         return executeTaskUpdate(sql);
     }
 
-    // Add task to DB
+    // Add updates to DB
     private boolean executeTaskUpdate(String sql) {
         Database database = Database.getInstance();
         Connection connection = null;
@@ -80,13 +80,17 @@ public class TaskData {
             sql = "SELECT * FROM task INNER JOIN type ON task.typeId=type.typeId INNER JOIN user ON "
                     + "task.userID=user.userID WHERE email = '" + userEmail + "' AND " + search;
         }
-        System.out.print(sql);
         tasks = executeQuery(sql);
         for (Task task : tasks) {
             double estimatedTime = calculateEstimatedTime(task.getTaskType(), task.getTaskCategory());
-            updateEstimatedCompletionTime(task, estimatedTime);
-            task.setEstimatedCompletionTime(estimatedTime);
-
+            if ((task.getEstimatedCompletionTime() == 0 && estimatedTime >= 0) || (task.getEstimatedCompletionTime() >= 0 && estimatedTime > 0)) {
+                // if get > 0 and calc = 0 false --> user set estimated value but calculated value is 0, dont update because this is first task that type
+                // if get = 0 and calc >0 true
+                // if get = 0  and calc = 0 true
+                // if get  > 0 and calc > 0  true
+                updateEstimatedCompletionTime(task, estimatedTime);
+                task.setEstimatedCompletionTime(estimatedTime);
+            }
         }
         return tasks;
     }

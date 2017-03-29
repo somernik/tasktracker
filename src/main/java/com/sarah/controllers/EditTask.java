@@ -12,6 +12,7 @@ import java.lang.Exception;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.sarah.entity.Task;
 import com.sarah.entity.TaskEntry;
 import com.sarah.persistence.TaskData;
 import com.sarah.persistence.TaskEntryData;
@@ -84,6 +85,17 @@ public class EditTask extends HttpServlet {
             dispatcher = req.getRequestDispatcher("/taskDetail.jsp");
             dispatcher.forward(req, resp);
 
+        } else if (req.getParameter("submit").equals("addEstimation")) {
+            Task task = new Task();
+            double estimate = Double.parseDouble(req.getParameter("estimation"));
+            int id = Integer.parseInt(req.getParameter("id"));
+            task.setEstimatedCompletionTime(estimate);
+            task.setTaskId(id);
+            taskData.updateEstimatedCompletionTime(task, estimate);
+
+            session.setAttribute("tasks", taskData.getUserTasks(session.getAttribute("email"), "taskId = taskId"));
+            dispatcher = req.getRequestDispatcher("/dashboard.jsp");
+            dispatcher.forward(req, resp);
         }
 
     }

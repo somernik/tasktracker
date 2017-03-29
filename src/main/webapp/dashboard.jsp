@@ -58,8 +58,21 @@
                     <td>${task.taskName}</td>
                     <td>${task.taskType}</td>
                     <td>${task.taskCategory}</td>
-                    <td><c:out value="${task.estimateTimeLeft()}" />
-                    </td>
+                    <c:if test="${task.estimateTimeLeft() > 0 }">
+                      <td>
+                        <c:out value="${task.estimateTimeLeft()}" /> min
+                      </td>
+                    </c:if>
+                    <c:if test="${task.estimateTimeLeft() <= 0 }">
+                      <td>
+                        Estimated Time Left not available. Please add an estimate of how long this task will take.
+                        <form method="post" action="/editTask">
+                          <input type="hidden" name="id" value="${task.taskId}">
+                          <input type="text" class="form-control table-input dashboard-input" name="estimation" placeholder="Minutes" required />
+                          <button type="submit" name="submit" value="addEstimation" class="btn btn-success">Add Estimation</button>
+                        </form>
+                      </td>
+                    </c:if>
                     <td>
                       <form method="post" action="/editTask">
                         <input type="hidden" name="id" value="${task.taskId}">
