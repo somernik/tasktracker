@@ -12,6 +12,7 @@ import java.lang.Exception;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.*;
+import java.util.Collections;
 
 import com.sarah.entity.Task;
 import com.sarah.entity.TaskEntry;
@@ -44,12 +45,14 @@ public class Analytics extends HttpServlet {
         dayOfWeekSetUp(timePerDayOfWeek);
         for (Task task : tasks) {
             calculateDaysOfWeek(task, timePerDayOfWeek);
+
             types.add(task.getTaskType());
             value.add(task.getTimeSpent());
 
             task.getTaskCategory();
         }
-        System.out.print(timePerDayOfWeek);
+
+        request.setAttribute("mostCommonDay", getMostCommonDay(timePerDayOfWeek));
         request.setAttribute("types", types);
         request.setAttribute("timePerDay", timePerDayOfWeek);
 
@@ -80,5 +83,18 @@ public class Analytics extends HttpServlet {
             }
         }
     }
+
+    private String getMostCommonDay(Map<String, Double> timePerDayOfWeek) {
+        Double maxValue = Collections.max(timePerDayOfWeek.values());
+        String mostCommonDay = null;
+        for (Map.Entry<String, Double> entry : timePerDayOfWeek.entrySet()) {  // Iterate through hashmap
+            if (entry.getValue() == maxValue) {
+                mostCommonDay = entry.getKey();     // Print the key with max value
+            }
+        }
+
+        return mostCommonDay;
+    }
+
 
 }
