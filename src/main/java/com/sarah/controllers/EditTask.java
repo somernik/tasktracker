@@ -58,10 +58,12 @@ public class EditTask extends HttpServlet {
             entries = taskEntryData.getUserTaskEntries(req.getParameter("id"));
 
             List<Double> increasingEntries = new ArrayList<Double>();
-            increasingEntries.add(entries.get(0).getTimeAdded());
-            for (int index = 0; index < entries.size(); index++) {
-                if (entries.size() > 1 && index > 0) {
-                    increasingEntries.add(increasingEntries.get(index - 1) + entries.get(index).getTimeAdded());
+            if (entries.size() > 0) {
+                increasingEntries.add(entries.get(0).getTimeAdded());
+                for (int index = 0; index < entries.size(); index++) {
+                    if (entries.size() > 1 && index > 0) {
+                        increasingEntries.add(increasingEntries.get(index - 1) + entries.get(index).getTimeAdded());
+                    }
                 }
             }
             session.setAttribute("plotPoints", increasingEntries);

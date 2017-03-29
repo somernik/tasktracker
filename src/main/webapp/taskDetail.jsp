@@ -69,6 +69,8 @@
 
             </div>
             <div class="col-sm-9 col-sm-offset-3 col-md-9 col-md-offset-2 main">
+                <h2 class="formHeader">Time Entry Burn Up</h2><hr />
+                <p>This graph shows the estimated amount of time for completion and how much the time you work is bringing you to your goal!</p>
                 <div id="burnUpChart"></div>
             </div>
         </div>
