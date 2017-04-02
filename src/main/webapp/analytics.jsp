@@ -33,14 +33,13 @@
 </div>
 <script>
     // http://stackoverflow.com/questions/27659818/c3js-custom-date-for-each-line multiple  xs
-    var types = [[],[],[],[],[],[],[]];
+    var types = [];
     var index_percent = 0;
     <c:forEach var="entry" items="${typePercentages}">
         var percentages = ['${entry.key}', ${entry.value}];
         types[index_percent] = percentages;
         index_percent++;
     </c:forEach>
-    alert(types);
     var donutChart = c3.generate({
         bindto: '#donutchart',
         data: {

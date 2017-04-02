@@ -39,7 +39,7 @@ public class EditTask extends HttpServlet {
         }
 
     }
-
+    // make doget that calls dopost
     private void dispatchRequests(TaskData taskData, TaskEntryData taskEntryData, HttpSession session,
                                   HttpServletRequest req, HttpServletResponse resp)  throws Exception {
         RequestDispatcher dispatcher;

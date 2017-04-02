@@ -41,6 +41,7 @@ public class SearchSpecificTasks extends HttpServlet {
     }
 
     private String determineSearchCriteria(HttpServletRequest request, String searchCriteria) {
+        // switch case, enumeration
         if (request.getParameter("completion").equals("completed") ) {
             searchCriteria += " AND completed = 1";
         } else if (request.getParameter("completion").equals("notCompleted") ) {
