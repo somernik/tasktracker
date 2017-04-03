@@ -10,12 +10,15 @@
 <!--<script src="/path/to/d3.v3.min.js" charset="utf-8"></script>-->
 <script src="c3/d3.v3.js" charset="utf-8"></script>
 <script src="c3/c3-0.4.11/c3.min.js"></script>
-<body>
 <div class="mainContent">
     <div class="container-fluid">
         <div class="row">
         <%@include file="templates/sideNav.jsp"%>
-
+            <div class="col-sm-9 col-sm-offset-3 col-md-9 col-md-offset-2 main">
+                <h2 class="formHeader">Time Entry Burn Up</h2><hr />
+                <p>This graph shows the estimated amount of time for completion and how much the time you work is bringing you to your goal!</p>
+                <div id="burnUpChart"></div>
+            </div>
             <div class="col-sm-9 col-sm-offset-3 col-md-4 col-md-offset-2 main">
                 <h2 class="form-signin-heading formHeader">Task Detail</h2><hr />
                 <h3>Name: ${singleTask.taskName}</h3>
@@ -68,11 +71,7 @@
                 </c:if>
 
             </div>
-            <div class="col-sm-9 col-sm-offset-3 col-md-9 col-md-offset-2 main">
-                <h2 class="formHeader">Time Entry Burn Up</h2><hr />
-                <p>This graph shows the estimated amount of time for completion and how much the time you work is bringing you to your goal!</p>
-                <div id="burnUpChart"></div>
-            </div>
+
         </div>
     </div>
 </div>
@@ -81,14 +80,17 @@
     var percentage = (${singleTask.timeSpent} / ${singleTask.estimatedCompletionTime}) * 100;
 
     var entries = ['${singleTask.taskName}'];
+    entries.push(0);
     <c:forEach var="point" items="${plotPoints}">
         entries.push(${point});
     </c:forEach>
 
     var dates = ['x'];
+    dates.push('${singleTask.startDate}');
     <c:forEach var="entry" items="${taskEntries}">
         dates.push('${entry.dateEntered}');
     </c:forEach>
+    alert(dates);
 
     var estimatedCompletion = ['Estimated Completion Time'];
     for (index = 1; index < entries.length; index++) {
@@ -111,8 +113,14 @@
             x: {
                 type: 'timeseries',
                 tick: {
-                    format: '%Y-%m-%d'
+                    format: '%Y-%m-%d',
+                    rotate: 85,
+                    multiline: false,
+                    height: 130
                 }
+            },
+            y: {
+                min: 0
             }
         }
     });
