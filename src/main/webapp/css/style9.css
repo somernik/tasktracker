@@ -62,3 +62,9 @@
 #minutes {
     width: 5em;
 }
+
+#profile {
+    padding: 1em;
+    align-content: center;
+    border: solid 1px #5cb85c;
+}

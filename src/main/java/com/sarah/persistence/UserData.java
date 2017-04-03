@@ -1,5 +1,6 @@
 package com.sarah.persistence;
 
+import com.sarah.entity.User;
 import org.apache.log4j.Logger;
 
 import java.sql.*;
@@ -87,4 +88,45 @@ public class UserData {
         }
         return count;
     }
+
+    public User getUser(Object userEmail) {
+        User user;
+        String sql = "SELECT * FROM user WHERE email = '" + userEmail + "'";
+        user = executeQuery(sql);
+        return user;
+    }
+
+
+    private User executeQuery(String sqlStatement) {
+
+        User user = new User();
+        Database database = Database.getInstance();
+        Connection connection = null;
+        try {
+            database.connect();
+            connection = database.getConnection();
+            Statement selectStatement = connection.createStatement();
+            ResultSet results = selectStatement.executeQuery(sqlStatement);
+            user = createUserFromResults(user, results);
+            database.disconnect();
+        } catch (SQLException e) {
+            System.out.println("ExecuteQuery Sql exception: task " + e);
+        } catch (Exception e) {
+            System.out.println("ExecuteQuery Exception: task " + e);
+            e.printStackTrace();
+        }
+        return user;
+    }
+
+    private User createUserFromResults(User user, ResultSet results) throws SQLException {
+        while (results.next()) {
+            user.setUsername(results.getString("username"));
+            user.setEmail(results.getString("email"));
+            user.setFirstName(results.getString("firstName"));
+            user.setLastName(results.getString("lastName"));
+            user.setPassword(results.getString("password"));
+        }
+        return user;
+    }
+
 }

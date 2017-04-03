@@ -1,5 +1,6 @@
 package com.sarah.controllers;
 
+import com.sarah.entity.User;
 import com.sarah.persistence.TaskData;
 import com.sarah.persistence.UserData;
 
@@ -35,6 +36,8 @@ public class LoginServlet extends HttpServlet {
 
         //if(isValid){
             HttpSession session = request.getSession();
+            User user = userData.getUser(email);
+            session.setAttribute("user", user);
             //session.setAttribute("email", email);
             session.setAttribute("email", "somernik@madisoncollege.edu");
 
