@@ -9,6 +9,6 @@
     </ul>
     <ul class="nav nav-sidebar">
         <li><a href="../profile.jsp">View Profile</a></li>
-        <li><a href="">Edit Account</a></li>
+        <li><a href="../editUser.jsp">Edit Account</a></li>
     </ul>
 </div>

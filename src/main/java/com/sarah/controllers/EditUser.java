@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+import com.sarah.entity.User;
 import com.sarah.persistence.UserData;
 
 
@@ -19,7 +20,7 @@ import com.sarah.persistence.UserData;
  */
 
 @WebServlet(
-        urlPatterns = {"/userProfile"}
+        urlPatterns = {"/editUser"}
 )
 
 public class EditUser extends HttpServlet {
@@ -27,8 +28,21 @@ public class EditUser extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         UserData userData = new UserData();
+        User user = (User) session.getAttribute("user");
+        String oldEmail = user.getEmail();
 
-        userData.getUser(session.getAttribute("email"));
+        try {
+            if (request.getParameter("password").equals(request.getParameter("passwordCheck"))) {
+                userData.editUser(request.getParameter("username"), request.getParameter("email"), request.getParameter("firstName"),
+                        request.getParameter("lastName"), request.getParameter("password"), oldEmail);
+                user = userData.getUser(request.getParameter("email"));
+                session.setAttribute("user", user);
+
+            }
+        } catch (Exception exception)
+        {
+            exception.printStackTrace();
+        }
 
         RequestDispatcher dispatcher = request.getRequestDispatcher("/profile.jsp");
         dispatcher.forward(request, response);

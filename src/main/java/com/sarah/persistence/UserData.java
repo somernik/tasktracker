@@ -129,4 +129,33 @@ public class UserData {
         return user;
     }
 
+    // Update a task
+    public boolean editUser(String username, String email, String firstName, String lastName, String password, String oldEmail) throws Exception {
+
+        TaskEntryData taskEntryData = new TaskEntryData();
+        String sql = "UPDATE user SET username = '" + username + "', email = '" + email + "', firstName = '" + firstName
+                + "', lastName = '" + lastName + "', password = '" + password + "' WHERE email = '" + oldEmail + "'";
+        return executeUserUpdate(sql);
+    }
+
+    // Add updates to DB
+    private boolean executeUserUpdate(String sql) {
+        Database database = Database.getInstance();
+        Connection connection = null;
+        try {
+            database.connect();
+            connection = database.getConnection();
+            Statement selectStatement = connection.createStatement();
+            selectStatement.executeUpdate(sql);
+            database.disconnect();
+            return true;
+        } catch (SQLException e) {
+            System.out.println("executeTaskUpdate Sql exception: task " + e);
+            return false;
+        } catch (Exception e) {
+            System.out.println("executeTaskUpdate Exception: task " + e);
+            return false;
+        }
+
+    }
 }
