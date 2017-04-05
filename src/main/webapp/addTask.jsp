@@ -26,7 +26,7 @@
 
                 <input id="taskDueDate" class="form-control datepicker" name="taskDueDate" aria-describedby="searchTermHelp" type="text" required placeholder="Due Date" /><br />
 
-                <button type="submit" name="submit" value="addTask" class="btn btn-success">Add Task</button>
+                <button type="submit" name="submit" value="addTask" class="btn btn-success btn-block">Add Task</button>
             </div>
         </form>
     </body>

@@ -3,7 +3,9 @@ package com.sarah.entity;
 import java.time.LocalDate;
 
 /**
+ * class Task
  * Created by Sarah Omernik on 2/8/2017.
+ * Holds all information about a Task
  */
 public class Task {
     private String taskName;
@@ -20,9 +22,26 @@ public class Task {
     private boolean completed;
     private double timeLeft;
 
+    /**
+     * Empty constructor for Task
+     */
     public Task() {
     }
 
+    /**
+     * Constructor with parameters for Task
+     * @param taskName The name of the task
+     * @param taskCategory The tasks category
+     * @param taskType The tasks type
+     * @param taskDescription Description of task
+     * @param taskDueDate Due date for task
+     * @param taskId Tasks id
+     * @param userId Id of the tasks user
+     * @param timeSpent Amount of time user has worked on this task
+     * @param estimatedCompletionTime How much time this task is estimated to take
+     * @param startDate When the task was started, defaults to day the task is created
+     * @param completed Boolean value of whether the task is completed
+     */
     public Task(String taskName, String taskCategory, String taskType, String taskDescription, LocalDate taskDueDate,
                 int taskId, int userId, double timeSpent, double estimatedCompletionTime, LocalDate startDate, boolean completed) {
         this.taskName = taskName;
@@ -38,14 +57,26 @@ public class Task {
         this.completed = completed;
     }
 
+    /**
+     * Getter for taskName
+     * @return taskName
+     */
     public String getTaskName() {
         return taskName;
     }
 
+    /**
+     * Setter for taskName
+     * @param taskName The name of the task
+     */
     public void setTaskName(String taskName) {
         this.taskName = taskName;
     }
 
+    /**
+     * Getter for task category
+     * @return taskCategory
+     */
     public String getTaskCategory() {
         return taskCategory;
     }

@@ -12,7 +12,6 @@ import java.util.Properties;
  *
  * @author pwaite
  */
-
 public class Database {
 
     // create an object of the class Database

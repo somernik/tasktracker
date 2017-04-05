@@ -31,7 +31,7 @@ public class TaskData {
         String sql = "INSERT INTO task (userId, name, typeId, category, description, dueDate, startDate) VALUES ("
                 + "(SELECT userId FROM user WHERE email='" + email + "'), '" + name + "', (SELECT typeId FROM type WHERE"
                 + " typeName='" + type + "'), '" + category + "', '" + description + "', '" + dueDate + "', NOW())";
-        return executeTaskUpdate(sql);
+        return Utility.executeUpdate(sql);
     }
 
     // Update a task
@@ -46,28 +46,7 @@ public class TaskData {
             taskEntryData.addTime(timeAdded, taskId);
             updateTimeSpent(taskId);
         }
-        return executeTaskUpdate(sql);
-    }
-
-    // Add updates to DB
-    private boolean executeTaskUpdate(String sql) {
-        Database database = Database.getInstance();
-        Connection connection = null;
-        try {
-            database.connect();
-            connection = database.getConnection();
-            Statement selectStatement = connection.createStatement();
-            selectStatement.executeUpdate(sql);
-            database.disconnect();
-            return true;
-        } catch (SQLException e) {
-            System.out.println("executeTaskUpdate Sql exception: task " + e);
-            return false;
-        } catch (Exception e) {
-            System.out.println("executeTaskUpdate Exception: task " + e);
-            return false;
-        }
-
+        return Utility.executeUpdate(sql);
     }
 
     public List<Task> getUserTasks(Object userEmail, String search) {
@@ -144,7 +123,7 @@ public class TaskData {
     public boolean updateTimeSpent(String taskId) {
         String sql = "UPDATE task SET cumulativeTimeSpent = (SELECT SUM(timeEnteredAmount) FROM taskEntry "
                 + "WHERE taskEntry.taskId=" + taskId + ") WHERE taskId=" + taskId + ";";
-        return executeTaskUpdate(sql);
+        return Utility.executeUpdate(sql);
 
     }
 
@@ -165,7 +144,7 @@ public class TaskData {
 
     public void updateEstimatedCompletionTime(Task task, double estimatedTime) {
         String sql = "UPDATE task SET estimatedCompletionTime = '" + estimatedTime + "' WHERE taskId = '" + task.getTaskId() + "'";
-        executeTaskUpdate(sql);
+        Utility.executeUpdate(sql);
     }
 
     public double groupSqlStatement(String type, String category, String columnName) {

@@ -82,7 +82,7 @@
                             <td>
                                 <form method="post" action="/editTask">
                                     <input type="hidden" name="id" value="${task.taskId}">
-                                    <button type="submit" name="submit" value="details" class="btn btn-success">View Details</button>
+                                    <button type="submit" name="submit" value="details" class="btn btn-success btn-block">View Details</button>
                                 </form>
                             </td>
                         </tr>
