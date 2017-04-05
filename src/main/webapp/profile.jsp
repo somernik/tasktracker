@@ -14,13 +14,19 @@
         <div class="row">
             <%@include file="templates/sideNav.jsp"%>
             <div class="col-sm-9 col-sm-offset-3 col-md-5 col-md-offset-2 main">
-                <div>
-                    <h2 class="form-signin-heading formHeader">User Profile</h2><hr />
-                    <h3>Username: ${user.username}</h3>
-                    <h3>Email: ${user.email}</h3>
-                    <h3>First Name: ${user.firstName}</h3>
-                    <h3>Last Name: ${user.lastName}</h3>
-                    <a href="../editUser.jsp"><button type="submit" name="submit" value="editUser" class="btn btn-success">Edit Profile</button></a>
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <h2 class="form-signin-heading formHeader">User Profile</h2>
+                    </div>
+                    <div class="panel-body">
+                        <h3>Username: ${user.username}</h3>
+                        <h3>Email: ${user.email}</h3>
+                        <h3>First Name: ${user.firstName}</h3>
+                        <h3>Last Name: ${user.lastName}</h3>
+                    </div>
+                    <div class="panel-footer">
+                        <a href="../editUser.jsp"><button type="submit" name="submit" value="editUser" class="btn btn-success">Edit Profile</button></a>
+                    </div>
                 </div>
             </div>
         </div>

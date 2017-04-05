@@ -30,18 +30,24 @@ public class EditUser extends HttpServlet {
         UserData userData = new UserData();
         User user = (User) session.getAttribute("user");
         String oldEmail = user.getEmail();
+        boolean isValid = false;
 
-        try {
-            if (request.getParameter("password").equals(request.getParameter("passwordCheck"))) {
-                userData.editUser(request.getParameter("username"), request.getParameter("email"), request.getParameter("firstName"),
-                        request.getParameter("lastName"), request.getParameter("password"), oldEmail);
-                user = userData.getUser(request.getParameter("email"));
-                session.setAttribute("user", user);
+        isValid = userData.validateUser(oldEmail, request.getParameter("passwordOld"));
 
+        if (isValid) {
+            try {
+                if (request.getParameter("password").equals(request.getParameter("passwordCheck"))) {
+                    userData.editUser(request.getParameter("username"), request.getParameter("email"), request.getParameter("firstName"),
+                            request.getParameter("lastName"), request.getParameter("password"), oldEmail);
+                    user = userData.getUser(request.getParameter("email"));
+                    session.setAttribute("user", user);
+
+                }
+            } catch (Exception exception) {
+                exception.printStackTrace();
             }
-        } catch (Exception exception)
-        {
-            exception.printStackTrace();
+        } else {
+            request.setAttribute("error", "Problem accessing information");
         }
 
         RequestDispatcher dispatcher = request.getRequestDispatcher("/profile.jsp");

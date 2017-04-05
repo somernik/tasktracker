@@ -36,7 +36,9 @@ public class Analytics extends HttpServlet {
         List<Task> tasks;
         Map<String, Double> timePerDayOfWeek = new HashMap<String, Double>();
         Map<String, Double> totalPerType = new HashMap<String, Double>();
+        Map<String, Double> totalPerCategory = new HashMap<String, Double>();
         Map<String, Double> percentagePerType = new HashMap<String, Double>();
+        Map<String, Double> percentagePerCategory = new HashMap<String, Double>();
         Double total = 0.0;
 
         List<String> types = new ArrayList<String>();
@@ -49,19 +51,20 @@ public class Analytics extends HttpServlet {
         for (Task task : tasks) {
             total += task.getTimeSpent();
             calculateDaysOfWeek(task, timePerDayOfWeek);
-            updateTotalPerType(task, totalPerType);
+            updateTotalPerSomeSortingFactor(task, totalPerType, "type");
+            updateTotalPerSomeSortingFactor(task, totalPerCategory, "category");
             types.add(task.getTaskType());
             value.add(task.getTimeSpent());
-
-            task.getTaskCategory();
         }
 
-        calculatePercentagePerType(percentagePerType, totalPerType, total);
+        calculatePercentages(percentagePerType, totalPerType, total);
+        calculatePercentages(percentagePerCategory, totalPerCategory, total);
 
         request.setAttribute("mostCommonDay", getMostCommonDay(timePerDayOfWeek));
         request.setAttribute("types", types);
         request.setAttribute("timePerDay", timePerDayOfWeek);
         request.setAttribute("typePercentages", percentagePerType);
+        request.setAttribute("categoryPercentages", percentagePerCategory);
 
         RequestDispatcher dispatcher = request.getRequestDispatcher("/analytics.jsp");
         dispatcher.forward(request, response);
@@ -90,19 +93,25 @@ public class Analytics extends HttpServlet {
             }
         }
     }
-    private void updateTotalPerType(Task task, Map<String, Double>totalPerType) {
-
-        if (totalPerType.containsKey(task.getTaskType())) {
-            Double newTotal = totalPerType.get(task.getTaskType()).intValue() + task.getTimeSpent();
-            totalPerType.put(task.getTaskType(), newTotal);
+    private void updateTotalPerSomeSortingFactor(Task task, Map<String, Double>totalPerSomeSortingFactor, String sortingFactor) {
+        String key;
+        if (sortingFactor.equals("type")) {
+            key = task.getTaskType();
         } else {
-            totalPerType.put(task.getTaskType(), (task.getTimeSpent()));
+            key = task.getTaskCategory();
+        }
+
+        if (totalPerSomeSortingFactor.containsKey(key)) {
+            Double newTotal = totalPerSomeSortingFactor.get(key).intValue() + task.getTimeSpent();
+            totalPerSomeSortingFactor.put(key, newTotal);
+        } else {
+            totalPerSomeSortingFactor.put(key, (task.getTimeSpent()));
         }
     }
 
-    private void calculatePercentagePerType(Map<String, Double>percentagePerType, Map<String, Double>totalPerType, Double total) {
+    private void calculatePercentages(Map<String, Double>percentagePerType, Map<String, Double>totalPerSomeSortingFactor, Double total) {
         // Divide total per type by total, then * 100
-        for (Map.Entry<String, Double> entry : totalPerType.entrySet()) {  // Iterate through hashmap
+        for (Map.Entry<String, Double> entry : totalPerSomeSortingFactor.entrySet()) {  // Iterate through hashmap
             Double percentage = ((entry.getValue() / total) * 100);
             percentagePerType.put(entry.getKey(), percentage);
         }

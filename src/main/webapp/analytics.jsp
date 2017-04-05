@@ -18,12 +18,13 @@
     <div>
         <h2 class="formHeader">Percentage of Time Spent by Type</h2>
         Category
-            <label class="switch">
-                <input type="checkbox" checked>
+            <label class="switch" onclick="changeDonutChart();">
+                <input id="chartSwitch" type="checkbox" checked>
                 <div class="slider round"></div>
             </label>Type
     </div>
-    <div id="donutchart"></div>
+    <div id="typeChart"></div>
+    <div id="categoryChart" class="hide"></div>
     <div id="chart"></div>
     <div>
         <h2 class="formHeader">Time Spent Per Day of Week</h2>
@@ -32,18 +33,47 @@
     <div id="barChart"></div>
 </div>
 <script>
+    function changeDonutChart() {
+        if (document.getElementById("chartSwitch").checked) {
+            document.getElementById("categoryChart").className = "hide";
+            document.getElementById("typeChart").className = "not-hidden";
+        } else {
+            document.getElementById("typeChart").className = "hide";
+            document.getElementById("categoryChart").className = "not-hidden";
+        }
+    }
     // http://stackoverflow.com/questions/27659818/c3js-custom-date-for-each-line multiple  xs
     var types = [];
+    var categories = [];
     var index_percent = 0;
     <c:forEach var="entry" items="${typePercentages}">
         var percentages = ['${entry.key}', ${entry.value}];
         types[index_percent] = percentages;
         index_percent++;
     </c:forEach>
+    index_percent = 0;
+    <c:forEach var="entry" items="${categoryPercentages}">
+        var percentages = ['${entry.key}', ${entry.value}];
+        categories[index_percent] = percentages;
+        index_percent++;
+    </c:forEach>
     var donutChart = c3.generate({
-        bindto: '#donutchart',
+        bindto: '#typeChart',
         data: {
             columns: types,
+            type : 'donut',
+            onclick: function (d, i) { console.log("onclick", d, i); },
+            onmouseover: function (d, i) { console.log("onmouseover", d, i); },
+            onmouseout: function (d, i) { console.log("onmouseout", d, i); }
+        },
+        donut: {
+            title: "% of Time Spent"
+        }
+    });
+    var donutChart = c3.generate({
+        bindto: '#categoryChart',
+        data: {
+            columns: categories,
             type : 'donut',
             onclick: function (d, i) { console.log("onclick", d, i); },
             onmouseover: function (d, i) { console.log("onmouseover", d, i); },

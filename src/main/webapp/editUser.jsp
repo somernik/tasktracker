@@ -17,7 +17,7 @@
             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
                 <form action="/editUser" id="editUser" class="form-signin form" method="post">
 
-                    <h2 class="form-signin-heading formHeader">Edit User</h2><hr />
+                    <h2 class="form-signin-heading formHeader">Edit User</h2>
 
                     <label for="username">Username</label>
                     <input id="username" class="form-control" name="username" type="text" placeholder="Username" required autofocus value="${user.username}" /><br />
@@ -32,11 +32,12 @@
                     <input id="lastName" class="form-control" name="lastName" type="text" placeholder="Last Name" required value="${user.lastName}" /><br />
 
                     <label for="password">Change Password</label>
+                    <input type="password" class="form-control" id="passwordOld" name="passwordOld" aria-describedby="searchTermHelp" placeholder="Old Password"><br />
                     <input type="password" class="form-control" id="password" name="password" aria-describedby="searchTermHelp" placeholder="New Password"><br />
                     <input type="password" class="form-control" id="passwordCheck" name="passwordCheck" aria-describedby="searchTermHelp" placeholder="New Password Check"><br />
 
                     <button href="profile.jsp" value="cancel" class="btn btn-success">Cancel</button>
-                    <button type="submit" name="submit" value="editUser" class="btn btn-success">Save Changes</button>
+                    <button type="submit" name="submit" value="editUser" class="btn btn-success btn-block">Save Changes</button>
                 </form>
             </div>
         </div>
