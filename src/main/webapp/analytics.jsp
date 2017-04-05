@@ -25,7 +25,7 @@
     </div>
     <div id="typeChart"></div>
     <div id="categoryChart" class="hide"></div>
-    <div id="chart"></div>
+    <!--<div id="chart"></div>-->
     <div>
         <h2 class="formHeader">Time Spent Per Day of Week</h2>
         <p>${mostCommonDay} is the day you are most likely to work on tasks!</p>
@@ -45,18 +45,22 @@
     // http://stackoverflow.com/questions/27659818/c3js-custom-date-for-each-line multiple  xs
     var types = [];
     var categories = [];
+
+    // create function to trim this down?
     var index_percent = 0;
     <c:forEach var="entry" items="${typePercentages}">
         var percentages = ['${entry.key}', ${entry.value}];
         types[index_percent] = percentages;
         index_percent++;
     </c:forEach>
-    index_percent = 0;
+
+    index = 0;
     <c:forEach var="entry" items="${categoryPercentages}">
         var percentages = ['${entry.key}', ${entry.value}];
-        categories[index_percent] = percentages;
-        index_percent++;
+        categories[index] = percentages;
+        index++;
     </c:forEach>
+
     var donutChart = c3.generate({
         bindto: '#typeChart',
         data: {

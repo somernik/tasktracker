@@ -13,6 +13,7 @@ import java.lang.Exception;
 import com.sarah.persistence.TaskData;
 
 /**
+ * SearchSpecificTasks
  * Created by Sarah Omernik on 2/8/2017.
  */
 
@@ -40,19 +41,26 @@ public class SearchSpecificTasks extends HttpServlet {
         dispatcher.forward(request, response);
     }
 
+    /**
+     * Creates search criteria string
+     * @param request the request object
+     * @param searchCriteria the criteria string
+     * @return searchCriteria
+     */
     private String determineSearchCriteria(HttpServletRequest request, String searchCriteria) {
-        // switch case, enumeration
-        if (request.getParameter("completion").equals("completed") ) {
-            searchCriteria += " AND completed = 1";
-        } else if (request.getParameter("completion").equals("notCompleted") ) {
-            searchCriteria += " AND completed = 0";
+
+        switch (request.getParameter("completion")) {
+            case "completed" : searchCriteria += " AND completed = 1";
+            case "notCompleted" : searchCriteria += " AND completed = 0";
         }
 
-        if (request.getParameter("timeOperator").equals("greaterThan") && (!request.getParameter("timeSpent").isEmpty())) {
-            searchCriteria += " AND cumulativeTimeSpent >= " + request.getParameter("timeSpent");
-        } else if (request.getParameter("timeOperator").equals("lessThan") && (!request.getParameter("timeSpent").isEmpty())) {
-            searchCriteria += " AND cumulativeTimeSpent <= " + request.getParameter("timeSpent");
+        if (!request.getParameter("timeSpent").isEmpty()) {
+            switch (request.getParameter("timeOperator")) {
+                case "greaterThan" : searchCriteria += " AND cumulativeTimeSpent >= " + request.getParameter("timeSpent");
+                case "lessThen" : searchCriteria += " AND cumulativeTimeSpent <= " + request.getParameter("timeSpent");
+            }
         }
+        // TODO add type and category
 
         return searchCriteria;
     }
