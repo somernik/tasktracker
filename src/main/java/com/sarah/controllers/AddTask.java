@@ -14,15 +14,16 @@ import com.sarah.entity.Task;
 import com.sarah.persistence.TaskData;
 
 /**
+ * AddTask
+ * adds new task
  * Created by Sarah Omernik on 2/8/2017.
  */
-
 @WebServlet(
         urlPatterns = {"/addTask"}
 )
 public class AddTask extends HttpServlet {
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         TaskData taskData = new TaskData();
         HttpSession session=request.getSession();
 
@@ -39,6 +40,6 @@ public class AddTask extends HttpServlet {
         session.setAttribute("tasks", taskData.getUserTasks(session.getAttribute("email"), "completed=0"));
 
         RequestDispatcher dispatcher = request.getRequestDispatcher("/dashboard.jsp");
-        dispatcher.forward(request, resp);
+        dispatcher.forward(request, response);
     }
 }

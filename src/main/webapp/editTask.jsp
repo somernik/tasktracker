@@ -19,7 +19,7 @@
 
             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 
-                <form action="/editTask" id="editTask" class="form-signin form" method="post">
+                <form action="/saveTask" id="editTask" class="form-signin form" method="post">
                     <h2 class="form-signin-heading formHeader">Edit Task</h2>
                         <label for="taskName">Name</label>
                         <input id="taskName" class="form-control" name="taskName" type="text" placeholder="Name" required autofocus value="${singleTask.taskName}" /><br />

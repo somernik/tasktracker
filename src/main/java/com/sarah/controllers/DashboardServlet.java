@@ -13,6 +13,8 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.annotation.WebServlet;
 
 /**
+ * Dashboard Servlet
+ * Shows users dashboard
  * Created by sarah on 2/25/2017.
  */
 @WebServlet(
@@ -22,20 +24,25 @@ public class DashboardServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html");
-        PrintWriter out=response.getWriter();
-        TaskData taskData = new TaskData();
-        HttpSession session=request.getSession();
 
-        if(session!=null){
-            session.setAttribute("tasks", taskData.getUserTasks(session.getAttribute("email"), "active"));
-            request.getRequestDispatcher("/dashboard.jsp").include(request, response);
+        TaskData taskData = new TaskData();
+        HttpSession session = request.getSession();
+        session.setAttribute("tasks", taskData.getUserTasks(session.getAttribute("email"), "active"));
+        request.getRequestDispatcher("/dashboard.jsp").include(request, response);
+
+        // TODO check if user is logged in
+        /*
+        if(request.getSession(false) != null){
+
         }
         else{
+            response.setContentType("text/html");
+            PrintWriter out=response.getWriter();
             out.print("Please login first");
             request.getRequestDispatcher("/logIn.jsp").include(request, response);
             out.close();
         }
+        */
 
     }
 }

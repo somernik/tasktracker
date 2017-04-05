@@ -13,9 +13,9 @@ import java.lang.Exception;
 import com.sarah.persistence.TaskData;
 
 /**
+ * SearchTasks
  * Created by Sarah Omernik on 2/8/2017.
  */
-
 @WebServlet(
         urlPatterns = {"/searchTasks"}
 )

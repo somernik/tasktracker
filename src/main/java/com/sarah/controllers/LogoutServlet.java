@@ -12,25 +12,21 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.annotation.WebServlet;
 
 /**
+ * LogoutServlet
+ * Invalidates user's session to log them out
  * Created by sarah on 2/25/2017.
  */
-
 @WebServlet(
-        urlPatterns = {"/LoginServlet"}
+        urlPatterns = {"/LogoutServlet"}
 )
-
 public class LogoutServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html");
-        PrintWriter out = response.getWriter();
-
 
         HttpSession session=request.getSession();
         session.invalidate();
 
-        request.getRequestDispatcher("index.jsp").include(request, response);
-
-        out.close();
+        String url = "/index.jsp";
+        response.sendRedirect(url);
     }
 }

@@ -14,6 +14,7 @@ import com.sarah.persistence.UserData;
 
 
 /**
+ * EditUser
  * A simple servlet to edit the user.
  *
  * @author somernik 4/2/2017
@@ -22,7 +23,6 @@ import com.sarah.persistence.UserData;
 @WebServlet(
         urlPatterns = {"/editUser"}
 )
-
 public class EditUser extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -35,22 +35,41 @@ public class EditUser extends HttpServlet {
         isValid = userData.validateUser(oldEmail, request.getParameter("passwordOld"));
 
         if (isValid) {
-            try {
-                if (request.getParameter("password").equals(request.getParameter("passwordCheck"))) {
-                    userData.editUser(request.getParameter("username"), request.getParameter("email"), request.getParameter("firstName"),
-                            request.getParameter("lastName"), request.getParameter("password"), oldEmail);
-                    user = userData.getUser(request.getParameter("email"));
-                    session.setAttribute("user", user);
-
-                }
-            } catch (Exception exception) {
-                exception.printStackTrace();
-            }
+            editUserValues(request, session, userData, oldEmail);
         } else {
             request.setAttribute("error", "Problem accessing information");
         }
 
         RequestDispatcher dispatcher = request.getRequestDispatcher("/profile.jsp");
         dispatcher.forward(request, response);
+    }
+
+    /**
+     * Changes user values to entered values
+     * @param request the request
+     * @param session the current session
+     * @param userData the user data object
+     * @param oldEmail the current email
+     */
+    private void editUserValues(HttpServletRequest request, HttpSession session, UserData userData, String oldEmail) {
+        User user;
+        try {
+            if (request.getParameter("password").equals(request.getParameter("passwordCheck")) && request.getParameter("password").length() > 0) {
+                userData.editUser(request.getParameter("username"), request.getParameter("email"), request.getParameter("firstName"),
+                        request.getParameter("lastName"), request.getParameter("password"), oldEmail);
+                // TODO test how this works if changing email
+
+            } else if (request.getParameter("password").equals(request.getParameter("passwordCheck")) && !(request.getParameter("password").length() > 0)) {
+                // This wont write an empty password to the database
+                userData.editUser(request.getParameter("username"), request.getParameter("email"), request.getParameter("firstName"),
+                        request.getParameter("lastName"), request.getParameter("passwordOld"), oldEmail);
+            }
+
+            user = userData.getUser(request.getParameter("email"));
+            session.setAttribute("user", user);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
     }
 }

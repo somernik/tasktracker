@@ -25,10 +25,12 @@ public class AddUser extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         UserData userData = new UserData();
+
         if (req.getParameter("submit").equals("addUser")) {
             userData.addNewUser(req.getParameter("firstName"), req.getParameter("lastName"), req.getParameter("username"),
                     req.getParameter("email"), req.getParameter("password"));
         }
+
         RequestDispatcher dispatcher = req.getRequestDispatcher("/dashboard.jsp");
         dispatcher.forward(req, resp);
     }
