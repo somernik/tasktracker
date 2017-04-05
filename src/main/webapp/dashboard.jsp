@@ -58,12 +58,12 @@
                     <td>${task.taskName}</td>
                     <td>${task.taskType}</td>
                     <td>${task.taskCategory}</td>
-                    <c:if test="${task.estimateTimeLeft() > 0 }">
+                    <c:if test="${task.timeLeft > 0}">
                       <td>
-                        <c:out value="${task.estimateTimeLeft()}" /> min
+                        <c:out value="${task.timeLeft}" /> min
                       </td>
                     </c:if>
-                    <c:if test="${task.estimateTimeLeft() <= 0 }">
+                    <c:if test="${task.timeLeft <= 0}">
                       <td>
                         Estimated Time Left not available. Please add an estimate of how long this task will take.
                         <form method="post" action="/editTask">

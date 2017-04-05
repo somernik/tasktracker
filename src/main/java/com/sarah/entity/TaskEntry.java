@@ -17,11 +17,12 @@ public class TaskEntry {
     }
 
     public TaskEntry(double timeAdded, LocalDate dateEntered,
-                     int taskEntryId, int taskId) {
+                     int taskEntryId, int taskId, String timeEntered) {
         this.dateEntered = dateEntered;
         this.taskId = taskId;
         this.taskEntryId = taskEntryId;
         this.timeAdded = timeAdded;
+        this.timeEntered = timeEntered;
     }
 
     public double getTimeAdded() {

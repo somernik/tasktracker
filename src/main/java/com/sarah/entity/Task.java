@@ -18,6 +18,7 @@ public class Task {
     private double estimatedCompletionTime;
     private LocalDate startDate;
     private boolean completed;
+    private double timeLeft;
 
     public Task() {
     }
@@ -125,11 +126,11 @@ public class Task {
         this.completed = completed;
     }
 
-
-    public double estimateTimeLeft() {
-        return (estimatedCompletionTime - timeSpent);
+    public double getTimeLeft() {
+        return timeLeft;
     }
 
-
-
+    public void setTimeLeft(double timeLeft) {
+        this.timeLeft = timeLeft;
+    }
 }

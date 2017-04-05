@@ -136,6 +136,7 @@ public class TaskData {
         task.setEstimatedCompletionTime(results.getDouble("estimatedCompletionTime"));
         task.setStartDate(results.getDate("startDate").toLocalDate());
         task.setCompleted(results.getBoolean("completed"));
+        task.setTimeLeft(task.getEstimatedCompletionTime() - task.getTimeSpent());
         return task;
     }
 
