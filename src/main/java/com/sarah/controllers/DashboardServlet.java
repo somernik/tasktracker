@@ -31,6 +31,8 @@ public class DashboardServlet extends HttpServlet {
         request.getRequestDispatcher("/dashboard.jsp").include(request, response);
 
         // TODO check if user is logged in
+        // check if valid email is in session
+
         /*
         if(request.getSession(false) != null){
 
