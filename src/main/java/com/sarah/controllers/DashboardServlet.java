@@ -28,13 +28,7 @@ public class DashboardServlet extends HttpServlet {
 
         HttpSession session = request.getSession();
 
-        if(session.getAttribute("loggedIn") == null) {
-            response.setContentType("text/html");
-            PrintWriter out=response.getWriter();
-            out.print("<h2>Please login first</h2>");
-            request.getRequestDispatcher("/logIn.jsp").include(request, response);
-            out.close();
-        }
+        LoggedIn.checkLoggedIn(request, response);
 
         TaskData taskData = new TaskData();
         session.setAttribute("tasks", taskData.getUserTasks(session.getAttribute("email"), "active"));

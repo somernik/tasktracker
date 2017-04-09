@@ -22,6 +22,7 @@ import javax.servlet.annotation.WebServlet;
 public class LogoutServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        LoggedIn.checkLoggedIn(request, response);
 
         HttpSession session=request.getSession();
         session.invalidate();

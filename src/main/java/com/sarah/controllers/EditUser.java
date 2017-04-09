@@ -26,6 +26,8 @@ import com.sarah.persistence.UserData;
 public class EditUser extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        LoggedIn.checkLoggedIn(request, response);
+
         HttpSession session = request.getSession();
         UserData userData = new UserData();
         User user = (User) session.getAttribute("user");
@@ -71,5 +73,10 @@ public class EditUser extends HttpServlet {
         } catch (Exception exception) {
             exception.printStackTrace();
         }
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        doPost(req, resp);
     }
 }

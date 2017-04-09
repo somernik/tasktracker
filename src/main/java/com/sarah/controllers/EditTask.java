@@ -27,6 +27,8 @@ import com.sarah.persistence.TaskEntryData;
 public class EditTask extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        LoggedIn.checkLoggedIn(req, resp);
+
         TaskData taskData = new TaskData();
         HttpSession session = req.getSession();
         RequestDispatcher dispatcher;
@@ -43,5 +45,10 @@ public class EditTask extends HttpServlet {
 
         dispatcher = req.getRequestDispatcher("/editTask.jsp");
         dispatcher.forward(req, resp);
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        doPost(req, resp);
     }
 }

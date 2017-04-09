@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.lang.Exception;
 
 import com.sarah.entity.Task;
@@ -24,12 +25,15 @@ import com.sarah.persistence.TaskData;
 public class AddTask extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        LoggedIn.checkLoggedIn(request, response);
+
         TaskData taskData = new TaskData();
         HttpSession session=request.getSession();
 
+
         if (request.getParameter("submit").equals("addTask")) {
             try {
-                Task task = new Task();
                 taskData.addNewTask(request.getParameter("taskName"), request.getParameter("taskCategory"), request.getParameter("taskType"),
                         request.getParameter("taskDescription"), request.getParameter("taskDueDate"), session.getAttribute("email"));
             } catch (Exception exception) {
@@ -41,5 +45,10 @@ public class AddTask extends HttpServlet {
 
         RequestDispatcher dispatcher = request.getRequestDispatcher("/dashboard.jsp");
         dispatcher.forward(request, response);
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        doPost(req, resp);
     }
 }

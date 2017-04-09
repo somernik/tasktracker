@@ -28,6 +28,8 @@ import com.sarah.persistence.TaskEntryData;
 public class TaskDetails extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        LoggedIn.checkLoggedIn(req, resp);
+
         TaskData taskData = new TaskData();
         TaskEntryData taskEntryData = new TaskEntryData();
         HttpSession session = req.getSession();
@@ -54,6 +56,7 @@ public class TaskDetails extends HttpServlet {
 
     /**
      * Adds up all task entries
+     *
      * @param entries the list of entries
      * @return the list of entries
      */
@@ -70,4 +73,8 @@ public class TaskDetails extends HttpServlet {
         return increasingEntries;
     }
 
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        doPost(req, resp);
+    }
 }

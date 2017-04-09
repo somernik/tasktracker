@@ -31,7 +31,12 @@ public class AddUser extends HttpServlet {
                     req.getParameter("email"), req.getParameter("password"));
         }
 
-        RequestDispatcher dispatcher = req.getRequestDispatcher("/dashboard.jsp");
+        RequestDispatcher dispatcher = req.getRequestDispatcher("/LoginServlet");
         dispatcher.forward(req, resp);
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        doPost(req, resp);
     }
 }

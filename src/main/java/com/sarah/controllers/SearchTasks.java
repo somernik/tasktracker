@@ -22,6 +22,8 @@ import com.sarah.persistence.TaskData;
 public class SearchTasks extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        LoggedIn.checkLoggedIn(request, response);
+
         TaskData taskData = new TaskData();
         HttpSession session=request.getSession();
         String searchCriteria = "taskId = taskId";

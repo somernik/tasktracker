@@ -22,6 +22,7 @@ import com.sarah.persistence.TaskEntryData;
 import com.sarah.persistence.Utility;
 
 /**
+ * Analytics class
  * Created by Sarah Omernik on 3/22/2017.
  */
 
@@ -31,6 +32,8 @@ import com.sarah.persistence.Utility;
 public class Analytics extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        LoggedIn.checkLoggedIn(request, response);
+
         TaskData taskData = new TaskData();
         HttpSession session=request.getSession();
         String searchCriteria = "taskId = taskId";
