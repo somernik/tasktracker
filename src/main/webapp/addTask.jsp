@@ -11,6 +11,7 @@
     } );
 </script>
     <body>
+    <c:if test="${loggedIn}">
         <%@include file="templates/sideNav.jsp"%>
         <form action="/addTask" id="newTask" class="form-signin form" method="post">
             <h2 class="form-signin-heading formHeader">Add New Task</h2>
@@ -29,5 +30,9 @@
                 <button type="submit" name="submit" value="addTask" class="btn btn-success btn-block">Add Task</button>
             </div>
         </form>
+    </c:if>
+    <c:if test="${loggedIn != true}">
+        <h3>Please <a href="logIn.jsp">log in</a> to view page.</h3>
+    </c:if>
     </body>
 </html>

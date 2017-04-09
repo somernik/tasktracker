@@ -7,6 +7,7 @@ import com.sarah.persistence.UserData;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -52,7 +53,7 @@ public class LoginServlet extends HttpServlet {
      * @param userData the users data
      * @throws IOException
      */
-    private void setUpUserSession(HttpServletRequest request, HttpServletResponse response, String email, UserData userData) throws IOException {
+    private void setUpUserSession(HttpServletRequest request, HttpServletResponse response, String email, UserData userData) throws IOException, ServletException {
         TaskData taskData = new TaskData();
         HttpSession session = request.getSession();
         User user = userData.getUser(email);
@@ -62,7 +63,7 @@ public class LoginServlet extends HttpServlet {
         session.setAttribute("loggedIn", true);
         session.setAttribute("tasks", taskData.getUserTasks(session.getAttribute("email"), "active"));
 
-        String url = "/dashboard.jsp";
-        response.sendRedirect(url);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/dashboard.jsp");
+        dispatcher.forward(request, response);
     }
 }

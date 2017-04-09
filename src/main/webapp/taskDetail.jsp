@@ -10,6 +10,7 @@
 <!--<script src="/path/to/d3.v3.min.js" charset="utf-8"></script>-->
 <script src="c3/d3.v3.js" charset="utf-8"></script>
 <script src="c3/c3-0.4.11/c3.min.js"></script>
+<c:if test="${loggedIn}">
 <div class="mainContent">
     <div class="container-fluid">
         <div class="row">
@@ -183,5 +184,9 @@
         }
     });
 </script>
+</c:if>
+<c:if test="${loggedIn != true}">
+    <h3>Please <a href="logIn.jsp">log in</a> to view page.</h3>
+</c:if>
 </body>
 </html>

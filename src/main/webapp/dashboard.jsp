@@ -4,6 +4,7 @@
 <html>
 <%@include file="templates/dataTableSetup.jsp"%>
 <body>
+<c:if test="${loggedIn}">
 <div class="mainContent">
     <div class="container-fluid">
       <div class="row">
@@ -97,5 +98,9 @@
       </div>
     </div>
 </div>
-  </body>
+</body>
+</c:if>
+<c:if test="${loggedIn != true}">
+  <h3>Please <a href="logIn.jsp">log in</a> to view page.</h3>
+</c:if>
 </html>

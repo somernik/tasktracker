@@ -3,6 +3,7 @@
 <%@include file="templates/header.jsp"%>
 <html>
 <body>
+<c:if test="${loggedIn}">
 <!-- Load c3.css -->
 <link href="c3/c3-0.4.11/c3.css" rel="stylesheet" type="text/css">
 
@@ -141,6 +142,10 @@
         }
     }
 </script>
+</c:if>
+<c:if test="${loggedIn != true}">
+    <h3>Please <a href="logIn.jsp">log in</a> to view page.</h3>
+</c:if>
 </body>
 </html>
 
