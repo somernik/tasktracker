@@ -22,29 +22,23 @@ import javax.servlet.annotation.WebServlet;
 )
 public class DashboardServlet extends HttpServlet {
 
+
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        TaskData taskData = new TaskData();
         HttpSession session = request.getSession();
-        session.setAttribute("tasks", taskData.getUserTasks(session.getAttribute("email"), "active"));
-        request.getRequestDispatcher("/dashboard.jsp").include(request, response);
 
-        // TODO check if user is logged in
-        // check if valid email is in session
-
-        /*
-        if(request.getSession(false) != null){
-
-        }
-        else{
+        if(session.getAttribute("loggedIn") == null) {
             response.setContentType("text/html");
             PrintWriter out=response.getWriter();
-            out.print("Please login first");
+            out.print("<h2>Please login first</h2>");
             request.getRequestDispatcher("/logIn.jsp").include(request, response);
             out.close();
         }
-        */
+
+        TaskData taskData = new TaskData();
+        session.setAttribute("tasks", taskData.getUserTasks(session.getAttribute("email"), "active"));
+        request.getRequestDispatcher("/dashboard.jsp").include(request, response);
 
     }
 }
