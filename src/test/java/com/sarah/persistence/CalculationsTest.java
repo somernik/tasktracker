@@ -5,14 +5,14 @@ import com.sarah.entity.TaskEntry;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.*;
 
 /**
+ * CalculationsTest
+ * tests calculations
  * Created by sarah on 4/9/2017.
  */
 public class CalculationsTest {

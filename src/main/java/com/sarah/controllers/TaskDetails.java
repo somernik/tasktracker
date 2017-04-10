@@ -60,7 +60,7 @@ public class TaskDetails extends HttpServlet {
      * @param entries the list of entries
      * @return the list of entries
      */
-    private List<Double> getEntries(List<TaskEntry> entries) {
+    public List<Double> getEntries(List<TaskEntry> entries) {
         List<Double> increasingEntries = new ArrayList<Double>();
         if (entries.size() > 0) {
             increasingEntries.add(entries.get(0).getTimeAdded());
