@@ -21,7 +21,9 @@ public class CalculationsTest {
     Map<String, Double> testTotalsForSorting = new HashMap<String, Double>();
     Map<String, Double> testTotalsAfter = new HashMap<String, Double>();
     Map<String, Double> percentagePerType = new HashMap<String, Double>();
+    Map<String, Double> testDayMapTwo = new HashMap<String, Double>();
     Task testTaskForSorting = new Task();
+    TaskEntry testEntry = new TaskEntry();
     Double total = 0.0;
 
     @Before
@@ -52,6 +54,16 @@ public class CalculationsTest {
         testTaskForSorting.setTaskType("type1");
         testTaskForSorting.setTimeSpent(50);
 
+        // add value to day map
+        testDayMapTwo.put("Monday", 40.5);
+        testDayMapTwo.put("Tuesday", 60.0);
+        testDayMapTwo.put("Wednesday", 160.2);
+        testDayMapTwo.put("Thursday", 356.0);
+        testDayMapTwo.put("Friday", 150.0);
+        testDayMapTwo.put("Saturday", 505.0);
+        testDayMapTwo.put("Sunday", 160.2);
+
+        testEntry.setTimeAdded(50);
     }
 
     @Test
@@ -82,16 +94,14 @@ public class CalculationsTest {
         assertNotNull(testTotalsForSorting);
     }
 
+    @Test
+    public void testAddValuesToDayMap() {
+        Calculations.addValuesToDayMap(testDayMapTwo, testEntry, "Friday");
+        assertEquals(testDayMap, testDayMapTwo);
+        assertNotNull(testDayMapTwo);
+    }
 /*
-    startCalculations
     dayOfWeekSetUp
     calculateDaysOfWeek
-
-    addValuesToDayMap
-    updateTotalPerSomeSortingFactor
-
-     calculatePercentages
-
-    getMostCommonDay
 */
 }
