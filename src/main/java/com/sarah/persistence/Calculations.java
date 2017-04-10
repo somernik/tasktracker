@@ -14,36 +14,9 @@ import java.util.Map;
  */
 public class Calculations {
     // TODO add javadoc
-    /**
-     * Gathers needed informations and starts calculations
-     * @param taskData the data about tasks
-     * @param searchCriteria the criteria to search on
-     * @param types the types of tasks
-     * @param timePerDayOfWeek the map of days and time
-     * @param percentagePerType the map of types and %s
-     * @param percentagePerCategory the map of categories and %s
-     */
-    public static void startCalculations(String email, TaskData taskData, String searchCriteria, List<String> types, Map<String, Double> timePerDayOfWeek, Map<String, Double> percentagePerType, Map<String, Double> percentagePerCategory) {
-        List<Task> tasks = taskData.getUserTasks(email, searchCriteria);
-        Map<String, Double> totalPerType = new HashMap<String, Double>();
-        Map<String, Double> totalPerCategory = new HashMap<String, Double>();
-        Double total = 0.0;
 
-        dayOfWeekSetUp(timePerDayOfWeek);
 
-        for (Task task : tasks) {
-            total += task.getTimeSpent();
-            calculateDaysOfWeek(task, timePerDayOfWeek);
-            updateTotalPerSomeSortingFactor(task, totalPerType, "type");
-            updateTotalPerSomeSortingFactor(task, totalPerCategory, "category");
-            types.add(task.getTaskType());
-        }
-
-        calculatePercentages(percentagePerType, totalPerType, total);
-        calculatePercentages(percentagePerCategory, totalPerCategory, total);
-    }
-
-    private static void dayOfWeekSetUp(Map<String, Double> timePerDayOfWeek) {
+    public static void dayOfWeekSetUp(Map<String, Double> timePerDayOfWeek) {
         Double starter = 0.0;
         timePerDayOfWeek.put("Monday", starter);
         timePerDayOfWeek.put("Tuesday", starter);
@@ -54,7 +27,7 @@ public class Calculations {
         timePerDayOfWeek.put("Sunday", starter);
     }
 
-    private static void calculateDaysOfWeek(Task task, Map<String, Double> timePerDayOfWeek) {
+    public static void calculateDaysOfWeek(Task task, Map<String, Double> timePerDayOfWeek) {
         TaskEntryData taskEntryData = new TaskEntryData();
         List<TaskEntry> taskEntries = taskEntryData.getUserTaskEntries(String.valueOf(task.getTaskId()));
         for (TaskEntry entry : taskEntries) {
@@ -63,7 +36,7 @@ public class Calculations {
         }
     }
 
-    private static void addValuesToDayMap(Map<String, Double> timePerDayOfWeek, TaskEntry entry, String day) {
+    public static void addValuesToDayMap(Map<String, Double> timePerDayOfWeek, TaskEntry entry, String day) {
         if (timePerDayOfWeek.containsKey(day)) {
             Double newTotal = timePerDayOfWeek.get(day).intValue() + entry.getTimeAdded();
             timePerDayOfWeek.put(day, newTotal);
@@ -72,7 +45,7 @@ public class Calculations {
         }
     }
 
-    private static void updateTotalPerSomeSortingFactor(Task task, Map<String, Double>totalPerSomeSortingFactor, String sortingFactor) {
+    public static void updateTotalPerSomeSortingFactor(Task task, Map<String, Double>totalPerSomeSortingFactor, String sortingFactor) {
         String key;
         // Check sorting factor
         // Pull into own function?
@@ -91,9 +64,9 @@ public class Calculations {
         }
     }
 
-    private static void calculatePercentages(Map<String, Double>percentagePerType, Map<String, Double>totalPerSomeSortingFactor, Double total) {
+    public static void calculatePercentages(Map<String, Double>percentagePerType, Map<String, Double>totalPerSomeSortingFactor, Double total) {
         // Divide total per type by total, then * 100
-        for (Map.Entry<String, Double> entry : totalPerSomeSortingFactor.entrySet()) {  // Iterate through hashmap
+        for (Map.Entry<String, Double> entry : totalPerSomeSortingFactor.entrySet()) {  // Iterate through hash map
             Double percentage = ((entry.getValue() / total) * 100);
             percentagePerType.put(entry.getKey(), percentage);
         }
