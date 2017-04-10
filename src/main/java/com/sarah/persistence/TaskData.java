@@ -35,8 +35,8 @@ public class TaskData {
      */
     public boolean addNewTask(String name, String category, String type, String description, String dueDate, Object email) throws Exception {
         String sql = "INSERT INTO task (userId, name, typeId, category, description, dueDate, startDate) VALUES ("
-                + "(SELECT userId FROM user WHERE email='" + email + "'), '" + name + "', (SELECT typeId FROM type WHERE"
-                + " typeName='" + type + "'), '" + category + "', '" + description + "', '" + dueDate + "', NOW())";
+                + "(SELECT userId FROM user WHERE email='" + email + "'), '" + name + "', '" + type + "', '"
+                + category + "', '" + description + "', '" + dueDate + "', NOW())";
         return Utility.executeUpdate(sql);
     }
 
@@ -264,6 +264,63 @@ public class TaskData {
         tasks = executeQuery(sql);
         task = tasks.get(0);
         return task;
+    }
+
+
+    public String addType(String typeName, String email) {
+
+        String typeSql = "INSERT INTO type (typeName) VALUES ('" + typeName + "')";
+        String userTypeSql = "INSERT INTO usertype (typeId, userId) VALUES ((SELECT typeId FROM type WHERE typeName='" + typeName + "' LIMIT 1), (SELECT userId FROM user WHERE email='" + email + "'))";
+
+        Utility.executeUpdate(typeSql);
+        Utility.executeUpdate(userTypeSql);
+
+        // get types id
+        String findTypeId = "SELECT typeId FROM type WHERE typeName='" + typeName + "'";
+        Double typeId = executeSingleQuery(findTypeId, "typeId");
+
+        return typeId.toString();
+    }
+
+    public Map<String, String> getTypes(String email) {
+        Map<String, String> types = new HashMap<String, String>();
+        String sql = "SELECT * FROM type WHERE NOT EXISTS (SELECT usertype.typeId FROM usertype WHERE type.typeId=usertype.typeId)";
+
+        executeTypesQuery(sql, types);
+
+        String userOnlySql = "SELECT usertype.typeId, typeName FROM usertype INNER JOIN type ON type.typeId=usertype.typeID INNER JOIN user ON usertype.userId=user.userID WHERE user.email='"
+                + email + "'";
+
+        executeTypesQuery(userOnlySql, types);
+
+        return types;
+    }
+
+
+    private Map<String, String> executeTypesQuery(String sqlStatement, Map<String, String> types) {
+
+        Database database = Database.getInstance();
+        Connection connection = null;
+        try {
+            database.connect();
+            connection = database.getConnection();
+            Statement selectStatement = connection.createStatement();
+            ResultSet results = selectStatement.executeQuery(sqlStatement);
+            retrieveTypes(types, results);
+            database.disconnect();
+        } catch (SQLException e) {
+            System.out.println("ExecuteQuery Sql exception: task " + e);
+        } catch (Exception e) {
+            System.out.println("ExecuteQuery Exception: task " + e);
+            e.printStackTrace();
+        }
+        return types;
+    }
+
+    private void retrieveTypes(Map<String, String> types, ResultSet results) throws SQLException {
+        while (results.next()) {
+            types.put(results.getString("typeId"), results.getString("typeName"));
+        }
     }
 
 }

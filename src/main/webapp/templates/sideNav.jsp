@@ -4,7 +4,7 @@
         <li><a href="/analytics">Analytics</a></li>
     </ul>
     <ul class="nav nav-sidebar">
-        <li><a href="../addTask.jsp">Add New Task</a></li>
+        <li><a href="/addTask">Add New Task</a></li>
         <li><a href="/searchTasks">Search Tasks</a></li>
     </ul>
     <ul class="nav nav-sidebar">
