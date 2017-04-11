@@ -41,8 +41,8 @@
 
                 <label for="timeOperator">Time Spent</label>
                 <select name="timeOperator" id="timeOperator" class="form-control filterForm">
-                    <option value="greaterThan" <c:if test="${timeOperator == 'greaterThan'}">selected</c:if>>Greater than or equal to</option>
-                    <option value="lessThan" <c:if test="${timeOperator == 'lessThan'}">selected</c:if>>Less than or equal to</option>
+                    <option value="greaterThan" <c:if test="${timeOperator == 'greaterThan'}">selected</c:if>>>=</option>
+                    <option value="lessThan" <c:if test="${timeOperator == 'lessThan'}">selected</c:if>><=</option>
                 </select>
                 <input type="text" class="form-control filterForm" id="minutes" name="timeSpent" value="${time}" /> minutes
                 <br /><br />

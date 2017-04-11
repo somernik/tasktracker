@@ -33,11 +33,12 @@
                     <input id="lastName" class="form-control" name="lastName" type="text" placeholder="Last Name" required value="${user.lastName}" /><br />
 
                     <label for="password">Change Password</label>
-                    <input type="password" class="form-control" id="passwordOld" name="passwordOld" aria-describedby="searchTermHelp" placeholder="Old Password"><br />
                     <input type="password" class="form-control" id="password" name="password" aria-describedby="searchTermHelp" placeholder="New Password"><br />
                     <input type="password" class="form-control" id="passwordCheck" name="passwordCheck" aria-describedby="searchTermHelp" placeholder="New Password Check"><br />
 
-                    <button href="profile.jsp" value="cancel" class="btn btn-success btn-block">Cancel</button><br />
+                    <label for="passwordOld">Enter Password to Confirm Changes</label>
+                    <input type="password" class="form-control" id="passwordOld" name="passwordOld" aria-describedby="searchTermHelp" placeholder="Password" required><br />
+                    <input type="button" href="profile.jsp" value="Cancel" class="btn btn-success btn-block" /><br />
                     <button type="submit" name="submit" value="editUser" class="btn btn-success btn-block">Save Changes</button>
                 </form>
             </div>
