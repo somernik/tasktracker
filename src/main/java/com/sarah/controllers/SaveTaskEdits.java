@@ -30,14 +30,9 @@ public class SaveTaskEdits extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         LoggedIn.checkLoggedIn(req, resp);
 
-        TaskData taskData = new TaskData();
-        TaskEntryData taskEntryData = new TaskEntryData();
-        HttpSession session = req.getSession();
         // make in functions or new controllers
-
-
         try {
-            dispatchRequests(taskData, taskEntryData, session, req, resp);
+            dispatchRequests(req, resp);
 
         } catch (Exception exception) {
             exception.printStackTrace();
@@ -45,19 +40,21 @@ public class SaveTaskEdits extends HttpServlet {
 
     }
 
-    private void dispatchRequests(TaskData taskData, TaskEntryData taskEntryData, HttpSession session,
-                                  HttpServletRequest req, HttpServletResponse resp)  throws Exception {
+    private void dispatchRequests(HttpServletRequest req, HttpServletResponse resp)  throws Exception {
 
         switch (req.getParameter("submit")) {
-            case "addTime" : addTime(taskData, taskEntryData, session, req, resp);
-            case "saveEdits" : saveEdits(taskData, taskEntryData, session, req, resp);
-            case "addEstimation" : addEstimation(taskData, session, req, resp);
+            case "addTime" : addTime(req, resp);
+            case "saveEdits" : saveEdits(req, resp);
+            case "addEstimation" : addEstimation(req, resp);
         }
     }
 
-    private void addEstimation(TaskData taskData, HttpSession session, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    private void addEstimation(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         RequestDispatcher dispatcher;
         Task task = new Task();
+        TaskData taskData = new TaskData();
+        HttpSession session = req.getSession();
+
         double estimate = Double.parseDouble(req.getParameter("estimation"));
         int id = Integer.parseInt(req.getParameter("id"));
         task.setEstimatedCompletionTime(estimate);
@@ -69,8 +66,12 @@ public class SaveTaskEdits extends HttpServlet {
         dispatcher.forward(req, resp);
     }
 
-    private void saveEdits(TaskData taskData, TaskEntryData taskEntryData, HttpSession session, HttpServletRequest req, HttpServletResponse resp) throws Exception {
+    private void saveEdits(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         RequestDispatcher dispatcher;
+        HttpSession session = req.getSession();
+        TaskData taskData = new TaskData();
+        TaskEntryData taskEntryData = new TaskEntryData();
+
         taskData.editSingleTask(req.getParameter("id"),
                 req.getParameter("taskName"), req.getParameter("taskCategory"), req.getParameter("taskType"),
                 req.getParameter("taskDescription"), req.getParameter("taskDueDate"), req.getParameter("completion"),
@@ -81,8 +82,12 @@ public class SaveTaskEdits extends HttpServlet {
         dispatcher.forward(req, resp);
     }
 
-    private void addTime(TaskData taskData, TaskEntryData taskEntryData, HttpSession session, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    private void addTime(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         RequestDispatcher dispatcher;
+        HttpSession session = req.getSession();
+        TaskData taskData = new TaskData();
+        TaskEntryData taskEntryData = new TaskEntryData();
+
         taskEntryData.addTime(req.getParameter("timeAdded"), req.getParameter("id"));
         taskData.updateTimeSpent(req.getParameter("id"));
         session.setAttribute("tasks", taskData.getUserTasks(session.getAttribute("email"), "taskId = taskId"));
