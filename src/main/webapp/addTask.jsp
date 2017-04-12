@@ -19,14 +19,15 @@
         }
     }
 
-    function addNewCategory() {
+    function test() {
         if (document.getElementById("addNewCategory").checked) {
             document.getElementById("newCategoryLocation").className = "not-hidden";
-            document.getElementById("taskCategoryId").value = "new";
+            document.getElementById("taskCategory").value = "new";
         } else {
             document.getElementById("newCategoryLocation").className = "hidden";
         }
     }
+
 </script>
     <body>
     <c:if test="${loggedIn}">
@@ -45,7 +46,7 @@
                     </c:forEach>
                 </select>
                 <label for="addNewCategory">Add New Category?</label>
-                <input type="checkbox" id="addNewCategory" name="addNewCategory" onclick="addNewCategory();" />
+                <input type="checkbox" id="addNewCategory" name="addNewCategory" onclick="test();" />
 
                 <div id="newCategoryLocation" class="hidden">
                     <input id="category" class="form-control" name="newCategory" type="text" placeholder="New Category" value="New Category" required /><br />
