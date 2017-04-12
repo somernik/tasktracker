@@ -32,6 +32,7 @@ public class AddTask extends HttpServlet {
         TaskData taskData = new TaskData();
         HttpSession session=request.getSession();
         String type = request.getParameter("type");
+        String category = request.getParameter("taskCategory");
 
         if (request.getParameter("submit").equals("addTask")) {
             try {
@@ -40,10 +41,13 @@ public class AddTask extends HttpServlet {
                     // add type & get type id
                     type = taskData.addType(request.getParameter("newType"), (String)session.getAttribute("email"));
                 }
-                System.out.print(type);
-                taskData.addNewTask(request.getParameter("taskName"), request.getParameter("taskCategory"), type,
+                if (category.equals("new")) {
+                    category = request.getParameter("newCategory");
+                }
+
+                taskData.addNewTask(request.getParameter("taskName"), category, type,
                         request.getParameter("taskDescription"), request.getParameter("taskDueDate"), session.getAttribute("email"));
-                System.out.print(type);
+
             } catch (Exception exception) {
                 exception.printStackTrace();
             }
@@ -66,8 +70,10 @@ public class AddTask extends HttpServlet {
         HttpSession session=request.getSession();
 
         Map<String, String> types = taskData.getTypes((String) session.getAttribute("email"));
+        List<String> categories = taskData.getCategories((String) session.getAttribute("email"));
 
         request.setAttribute("types", types);
+        request.setAttribute("categories", categories);
 
         session.setAttribute("tasks", taskData.getUserTasks(session.getAttribute("email"), "completed=0"));
 

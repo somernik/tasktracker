@@ -58,7 +58,9 @@ public class SearchSpecificTasks extends HttpServlet {
 
         switch (request.getParameter("completion")) {
             case "completed" : searchCriteria += " AND completed = 1";
+                break;
             case "notCompleted" : searchCriteria += " AND completed = 0";
+                break;
         }
 
         if (!request.getParameter("timeSpent").isEmpty()) {
@@ -75,7 +77,7 @@ public class SearchSpecificTasks extends HttpServlet {
         }
 
         if (!request.getParameter("category").equals("all")) {
-            searchCriteria += " AND task.category='" + request.getParameter("type") + "'";
+            searchCriteria += " AND task.category='" + request.getParameter("category") + "'";
         }
 
         return searchCriteria;
