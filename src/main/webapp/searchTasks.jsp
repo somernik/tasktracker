@@ -9,7 +9,7 @@
     <div class="container-fluid">
         <div class="row">
         <%@include file="templates/sideNav.jsp"%>
-            <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <div class="col-sm-9 col-sm-offset-3 col-md  -10 col-md-offset-2 main">
             <h2 class="sub-header">Search Tasks</h2>
             <c:if test="${empty tasks}">
                 <h3>No tasks matched your search or you do not have any tasks. <a href="addTask.jsp">Add a task?</a></h3>
