@@ -35,8 +35,9 @@
                 <label for="type">Type</label>
                 <select name="type" id="type" class="form-control filterForm">
                     <option value="all">All</option>
-                    <option value="completed">populated values here</option>
-                    <option value="notCompleted">populated values here</option>
+                    <c:forEach var="entry" items="${types}">
+                        <option name="taskType" value="${entry.key}">${entry.value}</option>
+                    </c:forEach>
                 </select>
 
                 <label for="timeOperator">Time Spent</label>

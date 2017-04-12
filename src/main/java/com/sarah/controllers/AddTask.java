@@ -65,8 +65,7 @@ public class AddTask extends HttpServlet {
         TaskData taskData = new TaskData();
         HttpSession session=request.getSession();
 
-        Map<String, String> types;
-        types = taskData.getTypes((String) session.getAttribute("email"));
+        Map<String, String> types = taskData.getTypes((String) session.getAttribute("email"));
 
         request.setAttribute("types", types);
 
