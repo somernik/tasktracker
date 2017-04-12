@@ -1,7 +1,7 @@
 package com.sarah.persistence;
 
 import com.sarah.entity.TaskEntry;
-import com.sarah.persistence.Utility;
+import com.sarah.utility.DateUtility;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -76,7 +76,7 @@ public class TaskEntryData {
         taskEntry.setTaskEntryId(results.getInt("taskEntryId"));
         taskEntry.setTaskId(results.getInt("taskId"));
         taskEntry.setDateEntered((results.getDate("dateEntered").toLocalDate()));
-        taskEntry.setTimeEntered(Utility.formatTimeFromDateTime((results.getString("dateEntered"))));
+        taskEntry.setTimeEntered(DateUtility.formatTimeFromDateTime((results.getString("dateEntered"))));
         taskEntry.setTimeAdded(results.getDouble("timeEnteredAmount"));
         return taskEntry;
     }
@@ -107,7 +107,7 @@ public class TaskEntryData {
             connection = database.getConnection();
             PreparedStatement insertStatement = connection.prepareStatement(sql);
             insertStatement.setString(1, taskId);
-            insertStatement.setString(2, Utility.formatDateFromDate());
+            insertStatement.setString(2, DateUtility.formatDateFromDate());
             insertStatement.setString(3, timeToAdd);
             insertStatement.executeUpdate();
             database.disconnect();
@@ -122,4 +122,32 @@ public class TaskEntryData {
         }
 
     }
+
+    public double getAverageOfTimeAdded(String email) {
+        String sql = "SELECT AVG(timeEnteredAmount) FROM taskentry INNER JOIN task ON task.taskId=taskentry.taskId INNER" +
+                " JOIN user ON task.userId=user.userId WHERE user.email ='" + email + "'";
+        return 10.0;
+    }
+
+    public double getTotalEntriesForUser(String email) {
+        String sql = "SELECT COUNT(*) FROM taskentry WHERE taskentry.taskid IN (SELECT task.taskId FROM task INNER JOIN " +
+                "user ON task.userId=user.userId WHERE user.email='" + email + "')";
+
+        return 15.0;
+    }
+
+    public double getDayDifferenceForEntryAverages(String email) {
+        String sql = "SELECT DATEDIFF(NOW(), (SELECT MIN(dateentered) WHERE taskentry.taskid IN (SELECT task.taskId FROM task INNER JOIN " +
+                "user ON task.userId=user.userId WHERE user.email='" + email + "'))";
+
+        return 45.0;
+    }
+
+    public double getTotalEntriesForTask(String email, String taskId) {
+        String sql = "SELECT COUNT(*) FROM taskentry WHERE taskentry.taskid IN (SELECT task.taskId FROM task INNER JOIN " +
+                "user ON task.userId=user.userId WHERE user.email='" + email + "')";
+
+        return 15.0;
+    }
+
 }

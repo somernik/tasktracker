@@ -1,4 +1,6 @@
-package com.sarah.persistence;
+package com.sarah.utility;
+
+import com.sarah.persistence.Database;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -12,35 +14,11 @@ import java.time.format.TextStyle;
 import java.util.Locale;
 
 /**
- * Utility class
- * Utility functions, mostly for dates, days, and times.
+ * DateUtility class
+ * DateUtility functions, mostly for dates, days, and times.
  * Created by Sarah Omernik on 3/8/2017.
  */
-public class Utility {
-    /**
-     * Executes generic sql statement
-     * @param sql sql query to execute
-     * @return boolean if completed successfully
-     */
-    public static boolean executeUpdate(String sql) {
-        Database database = Database.getInstance();
-        Connection connection = null;
-        try {
-            database.connect();
-            connection = database.getConnection();
-            Statement selectStatement = connection.createStatement();
-            selectStatement.executeUpdate(sql);
-            database.disconnect();
-            return true;
-        } catch (SQLException e) {
-            System.out.println("executeTaskUpdate Sql exception: task " + e);
-            return false;
-        } catch (Exception e) {
-            System.out.println("executeTaskUpdate Exception: task " + e);
-            return false;
-        }
-
-    }
+public class DateUtility {
 
     // Formatting functions
     /**

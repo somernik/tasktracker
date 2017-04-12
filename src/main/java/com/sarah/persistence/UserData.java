@@ -1,11 +1,11 @@
 package com.sarah.persistence;
 
 import com.sarah.entity.User;
+import com.sarah.utility.DatabaseUtility;
+import com.sarah.utility.DateUtility;
 import org.apache.log4j.Logger;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * UserData class
@@ -191,7 +191,7 @@ public class UserData {
 
         String sql = "UPDATE user SET username = '" + username + "', email = '" + email + "', firstName = '" + firstName
                 + "', lastName = '" + lastName + "', password = '" + password + "' WHERE email = '" + oldEmail + "'";
-        return Utility.executeUpdate(sql);
+        return DatabaseUtility.executeUpdate(sql);
     }
 
 }

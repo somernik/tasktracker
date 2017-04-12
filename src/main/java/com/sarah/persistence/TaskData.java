@@ -1,19 +1,13 @@
 package com.sarah.persistence;
 
 import com.sarah.entity.Task;
-import com.sarah.persistence.Utility;
-
-import org.apache.log4j.Logger;
+import com.sarah.utility.DatabaseUtility;
+import com.sarah.utility.DateUtility;
 
 import java.sql.*;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.PreparedStatement;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.*;
-import java.util.Date;
 
 
 /**
@@ -37,7 +31,7 @@ public class TaskData {
         String sql = "INSERT INTO task (userId, name, typeId, category, description, dueDate, startDate) VALUES ("
                 + "(SELECT userId FROM user WHERE email='" + email + "'), '" + name + "', '" + type + "', '"
                 + category + "', '" + description + "', '" + dueDate + "', NOW())";
-        return Utility.executeUpdate(sql);
+        return DatabaseUtility.executeUpdate(sql);
     }
 
     /**
@@ -65,7 +59,7 @@ public class TaskData {
             taskEntryData.addTime(timeAdded, taskId);
             updateTimeSpent(taskId);
         }
-        return Utility.executeUpdate(sql);
+        return DatabaseUtility.executeUpdate(sql);
     }
 
     /**
@@ -171,7 +165,7 @@ public class TaskData {
     public boolean updateTimeSpent(String taskId) {
         String sql = "UPDATE task SET cumulativeTimeSpent = (SELECT SUM(timeEnteredAmount) FROM taskEntry "
                 + "WHERE taskEntry.taskId=" + taskId + ") WHERE taskId=" + taskId + ";";
-        return Utility.executeUpdate(sql);
+        return DatabaseUtility.executeUpdate(sql);
 
     }
 
@@ -204,7 +198,7 @@ public class TaskData {
      */
     public void updateEstimatedCompletionTime(Task task, double estimatedTime) {
         String sql = "UPDATE task SET estimatedCompletionTime = '" + estimatedTime + "' WHERE taskId = '" + task.getTaskId() + "'";
-        Utility.executeUpdate(sql);
+        DatabaseUtility.executeUpdate(sql);
     }
 
     /**
@@ -273,8 +267,8 @@ public class TaskData {
         String typeSql = "INSERT INTO type (typeName) VALUES ('" + typeName + "')";
         String userTypeSql = "INSERT INTO usertype (typeId, userId) VALUES ((SELECT typeId FROM type WHERE typeName='" + typeName + "' LIMIT 1), (SELECT userId FROM user WHERE email='" + email + "'))";
 
-        Utility.executeUpdate(typeSql);
-        Utility.executeUpdate(userTypeSql);
+        DatabaseUtility.executeUpdate(typeSql);
+        DatabaseUtility.executeUpdate(userTypeSql);
 
         // get types id
         String findTypeId = "SELECT typeId FROM type WHERE typeName='" + typeName + "'";
