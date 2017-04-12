@@ -144,10 +144,17 @@ public class TaskEntryData {
     }
 
     public double getTotalEntriesForTask(String email, String taskId) {
-        String sql = "SELECT COUNT(*) FROM taskentry WHERE taskentry.taskid IN (SELECT task.taskId FROM task INNER JOIN " +
-                "user ON task.userId=user.userId WHERE user.email='" + email + "')";
+        String sql = "SELECT COUNT(*) FROM taskentry INNER JOIN task ON task.taskId=taskentry.taskId INNER JOIN "
+                + "user ON task.userId=user.userId WHERE taskentry.taskId=" + taskId + " AND user.email='" + email + "')";
 
         return 15.0;
+    }
+
+    public double getDayDifferenceFromTaskStart(String taskId) {
+        String sql = "SELECT DATEDIFF(NOW(), (SELECT MIN(dateentered) FROM taskentry INNER JOIN task ON "
+                + "task.taskId=taskentry.taskId WHERE task.taskid=" + taskId + "))";
+
+        return 45.0;
     }
 
 }

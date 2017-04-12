@@ -59,6 +59,7 @@ public class EditUser extends HttpServlet {
             String password;
 
             // Changes user password if new one has been entered
+            // pull if into its own method
             if (request.getParameter("password").equals(request.getParameter("passwordCheck")) && request.getParameter("passwordOld").length() > 0
                     && request.getParameter("password").length() > 0 && request.getParameter("passwordCheck").length() > 0) {
                 password = request.getParameter("password");
