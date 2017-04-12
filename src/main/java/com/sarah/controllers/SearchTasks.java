@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.lang.Exception;
+import java.util.List;
 import java.util.Map;
 
 import com.sarah.persistence.TaskData;
@@ -32,8 +33,10 @@ public class SearchTasks extends HttpServlet {
         session.setAttribute("tasks", taskData.getUserTasks(session.getAttribute("email"), searchCriteria));
 
         Map<String, String> types = taskData.getTypes((String) session.getAttribute("email"));
+        List<String> categories = taskData.getCategories((String) session.getAttribute("email"));
 
         request.setAttribute("types", types);
+        request.setAttribute("categories", categories);
 
         RequestDispatcher dispatcher = request.getRequestDispatcher("/searchTasks.jsp");
         dispatcher.forward(request, response);

@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.lang.Exception;
-import java.util.Map;
+import java.util.*;
 
 import com.sarah.persistence.TaskData;
 
@@ -30,6 +30,7 @@ public class SearchSpecificTasks extends HttpServlet {
         HttpSession session=request.getSession();
         String searchCriteria = "taskId = taskId";
         Map<String, String> types = taskData.getTypes((String) session.getAttribute("email"));
+        List<String> categories = taskData.getCategories((String) session.getAttribute("email"));
 
         if (request.getParameter("submit").equals("searchInfo")){
             searchCriteria = determineSearchCriteria(request, searchCriteria);
@@ -37,6 +38,8 @@ public class SearchSpecificTasks extends HttpServlet {
 
         session.setAttribute("tasks", taskData.getUserTasks(session.getAttribute("email"), searchCriteria));
         request.setAttribute("types", types);
+        request.setAttribute("categories", categories);
+
         request.setAttribute("completion", request.getParameter("completion"));
         request.setAttribute("timeOperator", request.getParameter("timeOperator"));
         request.setAttribute("time", request.getParameter("timeSpent"));
@@ -70,7 +73,10 @@ public class SearchSpecificTasks extends HttpServlet {
         if (!request.getParameter("type").equals("all")) {
             searchCriteria += " AND task.typeId='" + request.getParameter("type") + "'";
         }
-        // TODO add category
+
+        if (!request.getParameter("category").equals("all")) {
+            searchCriteria += " AND task.category='" + request.getParameter("type") + "'";
+        }
 
         return searchCriteria;
     }

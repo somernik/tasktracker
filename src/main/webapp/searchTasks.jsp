@@ -27,8 +27,9 @@
                 <label for="category">Category</label>
                 <select name="category" id="category" class="form-control filterForm">
                     <option value="all" >All</option>
-                    <option value="completed">populated values here</option>
-                    <option value="notCompleted">populated values here</option>
+                    <c:forEach var="entry" items="${categories}">
+                        <option name="taskType" value="${entry}">${entry}</option>
+                    </c:forEach>
                 </select>
                 <br />
                 <br />

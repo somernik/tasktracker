@@ -324,4 +324,37 @@ public class TaskData {
         }
     }
 
+    public List<String> getCategories(String email) {
+        List<String> categories = new ArrayList<String>();
+        String sql = "SELECT DISTINCT category FROM task INNER JOIN user ON task.userId=user.userID WHERE user.email='" + email + "'";
+
+        categories = executeCategoriesQuery(sql, categories);
+
+        return categories;
+    }
+
+    private List<String> executeCategoriesQuery(String sql, List<String> categories) {
+        Database database = Database.getInstance();
+        Connection connection = null;
+        try {
+            database.connect();
+            connection = database.getConnection();
+            Statement selectStatement = connection.createStatement();
+            ResultSet results = selectStatement.executeQuery(sql);
+            retrieveCategories(categories, results);
+            database.disconnect();
+        } catch (SQLException e) {
+            System.out.println("ExecuteQuery Sql exception: task " + e);
+        } catch (Exception e) {
+            System.out.println("ExecuteQuery Exception: task " + e);
+            e.printStackTrace();
+        }
+        return categories;
+    }
+
+    private void retrieveCategories(List<String> categories, ResultSet results) throws SQLException {
+        while (results.next()) {
+            categories.add(results.getString("category"));
+        }
+    }
 }
