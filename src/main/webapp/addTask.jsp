@@ -18,6 +18,16 @@
             document.getElementById("newTypeLocation").className = "hidden";
         }
     }
+
+    function test() {
+        if (document.getElementById("addNewCategory").checked) {
+            document.getElementById("newCategoryLocation").className = "not-hidden";
+            document.getElementById("taskCategory").value = "new";
+        } else {
+            document.getElementById("newCategoryLocation").className = "hidden";
+        }
+    }
+
 </script>
     <body>
     <c:if test="${loggedIn}">
@@ -29,7 +39,19 @@
 
                 <input id="taskName" class="form-control" name="taskName" type="text" placeholder="Name" required autofocus /><br />
 
-                <input id="taskCategory" class="form-control" name="taskCategory" type="text" placeholder="Category" required /><br />
+                <select name="taskCategory" class="form-control" id="taskCategoryId">
+                    <option name="taskCategory" value="new">Select Category</option>
+                    <c:forEach var="entry" items="${categories}">
+                        <option name="category" value="${entry}">${entry}</option>
+                    </c:forEach>
+                </select>
+                <label for="addNewCategory">Add New Category?</label>
+                <input type="checkbox" id="addNewCategory" name="addNewCategory" onclick="test();" />
+
+                <div id="newCategoryLocation" class="hidden">
+                    <input id="category" class="form-control" name="newCategory" type="text" placeholder="New Category" value="New Category" required /><br />
+                </div>
+
                 <select name="type" class="form-control" id="typeSelection">
                     <option name="taskType" value="new">Select Type</option>
                     <c:forEach var="entry" items="${types}">

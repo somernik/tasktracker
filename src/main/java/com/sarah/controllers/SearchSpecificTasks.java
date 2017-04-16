@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.lang.Exception;
+import java.util.*;
 
 import com.sarah.persistence.TaskData;
 
@@ -28,12 +29,16 @@ public class SearchSpecificTasks extends HttpServlet {
         TaskData taskData = new TaskData();
         HttpSession session=request.getSession();
         String searchCriteria = "taskId = taskId";
+        Map<String, String> types = taskData.getTypes((String) session.getAttribute("email"));
+        List<String> categories = taskData.getCategories((String) session.getAttribute("email"));
 
         if (request.getParameter("submit").equals("searchInfo")){
             searchCriteria = determineSearchCriteria(request, searchCriteria);
         }
 
         session.setAttribute("tasks", taskData.getUserTasks(session.getAttribute("email"), searchCriteria));
+        request.setAttribute("types", types);
+        request.setAttribute("categories", categories);
 
         request.setAttribute("completion", request.getParameter("completion"));
         request.setAttribute("timeOperator", request.getParameter("timeOperator"));
@@ -53,16 +58,27 @@ public class SearchSpecificTasks extends HttpServlet {
 
         switch (request.getParameter("completion")) {
             case "completed" : searchCriteria += " AND completed = 1";
+                break;
             case "notCompleted" : searchCriteria += " AND completed = 0";
+                break;
         }
 
         if (!request.getParameter("timeSpent").isEmpty()) {
             switch (request.getParameter("timeOperator")) {
                 case "greaterThan" : searchCriteria += " AND cumulativeTimeSpent >= " + request.getParameter("timeSpent");
-                case "lessThen" : searchCriteria += " AND cumulativeTimeSpent <= " + request.getParameter("timeSpent");
+                    break;
+                case "lessThan" : searchCriteria += " AND cumulativeTimeSpent <= " + request.getParameter("timeSpent");
+                    break;
             }
         }
-        // TODO add type and category
+
+        if (!request.getParameter("type").equals("all")) {
+            searchCriteria += " AND task.typeId='" + request.getParameter("type") + "'";
+        }
+
+        if (!request.getParameter("category").equals("all")) {
+            searchCriteria += " AND task.category='" + request.getParameter("category") + "'";
+        }
 
         return searchCriteria;
     }

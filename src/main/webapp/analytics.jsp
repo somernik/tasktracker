@@ -17,7 +17,7 @@
 <%@include file="templates/sideNav.jsp"%>
 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
     <div>
-        <h2 class="formHeader">Percentage of Time Spent by Type</h2>
+        <h2 class="formHeader">% of Time Spent by <span id="value">Type</span></h2>
         Category
             <label class="switch" onclick="changeDonutChart();">
                 <input id="chartSwitch" type="checkbox" checked>
@@ -38,9 +38,11 @@
         if (document.getElementById("chartSwitch").checked) {
             document.getElementById("categoryChart").className = "hide";
             document.getElementById("typeChart").className = "not-hidden";
+            document.getElementById("value").innerHTML = "Type";
         } else {
             document.getElementById("typeChart").className = "hide";
             document.getElementById("categoryChart").className = "not-hidden";
+            document.getElementById("value").innerHTML = "Category";
         }
     }
     // http://stackoverflow.com/questions/27659818/c3js-custom-date-for-each-line multiple  xs

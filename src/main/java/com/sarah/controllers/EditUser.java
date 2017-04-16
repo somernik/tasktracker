@@ -56,16 +56,21 @@ public class EditUser extends HttpServlet {
     private void editUserValues(HttpServletRequest request, HttpSession session, UserData userData, String oldEmail) {
         User user;
         try {
-            if (request.getParameter("password").equals(request.getParameter("passwordCheck")) && request.getParameter("password").length() > 0) {
-                userData.editUser(request.getParameter("username"), request.getParameter("email"), request.getParameter("firstName"),
-                        request.getParameter("lastName"), request.getParameter("password"), oldEmail);
-                // TODO test how this works if changing email
+            String password;
 
-            } else if (request.getParameter("password").equals(request.getParameter("passwordCheck")) && !(request.getParameter("password").length() > 0)) {
+            // Changes user password if new one has been entered
+            // pull if into its own method
+            if (request.getParameter("password").equals(request.getParameter("passwordCheck")) && request.getParameter("passwordOld").length() > 0
+                    && request.getParameter("password").length() > 0 && request.getParameter("passwordCheck").length() > 0) {
+                password = request.getParameter("password");
+            } else {
                 // This wont write an empty password to the database
-                userData.editUser(request.getParameter("username"), request.getParameter("email"), request.getParameter("firstName"),
-                        request.getParameter("lastName"), request.getParameter("passwordOld"), oldEmail);
+                password = request.getParameter("passwordOld");
             }
+
+            userData.editUser(request.getParameter("username"), request.getParameter("email"), request.getParameter("firstName"),
+                    request.getParameter("lastName"), password, oldEmail);
+
 
             user = userData.getUser(request.getParameter("email"));
             session.setAttribute("user", user);

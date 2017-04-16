@@ -2,9 +2,9 @@ package com.sarah.persistence;
 
 import com.sarah.entity.Task;
 import com.sarah.entity.TaskEntry;
+import com.sarah.utility.DateUtility;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,7 +14,6 @@ import java.util.Map;
  */
 public class Calculations {
     // TODO add javadoc
-
 
     public static void dayOfWeekSetUp(Map<String, Double> timePerDayOfWeek) {
         Double starter = 0.0;
@@ -31,7 +30,7 @@ public class Calculations {
         TaskEntryData taskEntryData = new TaskEntryData();
         List<TaskEntry> taskEntries = taskEntryData.getUserTaskEntries(String.valueOf(task.getTaskId()));
         for (TaskEntry entry : taskEntries) {
-            String day = Utility.getDayFromLocalDate(entry.getDateEntered());
+            String day = DateUtility.getDayFromLocalDate(entry.getDateEntered());
             addValuesToDayMap(timePerDayOfWeek, entry, day);
         }
     }
@@ -85,5 +84,23 @@ public class Calculations {
         return mostCommonDay;
     }
 
+    public static void calculateFinishDate(String email, double timeLeft, String taskId) {
 
+        TaskEntryData data = new TaskEntryData();
+        double averageTimePerEntry = data.getAverageOfTimeAdded(email); // ex. 25min
+        double totalEntries = data.getTotalEntriesForTask(email, taskId); // ex. 10
+        double numberOfDaysDifference = data.getDayDifferenceFromTaskStart(taskId); // ex. 14
+
+        double averageEntriesPerDay = totalEntries / numberOfDaysDifference; // ex. 0.71 entries / day
+
+        double numberOfEntriesRemaining = timeLeft / averageTimePerEntry; // ex. 75min left / 0.71 =
+
+        double numberOfDays = numberOfEntriesRemaining / averageEntriesPerDay;
+
+        // for day in days
+        // if day is no work -> +1 day
+        // if day is much work -> -1day
+
+        // If task is new... get average of category/type/all
+    }
 }

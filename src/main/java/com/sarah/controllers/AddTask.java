@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.ws.rs.HEAD;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.Exception;
@@ -32,6 +33,7 @@ public class AddTask extends HttpServlet {
         TaskData taskData = new TaskData();
         HttpSession session=request.getSession();
         String type = request.getParameter("type");
+        String category = request.getParameter("taskCategory");
 
         if (request.getParameter("submit").equals("addTask")) {
             try {
@@ -40,7 +42,12 @@ public class AddTask extends HttpServlet {
                     // add type & get type id
                     type = taskData.addType(request.getParameter("newType"), (String)session.getAttribute("email"));
                 }
-                taskData.addNewTask(request.getParameter("taskName"), request.getParameter("taskCategory"), type,
+
+                if (category.equals("new")) {
+                    category = request.getParameter("newCategory");
+                }
+
+                taskData.addNewTask(request.getParameter("taskName"), category, type,
                         request.getParameter("taskDescription"), request.getParameter("taskDueDate"), session.getAttribute("email"));
 
             } catch (Exception exception) {
@@ -63,10 +70,11 @@ public class AddTask extends HttpServlet {
         TaskData taskData = new TaskData();
         HttpSession session=request.getSession();
 
-        Map<String, String> types;
-        types = taskData.getTypes((String) session.getAttribute("email"));
+        Map<String, String> types = taskData.getTypes((String) session.getAttribute("email"));
+        List<String> categories = taskData.getCategories((String) session.getAttribute("email"));
 
         request.setAttribute("types", types);
+        request.setAttribute("categories", categories);
 
         session.setAttribute("tasks", taskData.getUserTasks(session.getAttribute("email"), "completed=0"));
 

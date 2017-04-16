@@ -8,18 +8,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.lang.Exception;
-import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.*;
-import java.util.Collections;
 
 import com.sarah.entity.Task;
-import com.sarah.entity.TaskEntry;
 import com.sarah.persistence.Calculations;
 import com.sarah.persistence.TaskData;
-import com.sarah.persistence.TaskEntryData;
-import com.sarah.persistence.Utility;
 
 /**
  * Analytics class

@@ -9,7 +9,7 @@
     <div class="container-fluid">
         <div class="row">
         <%@include file="templates/sideNav.jsp"%>
-            <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <div class="col-sm-9 col-sm-offset-3 col-md  -10 col-md-offset-2 main">
             <h2 class="sub-header">Search Tasks</h2>
             <c:if test="${empty tasks}">
                 <h3>No tasks matched your search or you do not have any tasks. <a href="addTask.jsp">Add a task?</a></h3>
@@ -27,22 +27,24 @@
                 <label for="category">Category</label>
                 <select name="category" id="category" class="form-control filterForm">
                     <option value="all" >All</option>
-                    <option value="completed">populated values here</option>
-                    <option value="notCompleted">populated values here</option>
+                    <c:forEach var="entry" items="${categories}">
+                        <option name="taskType" value="${entry}">${entry}</option>
+                    </c:forEach>
                 </select>
                 <br />
                 <br />
                 <label for="type">Type</label>
                 <select name="type" id="type" class="form-control filterForm">
                     <option value="all">All</option>
-                    <option value="completed">populated values here</option>
-                    <option value="notCompleted">populated values here</option>
+                    <c:forEach var="entry" items="${types}">
+                        <option name="taskType" value="${entry.key}">${entry.value}</option>
+                    </c:forEach>
                 </select>
 
                 <label for="timeOperator">Time Spent</label>
                 <select name="timeOperator" id="timeOperator" class="form-control filterForm">
-                    <option value="greaterThan" <c:if test="${timeOperator == 'greaterThan'}">selected</c:if>>Greater than or equal to</option>
-                    <option value="lessThan" <c:if test="${timeOperator == 'lessThan'}">selected</c:if>>Less than or equal to</option>
+                    <option value="greaterThan" <c:if test="${timeOperator == 'greaterThan'}">selected</c:if>>>=</option>
+                    <option value="lessThan" <c:if test="${timeOperator == 'lessThan'}">selected</c:if>><=</option>
                 </select>
                 <input type="text" class="form-control filterForm" id="minutes" name="timeSpent" value="${time}" /> minutes
                 <br /><br />
