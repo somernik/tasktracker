@@ -39,10 +39,27 @@ public class Analytics extends HttpServlet {
         Map<String, Double> percentagePerType = new HashMap<String, Double>();
         Map<String, Double> percentagePerCategory = new HashMap<String, Double>();
 
-        startCalculations(email, taskData, searchCriteria, types, timePerDayOfWeek, percentagePerType, percentagePerCategory);
+        List<Task> tasks = taskData.getUserTasks(email, searchCriteria);
+        Map<String, Double> totalPerType = new HashMap<String, Double>();
+        Map<String, Double> totalPerCategory = new HashMap<String, Double>();
+        Double total = 0.0;
+
+        timePerDayOfWeek = Calculations.dayOfWeekSetUp(timePerDayOfWeek);
+        String mostCommonDay = Calculations.getMostCommonDay(timePerDayOfWeek);
+
+        for (Task task : tasks) {
+            total += task.getTimeSpent();
+            timePerDayOfWeek = Calculations.calculateDaysOfWeek(task, timePerDayOfWeek);
+            totalPerType = Calculations.updateTotalPerSomeSortingFactor(task, totalPerType, "type");
+            totalPerCategory = Calculations.updateTotalPerSomeSortingFactor(task, totalPerCategory, "category");
+            types.add(task.getTaskType());
+        }
+
+        percentagePerType = Calculations.calculatePercentages(percentagePerType, totalPerType, total);
+        percentagePerCategory = Calculations.calculatePercentages(percentagePerCategory, totalPerCategory, total);
 
         // Set maps to be used
-        request.setAttribute("mostCommonDay", Calculations.getMostCommonDay(timePerDayOfWeek));
+        request.setAttribute("mostCommonDay", mostCommonDay);
         request.setAttribute("types", types);
         request.setAttribute("timePerDay", timePerDayOfWeek);
         request.setAttribute("typePercentages", percentagePerType);
@@ -50,37 +67,6 @@ public class Analytics extends HttpServlet {
 
         RequestDispatcher dispatcher = request.getRequestDispatcher("/analytics.jsp");
         dispatcher.forward(request, response);
-    }
-
-    /**
-     * Gathers needed informations and starts calculations
-     * @param taskData the data about tasks
-     * @param searchCriteria the criteria to search on
-     * @param types the types of tasks
-     * @param timePerDayOfWeek the map of days and time
-     * @param percentagePerType the map of types and %s
-     * @param percentagePerCategory the map of categories and %s
-     */
-    public static void startCalculations(String email, TaskData taskData, String searchCriteria, List<String> types,
-                                         Map<String, Double> timePerDayOfWeek, Map<String, Double> percentagePerType,
-                                         Map<String, Double> percentagePerCategory) {
-        List<Task> tasks = taskData.getUserTasks(email, searchCriteria);
-        Map<String, Double> totalPerType = new HashMap<String, Double>();
-        Map<String, Double> totalPerCategory = new HashMap<String, Double>();
-        Double total = 0.0;
-
-        Calculations.dayOfWeekSetUp(timePerDayOfWeek);
-
-        for (Task task : tasks) {
-            total += task.getTimeSpent();
-            Calculations.calculateDaysOfWeek(task, timePerDayOfWeek);
-            Calculations.updateTotalPerSomeSortingFactor(task, totalPerType, "type");
-            Calculations.updateTotalPerSomeSortingFactor(task, totalPerCategory, "category");
-            types.add(task.getTaskType());
-        }
-
-        Calculations.calculatePercentages(percentagePerType, totalPerType, total);
-        Calculations.calculatePercentages(percentagePerCategory, totalPerCategory, total);
     }
 
 }
