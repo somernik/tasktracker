@@ -4,6 +4,7 @@
 <html>
 <%@include file="templates/dataTableSetup.jsp"%>
 <body>
+<c:if test="${loggedIn}">
 <div class="mainContent">
     <div class="container-fluid">
         <div class="row">
@@ -45,7 +46,7 @@
                 </select>
                 <input type="text" class="form-control filterForm" id="minutes" name="timeSpent" value="${time}" /> minutes
                 <br /><br />
-                <button type="submit" name="submit" value="searchInfo" class="btn btn-success">Search</button>
+                <button type="submit" name="submit" value="searchInfo" class="btn btn-success btn-block">Search</button>
             </form>
             <br />
             <div class="table-responsive">
@@ -72,7 +73,7 @@
                             <td>
                                 <c:if test="${task.completed == true}">Completed</c:if>
                                 <c:if test="${task.completed == false}">
-                                    <form method="post" action="/editTask">
+                                    <form method="post" action="/saveTask">
                                         <input type="hidden" name="id" value="${task.taskId}">
                                         <input type="text" class="form-control table-input dashboard-input" name="timeAdded" placeholder="Minutes" required />
                                         <button type="submit" name="submit" value="addTime" class="btn btn-success">Add Time</button>
@@ -80,7 +81,7 @@
                                 </c:if>
                             </td>
                             <td>
-                                <form method="post" action="/editTask">
+                                <form method="post" action="/taskDetails">
                                     <input type="hidden" name="id" value="${task.taskId}">
                                     <button type="submit" name="submit" value="details" class="btn btn-success">View Details</button>
                                 </form>
@@ -94,5 +95,9 @@
         </div>
     </div>
 </div>
+</c:if>
+<c:if test="${loggedIn != true}">
+    <h3>Please <a href="logIn.jsp">log in</a> to view page.</h3>
+</c:if>
 </body>
 </html>

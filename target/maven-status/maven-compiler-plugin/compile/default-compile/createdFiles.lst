@@ -1,10 +1,14 @@
 com\sarah\controllers\AddTask.class
 com\sarah\controllers\LogoutServlet.class
+com\sarah\controllers\TaskDetails.class
 com\sarah\controllers\DashboardServlet.class
 com\sarah\controllers\LoginServlet.class
 com\sarah\persistence\TaskEntryData.class
+com\sarah\controllers\LoggedIn.class
+com\sarah\controllers\SaveTaskEdits.class
 com\sarah\persistence\UserData.class
 com\sarah\persistence\Utility.class
+com\sarah\controllers\EditUser.class
 com\sarah\controllers\AddUser.class
 com\sarah\controllers\SearchSpecificTasks.class
 com\sarah\entity\User.class
@@ -12,6 +16,7 @@ com\sarah\persistence\Database.class
 com\sarah\controllers\SearchTasks.class
 com\sarah\entity\TaskEntry.class
 com\sarah\entity\Task.class
+com\sarah\persistence\Calculations.class
 com\sarah\controllers\Analytics.class
 com\sarah\controllers\EditTask.class
 com\sarah\persistence\TaskData.class

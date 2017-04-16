@@ -43,7 +43,7 @@
                                 <li role="separator" class="divider"></li>
                                 <li class="dropdown-header">Nav header</li>
                                 <li><a href="editUser.jsp">Edit Account</a></li>
-                                <li><a class="btn btn-primary btn-success" href="\LogoutServlet" role="button">Log Out</a></li>
+                                <li><a class="btn btn-primary btn-success" href="/LogoutServlet" role="button">Log Out</a></li>
                             </ul>
                         </li>
 

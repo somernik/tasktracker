@@ -1,5 +1,5 @@
 <%@include file="templates/taglib.jsp"%>
-<c:set var="title" value="PROject | Sign In" />
+<c:set var="title" value="Sign In" />
 <%@include file="templates/header.jsp"%>
 <html>
 <body>

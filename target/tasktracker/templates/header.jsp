@@ -39,10 +39,10 @@
                             <ul class="dropdown-menu">
                                 <li><a href="../dashboard.jsp">Dashboard</a></li>
                                 <li><a href="#">Tasks</a></li>
-                                <li><a href="#">My Classes</a></li>
                                 <li role="separator" class="divider"></li>
-                                <li class="dropdown-header">Nav header</li>
-                                <li><a href="editUser.jsp">Edit Account</a></li>
+                                <li class="dropdown-header">Admin</li>
+                                <li><a href="/userProfile">View Profile</a></li>
+                                <li><a href="../editUser.jsp">Edit Account</a></li>
                                 <li><a class="btn btn-primary btn-success" href="\LogoutServlet" role="button">Log Out</a></li>
                             </ul>
                         </li>
