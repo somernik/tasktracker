@@ -4,6 +4,7 @@ import com.sarah.entity.Task;
 import com.sarah.entity.TaskEntry;
 import com.sarah.utility.DateUtility;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -154,5 +155,24 @@ public class Calculations {
         // if day is much work -> -1day
 
         // If task is new... get average of category/type/all
+    }
+
+    /**
+     * Adds up all task entries
+     *
+     * @param entries the list of entries
+     * @return the list of entries
+     */
+    public static List<Double> getEntries(List<TaskEntry> entries) {
+        List<Double> increasingEntries = new ArrayList<Double>();
+        if (entries.size() > 0) {
+            increasingEntries.add(entries.get(0).getTimeAdded());
+            for (int index = 0; index < entries.size(); index++) {
+                if (entries.size() > 1 && index > 0) {
+                    increasingEntries.add(increasingEntries.get(index - 1) + entries.get(index).getTimeAdded());
+                }
+            }
+        }
+        return increasingEntries;
     }
 }

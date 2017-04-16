@@ -5,7 +5,9 @@ import com.sarah.entity.TaskEntry;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.*;
@@ -25,6 +27,9 @@ public class CalculationsTest {
     Task testTaskForSorting = new Task();
     TaskEntry testEntry = new TaskEntry();
     Double total = 0.0;
+
+    List<TaskEntry> testEntries = new ArrayList<TaskEntry>();
+    List<Double> testList = new ArrayList<Double>();
 
     @Before
     public void SetUp() {
@@ -64,6 +69,24 @@ public class CalculationsTest {
         testDayMapTwo.put("Sunday", 160.2);
 
         testEntry.setTimeAdded(50);
+
+        // Add up task entries
+        TaskEntry one = new TaskEntry();
+        TaskEntry two = new TaskEntry();
+        TaskEntry three = new TaskEntry();
+
+        one.setTimeAdded(50);
+        two.setTimeAdded(45);
+        three.setTimeAdded(30);
+
+        testEntries.add(one);
+        testEntries.add(two);
+        testEntries.add(three);
+
+        testList.add(50.0);
+        testList.add(95.0);
+        testList.add(125.0);
+
     }
 
     @Test
@@ -99,6 +122,15 @@ public class CalculationsTest {
         testDayMapTwo = Calculations.addValuesToDayMap(testDayMapTwo, testEntry, "Friday");
         assertEquals(testDayMap, testDayMapTwo);
         assertNotNull(testDayMapTwo);
+    }
+
+    @Test
+    public void testGetEntries() {
+
+        List<Double> listToCheck = Calculations.getEntries(testEntries);
+        assertEquals(testList, listToCheck);
+        assertNotNull(listToCheck);
+
     }
 /*
     dayOfWeekSetUp
