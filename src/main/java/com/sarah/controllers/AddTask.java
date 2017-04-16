@@ -40,15 +40,13 @@ public class AddTask extends HttpServlet {
                     // add type & get type id
                     type = taskData.addType(request.getParameter("newType"), (String)session.getAttribute("email"));
                 }
-                System.out.print(type);
                 taskData.addNewTask(request.getParameter("taskName"), request.getParameter("taskCategory"), type,
                         request.getParameter("taskDescription"), request.getParameter("taskDueDate"), session.getAttribute("email"));
-                System.out.print(type);
+
             } catch (Exception exception) {
                 exception.printStackTrace();
             }
 
-            System.out.print(type);
             session.setAttribute("tasks", taskData.getUserTasks(session.getAttribute("email"), "completed=0"));
 
             RequestDispatcher dispatcher = request.getRequestDispatcher("/dashboard.jsp");
