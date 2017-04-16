@@ -10,11 +10,16 @@ import java.util.Map;
 
 /**
  * Calculations Class
+ * Handles calculations for graphs and calculating estimated completion.
  * Created by Sarah Omernik on 4/4/2017.
  */
 public class Calculations {
-    // TODO add javadoc
 
+    /**
+     * Adds days of week to map for later use
+     * @param timePerDayOfWeek The map to add values to.
+     * @return timePerDayOfWeek
+     */
     public static Map<String, Double> dayOfWeekSetUp(Map<String, Double> timePerDayOfWeek) {
         Double starter = 0.0;
         timePerDayOfWeek.put("Monday", starter);
@@ -28,30 +33,51 @@ public class Calculations {
         return timePerDayOfWeek;
     }
 
+    /**
+     * Add up the amount of time spent for each day of the week.
+     * @param task the current task
+     * @param timePerDayOfWeek the map with total time worked per day of week
+     * @return timePerDayOfWeek
+     */
     public static Map<String, Double> calculateDaysOfWeek(Task task, Map<String, Double> timePerDayOfWeek) {
         TaskEntryData taskEntryData = new TaskEntryData();
         List<TaskEntry> taskEntries = taskEntryData.getUserTaskEntries(String.valueOf(task.getTaskId()));
         for (TaskEntry entry : taskEntries) {
             String day = DateUtility.getDayFromLocalDate(entry.getDateEntered());
-            addValuesToDayMap(timePerDayOfWeek, entry, day);
+            timePerDayOfWeek = addValuesToDayMap(timePerDayOfWeek, entry, day);
         }
 
         return timePerDayOfWeek;
     }
 
-    public static void addValuesToDayMap(Map<String, Double> timePerDayOfWeek, TaskEntry entry, String day) {
+    /**
+     * Adds up the amount of time spent per day
+     * @param timePerDayOfWeek map with days and totals
+     * @param entry the entry to add
+     * @param day the day to add it too
+     * @return timePerDayOfWeek
+     */
+    public static Map<String, Double> addValuesToDayMap(Map<String, Double> timePerDayOfWeek, TaskEntry entry, String day) {
         if (timePerDayOfWeek.containsKey(day)) {
             Double newTotal = timePerDayOfWeek.get(day).intValue() + entry.getTimeAdded();
             timePerDayOfWeek.put(day, newTotal);
         } else {
             timePerDayOfWeek.put(day, entry.getTimeAdded());
         }
+
+        return timePerDayOfWeek;
     }
 
+    /**
+     * Updates total time spent per type or category
+     * @param task the current task
+     * @param totalPerSomeSortingFactor the total so far
+     * @param sortingFactor type or category
+     * @return totalPerSomeSortingFactor
+     */
     public static Map<String, Double> updateTotalPerSomeSortingFactor(Task task, Map<String, Double>totalPerSomeSortingFactor, String sortingFactor) {
         String key;
         // Check sorting factor
-        // Pull into own function?
         if (sortingFactor.equals("type")) {
             key = task.getTaskType();
         } else {
@@ -69,6 +95,13 @@ public class Calculations {
         return totalPerSomeSortingFactor;
     }
 
+    /**
+     * Calculates % of time spent on each type
+     * @param percentagePerType % value
+     * @param totalPerSomeSortingFactor total per type/category
+     * @param total total value
+     * @return percentagePerType
+     */
     public static Map<String, Double> calculatePercentages(Map<String, Double>percentagePerType, Map<String, Double>totalPerSomeSortingFactor, Double total) {
         // Divide total per type by total, then * 100
         for (Map.Entry<String, Double> entry : totalPerSomeSortingFactor.entrySet()) {  // Iterate through hash map
@@ -79,6 +112,11 @@ public class Calculations {
         return percentagePerType;
     }
 
+    /**
+     * Finds day with most amount of work done
+     * @param timePerDayOfWeek map with values of time spent per day
+     * @return mostCommonDay
+     */
     public static String getMostCommonDay(Map<String, Double> timePerDayOfWeek) {
         Double maxValue = Collections.max(timePerDayOfWeek.values());
         String mostCommonDay = null;
@@ -92,6 +130,12 @@ public class Calculations {
         return mostCommonDay;
     }
 
+    /**
+     * Determines the date you are estimated to finish a task
+     * @param email users email
+     * @param timeLeft amount of time left
+     * @param taskId the tasks id
+     */
     public static void calculateFinishDate(String email, double timeLeft, String taskId) {
 
         TaskEntryData data = new TaskEntryData();

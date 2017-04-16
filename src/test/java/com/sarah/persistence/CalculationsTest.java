@@ -96,7 +96,7 @@ public class CalculationsTest {
 
     @Test
     public void testAddValuesToDayMap() {
-        Calculations.addValuesToDayMap(testDayMapTwo, testEntry, "Friday");
+        testDayMapTwo = Calculations.addValuesToDayMap(testDayMapTwo, testEntry, "Friday");
         assertEquals(testDayMap, testDayMapTwo);
         assertNotNull(testDayMapTwo);
     }
