@@ -16,36 +16,11 @@ import static org.junit.Assert.*;
  */
 public class TaskDetailsTest {
 
-    List<TaskEntry> testEntries = new ArrayList<TaskEntry>();
-    List<Double> testList = new ArrayList<Double>();
-
     @Before
-    public void SetUp() {
-        TaskEntry one = new TaskEntry();
-        TaskEntry two = new TaskEntry();
-        TaskEntry three = new TaskEntry();
-
-        one.setTimeAdded(50);
-        two.setTimeAdded(45);
-        three.setTimeAdded(30);
-
-        testEntries.add(one);
-        testEntries.add(two);
-        testEntries.add(three);
-
-        testList.add(50.0);
-        testList.add(95.0);
-        testList.add(125.0);
-    }
+    public void SetUp() {}
 
     @Test
     public void testGetEntries() {
-        /*
-        TaskDetails newDetail = new TaskDetails();
-        List<Double> listToCheck = newDetail.getEntries(testEntries);
-        assertEquals(testList, listToCheck);
-        assertNotNull(listToCheck);
-        */
     }
 
 }
