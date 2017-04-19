@@ -1,6 +1,7 @@
 package com.sarah.utility;
 
 import com.sarah.persistence.Database;
+import com.sarah.persistence.ErrorException;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -16,7 +17,7 @@ public class DatabaseUtility {
      * @param sql sql query to execute
      * @return boolean if completed successfully
      */
-    public static boolean executeUpdate(String sql) {
+    public static boolean executeUpdate(String sql) throws ErrorException {
         Database database = Database.getInstance();
         Connection connection = null;
         try {
@@ -28,10 +29,10 @@ public class DatabaseUtility {
             return true;
         } catch (SQLException e) {
             System.out.println("executeTaskUpdate Sql exception: task " + e);
-            return false;
+            throw new ErrorException();
         } catch (Exception e) {
             System.out.println("executeTaskUpdate Exception: task " + e);
-            return false;
+            throw new ErrorException();
         }
 
     }

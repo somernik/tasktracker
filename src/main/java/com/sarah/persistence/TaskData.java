@@ -27,7 +27,7 @@ public class TaskData {
      * @return boolean if value was added
      * @throws Exception general exception
      */
-    public boolean addNewTask(String name, String category, String type, String description, String dueDate, Object email) throws Exception {
+    public boolean addNewTask(String name, String category, String type, String description, String dueDate, Object email) throws ErrorException {
         String sql = "INSERT INTO task (userId, name, typeId, category, description, dueDate, startDate) VALUES ("
                 + "(SELECT userId FROM user WHERE email='" + email + "'), '" + name + "', '" + type + "', '"
                 + category + "', '" + description + "', '" + dueDate + "', NOW())";
@@ -48,7 +48,8 @@ public class TaskData {
      * @return boolean if edit was successful
      * @throws Exception general exception
      */
-    public boolean editSingleTask(String taskId, String name, String category, String type, String description, String dueDate, String completed, String startDate, String timeAdded) throws Exception {
+    public boolean editSingleTask(String taskId, String name, String category, String type, String description,
+                                  String dueDate, String completed, String startDate, String timeAdded) throws Exception {
 
         TaskEntryData taskEntryData = new TaskEntryData();
         String sql = "UPDATE task SET name = '" + name + "', typeId = (SELECT typeId FROM type WHERE"
@@ -68,7 +69,7 @@ public class TaskData {
      * @param search search criteria for filter options
      * @return list of tasks
      */
-    public List<Task> getUserTasks(Object userEmail, String search) {
+    public List<Task> getUserTasks(Object userEmail, String search) throws ErrorException {
         List<Task> tasks;
         String sql;
         if (search.equals("active")) {
@@ -100,7 +101,7 @@ public class TaskData {
      * @param sqlStatement sql query to get tasks
      * @return a list of tasks
      */
-    private List<Task> executeQuery(String sqlStatement) {
+    private List<Task> executeQuery(String sqlStatement) throws ErrorException {
 
         List<Task> tasks = new ArrayList<Task>();
         Database database = Database.getInstance();
@@ -114,9 +115,11 @@ public class TaskData {
             database.disconnect();
         } catch (SQLException e) {
             System.out.println("ExecuteQuery Sql exception: task " + e);
+            throw new ErrorException();
         } catch (Exception e) {
             System.out.println("ExecuteQuery Exception: task " + e);
             e.printStackTrace();
+            throw new ErrorException();
         }
         return tasks;
     }
@@ -162,7 +165,7 @@ public class TaskData {
      * @param taskId the id of the task
      * @return boolean if executed successfully
      */
-    public boolean updateTimeSpent(String taskId) {
+    public boolean updateTimeSpent(String taskId) throws ErrorException {
         String sql = "UPDATE task SET cumulativeTimeSpent = (SELECT SUM(timeEnteredAmount) FROM taskEntry "
                 + "WHERE taskEntry.taskId=" + taskId + ") WHERE taskId=" + taskId + ";";
         return DatabaseUtility.executeUpdate(sql);
@@ -175,7 +178,7 @@ public class TaskData {
      * @param category category of tasks for grouping
      * @return value of estimated time to complete task
      */
-    public double calculateEstimatedTime(String type, String category) {
+    public double calculateEstimatedTime(String type, String category) throws ErrorException {
         String timeColumn = "SUM(cumulativeTimeSpent)";
         String numberColumn = "COUNT(taskId)";
         double estimatedTime;
@@ -196,7 +199,7 @@ public class TaskData {
      * @param task task to update
      * @param estimatedTime the value to update to
      */
-    public void updateEstimatedCompletionTime(Task task, double estimatedTime) {
+    public void updateEstimatedCompletionTime(Task task, double estimatedTime) throws ErrorException {
         String sql = "UPDATE task SET estimatedCompletionTime = '" + estimatedTime + "' WHERE taskId = '" + task.getTaskId() + "'";
         DatabaseUtility.executeUpdate(sql);
     }
@@ -208,7 +211,7 @@ public class TaskData {
      * @param columnName column name to group/count on
      * @return value of the grouping
      */
-    public double groupSqlStatement(String type, String category, String columnName) {
+    public double groupSqlStatement(String type, String category, String columnName) throws ErrorException{
         double totalTime;
 
         String sql = "SELECT " + columnName + " FROM task JOIN type ON task.typeId=type.typeId WHERE typeName='" + type + "' AND category='" + category + "' AND completed=1";
@@ -223,7 +226,7 @@ public class TaskData {
      * @param columnName the name of column to count
      * @return value returned from query
      */
-    private double executeSingleQuery(String sql, String columnName) {
+    private double executeSingleQuery(String sql, String columnName) throws ErrorException {
         ResultSet resultSet;
         double value = 0;
         Database database = Database.getInstance();
@@ -238,9 +241,11 @@ public class TaskData {
             database.disconnect();
         } catch (SQLException e) {
             System.out.println("ExecuteQuery Sql exception: task " + e);
+            throw new ErrorException();
         } catch (Exception e) {
             System.out.println("ExecuteQuery Exception: task " + e);
             e.printStackTrace();
+            throw new ErrorException();
         }
 
         return value;
@@ -251,7 +256,7 @@ public class TaskData {
      * @param taskId the id of the task to get
      * @return a task
      */
-    public Task getSingleTask(String taskId) {
+    public Task getSingleTask(String taskId) throws ErrorException {
         List<Task> tasks = new ArrayList<Task>();
         Task task;
         String sql = "SELECT * FROM task INNER JOIN type ON task.typeId=type.typeId INNER JOIN user ON "
@@ -262,7 +267,7 @@ public class TaskData {
     }
 
 
-    public String addType(String typeName, String email) {
+    public String addType(String typeName, String email) throws ErrorException {
 
         String typeSql = "INSERT INTO type (typeName) VALUES ('" + typeName + "')";
         String userTypeSql = "INSERT INTO usertype (typeId, userId) VALUES ((SELECT typeId FROM type WHERE typeName='" + typeName + "' LIMIT 1), (SELECT userId FROM user WHERE email='" + email + "'))";
@@ -277,7 +282,7 @@ public class TaskData {
         return typeId.toString();
     }
 
-    public Map<String, String> getTypes(String email) {
+    public Map<String, String> getTypes(String email) throws ErrorException {
         Map<String, String> types = new HashMap<String, String>();
         String sql = "SELECT * FROM type WHERE NOT EXISTS (SELECT usertype.typeId FROM usertype WHERE type.typeId=usertype.typeId)";
 
@@ -292,7 +297,7 @@ public class TaskData {
     }
 
 
-    private Map<String, String> executeTypesQuery(String sqlStatement, Map<String, String> types) {
+    private Map<String, String> executeTypesQuery(String sqlStatement, Map<String, String> types) throws ErrorException {
 
         Database database = Database.getInstance();
         Connection connection = null;
@@ -305,9 +310,11 @@ public class TaskData {
             database.disconnect();
         } catch (SQLException e) {
             System.out.println("ExecuteQuery Sql exception: task " + e);
+            throw new ErrorException();
         } catch (Exception e) {
             System.out.println("ExecuteQuery Exception: task " + e);
             e.printStackTrace();
+            throw new ErrorException();
         }
         return types;
     }
@@ -318,7 +325,7 @@ public class TaskData {
         }
     }
 
-    public List<String> getCategories(String email) {
+    public List<String> getCategories(String email) throws ErrorException {
         List<String> categories = new ArrayList<String>();
         String sql = "SELECT DISTINCT category FROM task INNER JOIN user ON task.userId=user.userID WHERE user.email='" + email + "'";
 
@@ -327,7 +334,7 @@ public class TaskData {
         return categories;
     }
 
-    private List<String> executeCategoriesQuery(String sql, List<String> categories) {
+    private List<String> executeCategoriesQuery(String sql, List<String> categories) throws ErrorException {
         Database database = Database.getInstance();
         Connection connection = null;
         try {
@@ -339,9 +346,11 @@ public class TaskData {
             database.disconnect();
         } catch (SQLException e) {
             System.out.println("ExecuteQuery Sql exception: task " + e);
+            throw new ErrorException();
         } catch (Exception e) {
             System.out.println("ExecuteQuery Exception: task " + e);
             e.printStackTrace();
+            throw new ErrorException();
         }
         return categories;
     }

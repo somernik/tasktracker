@@ -14,6 +14,7 @@ import java.lang.Exception;
 import java.util.*;
 
 import com.sarah.entity.Task;
+import com.sarah.persistence.ErrorException;
 import com.sarah.persistence.TaskData;
 
 /**
@@ -49,12 +50,16 @@ public class AddTask extends HttpServlet {
 
                 taskData.addNewTask(request.getParameter("taskName"), category, type,
                         request.getParameter("taskDescription"), request.getParameter("taskDueDate"), session.getAttribute("email"));
+                session.setAttribute("tasks", taskData.getUserTasks(session.getAttribute("email"), "completed=0"));
 
+            } catch (ErrorException exception) {
+                request.setAttribute("message", exception.getMessage());
+                RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
+                dispatcher.forward(request, response);
             } catch (Exception exception) {
                 exception.printStackTrace();
             }
 
-            session.setAttribute("tasks", taskData.getUserTasks(session.getAttribute("email"), "completed=0"));
 
             RequestDispatcher dispatcher = request.getRequestDispatcher("/dashboard.jsp");
             dispatcher.forward(request, response);
@@ -70,13 +75,20 @@ public class AddTask extends HttpServlet {
         TaskData taskData = new TaskData();
         HttpSession session=request.getSession();
 
-        Map<String, String> types = taskData.getTypes((String) session.getAttribute("email"));
-        List<String> categories = taskData.getCategories((String) session.getAttribute("email"));
+        try {
+            Map<String, String> types = taskData.getTypes((String) session.getAttribute("email"));
 
-        request.setAttribute("types", types);
-        request.setAttribute("categories", categories);
+            List<String> categories = taskData.getCategories((String) session.getAttribute("email"));
+            request.setAttribute("categories", categories);
+            request.setAttribute("types", types);
 
-        session.setAttribute("tasks", taskData.getUserTasks(session.getAttribute("email"), "completed=0"));
+            session.setAttribute("tasks", taskData.getUserTasks(session.getAttribute("email"), "completed=0"));
+
+        } catch (ErrorException exception) {
+            request.setAttribute("message", exception.getMessage());
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
+            dispatcher.forward(request, response);
+        }
 
         RequestDispatcher dispatcher = request.getRequestDispatcher("/addTask.jsp");
         dispatcher.forward(request, response);
