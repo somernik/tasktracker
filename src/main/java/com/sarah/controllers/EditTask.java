@@ -31,6 +31,25 @@ public class EditTask extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         LoggedIn.checkLoggedIn(req, resp);
 
+        try {
+            getTaskInformation(req);
+            RequestDispatcher dispatcher = req.getRequestDispatcher("/editTask.jsp");
+            dispatcher.forward(req, resp);
+
+        } catch (ErrorException exception) {
+            req.setAttribute("message", exception.getMessage());
+            RequestDispatcher dispatcher = req.getRequestDispatcher("/error.jsp");
+            dispatcher.forward(req, resp);
+        }
+
+    }
+
+    /**
+     * Get Task information
+     * @param req the request object
+     * @throws ErrorException
+     */
+    private void getTaskInformation(HttpServletRequest req) throws ErrorException {
         TaskData taskData = new TaskData();
         HttpSession session = req.getSession();
 
@@ -45,15 +64,9 @@ public class EditTask extends HttpServlet {
                 session.setAttribute("singleTask", taskData.getSingleTask(req.getParameter("id")));
 
             }
-
-        } catch (ErrorException exception) {
-            req.setAttribute("message", exception.getMessage());
-            RequestDispatcher dispatcher = req.getRequestDispatcher("/error.jsp");
-            dispatcher.forward(req, resp);
+        } catch (Exception exception) {
+            throw new ErrorException();
         }
-
-        RequestDispatcher dispatcher = req.getRequestDispatcher("/editTask.jsp");
-        dispatcher.forward(req, resp);
     }
 
     @Override

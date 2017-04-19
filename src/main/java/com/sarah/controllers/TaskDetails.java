@@ -32,12 +32,23 @@ public class TaskDetails extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         LoggedIn.checkLoggedIn(req, resp);
 
-        TaskData taskData = new TaskData();
-        TaskEntryData taskEntryData = new TaskEntryData();
-        HttpSession session = req.getSession();
-
-
         try {
+            getTaskInformation(req, resp);
+
+        } catch (ErrorException exception) {
+            req.setAttribute("message", exception.getMessage());
+            RequestDispatcher dispatcher = req.getRequestDispatcher("/error.jsp");
+            dispatcher.forward(req, resp);
+        }
+
+    }
+
+    private void getTaskInformation(HttpServletRequest req, HttpServletResponse resp) throws ErrorException, ServletException, IOException {
+        try {
+            TaskData taskData = new TaskData();
+            TaskEntryData taskEntryData = new TaskEntryData();
+            HttpSession session = req.getSession();
+
             session.setAttribute("id", req.getParameter("id"));
             session.setAttribute("singleTask", taskData.getSingleTask((String) session.getAttribute("id")));
             List<TaskEntry> entries = new ArrayList<TaskEntry>();
@@ -48,15 +59,12 @@ public class TaskDetails extends HttpServlet {
 
             session.setAttribute("taskEntries", entries);
 
-        } catch (ErrorException exception) {
-            req.setAttribute("message", exception.getMessage());
-            RequestDispatcher dispatcher = req.getRequestDispatcher("/error.jsp");
+
+            RequestDispatcher dispatcher = req.getRequestDispatcher("/taskDetail.jsp");
             dispatcher.forward(req, resp);
+        } catch (Exception exception) {
+            throw new ErrorException();
         }
-
-        RequestDispatcher dispatcher = req.getRequestDispatcher("/taskDetail.jsp");
-        dispatcher.forward(req, resp);
-
     }
 
 

@@ -128,7 +128,9 @@
             </div>
             </c:if>
             <c:if test="${empty singleTask}">
+            <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
                 <h3>Please a select a task from the <a href="/dashboard">Dashboard</a> or <a href="/searchTasks">search</a> for a task.</h3>
+            </div>
             </c:if>
         </div>
     </div>

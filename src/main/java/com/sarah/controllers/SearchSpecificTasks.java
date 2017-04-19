@@ -27,34 +27,48 @@ public class SearchSpecificTasks extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         LoggedIn.checkLoggedIn(request, response);
 
-        TaskData taskData = new TaskData();
-        HttpSession session=request.getSession();
-        String searchCriteria = "taskId = taskId";
         try {
-            Map<String, String> types = taskData.getTypes((String) session.getAttribute("email"));
+            startSearch(request);
 
-            List<String> categories = taskData.getCategories((String) session.getAttribute("email"));
-            request.setAttribute("categories", categories);
-            if (request.getParameter("submit").equals("searchInfo")){
-                searchCriteria = determineSearchCriteria(request, searchCriteria);
-            }
+            request.setAttribute("completion", request.getParameter("completion"));
+            request.setAttribute("timeOperator", request.getParameter("timeOperator"));
+            request.setAttribute("time", request.getParameter("timeSpent"));
 
-            session.setAttribute("tasks", taskData.getUserTasks(session.getAttribute("email"), searchCriteria));
-            request.setAttribute("types", types);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/searchTasks.jsp");
+            dispatcher.forward(request, response);
+
         } catch (ErrorException exception) {
             request.setAttribute("message", exception.getMessage());
             RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
             dispatcher.forward(request, response);
         }
 
+    }
 
+    /**
+     * Start search by getting search criteria
+     * @param request the request object
+     * @throws ErrorException
+     */
+    private void startSearch(HttpServletRequest request) throws ErrorException {
+        TaskData taskData = new TaskData();
+        HttpSession session=request.getSession();
+        String searchCriteria = "taskId = taskId";
 
-        request.setAttribute("completion", request.getParameter("completion"));
-        request.setAttribute("timeOperator", request.getParameter("timeOperator"));
-        request.setAttribute("time", request.getParameter("timeSpent"));
+        try {
+            Map<String, String> types = taskData.getTypes((String) session.getAttribute("email"));
 
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/searchTasks.jsp");
-        dispatcher.forward(request, response);
+            List<String> categories = taskData.getCategories((String) session.getAttribute("email"));
+            request.setAttribute("categories", categories);
+            if (request.getParameter("submit").equals("searchInfo")) {
+                searchCriteria = determineSearchCriteria(request, searchCriteria);
+            }
+
+            session.setAttribute("tasks", taskData.getUserTasks(session.getAttribute("email"), searchCriteria));
+            request.setAttribute("types", types);
+        } catch (Exception exception) {
+            throw new ErrorException();
+        }
     }
 
     /**
