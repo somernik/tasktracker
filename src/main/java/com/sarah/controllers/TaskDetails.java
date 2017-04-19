@@ -15,6 +15,7 @@ import java.util.List;
 import com.sarah.entity.Task;
 import com.sarah.entity.TaskEntry;
 import com.sarah.persistence.Calculations;
+import com.sarah.persistence.ErrorException;
 import com.sarah.persistence.TaskData;
 import com.sarah.persistence.TaskEntryData;
 
@@ -34,10 +35,11 @@ public class TaskDetails extends HttpServlet {
         TaskData taskData = new TaskData();
         TaskEntryData taskEntryData = new TaskEntryData();
         HttpSession session = req.getSession();
-        RequestDispatcher dispatcher;
+
 
         try {
-            session.setAttribute("singleTask", taskData.getSingleTask(req.getParameter("id")));
+            session.setAttribute("id", req.getParameter("id"));
+            session.setAttribute("singleTask", taskData.getSingleTask((String) session.getAttribute("id")));
             List<TaskEntry> entries = new ArrayList<TaskEntry>();
             entries = taskEntryData.getUserTaskEntries(req.getParameter("id"));
 
@@ -46,11 +48,13 @@ public class TaskDetails extends HttpServlet {
 
             session.setAttribute("taskEntries", entries);
 
-        } catch (Exception exception) {
-            exception.printStackTrace();
+        } catch (ErrorException exception) {
+            req.setAttribute("message", exception.getMessage());
+            RequestDispatcher dispatcher = req.getRequestDispatcher("/error.jsp");
+            dispatcher.forward(req, resp);
         }
 
-        dispatcher = req.getRequestDispatcher("/taskDetail.jsp");
+        RequestDispatcher dispatcher = req.getRequestDispatcher("/taskDetail.jsp");
         dispatcher.forward(req, resp);
 
     }
