@@ -57,13 +57,14 @@ public class LoginServlet extends HttpServlet {
     private void setUpUserSession(HttpServletRequest request, HttpServletResponse response, String email, UserData userData) throws IOException, ServletException {
         TaskData taskData = new TaskData();
         HttpSession session = request.getSession();
-        User user = userData.getUser(email);
-
-        session.setAttribute("user", user);
-        session.setAttribute("email", email);
-        session.setAttribute("loggedIn", true);
-
+        
         try {
+            User user = userData.getUser(email);
+
+            session.setAttribute("user", user);
+            session.setAttribute("email", email);
+            session.setAttribute("loggedIn", true);
+
             session.setAttribute("tasks", taskData.getUserTasks(session.getAttribute("email"), "active"));
         } catch (ErrorException exception) {
             request.setAttribute("message", exception.getMessage());

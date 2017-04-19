@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import com.sarah.persistence.ErrorException;
 import com.sarah.persistence.UserData;
 
 
@@ -26,11 +27,16 @@ public class AddUser extends HttpServlet {
 
         UserData userData = new UserData();
 
-        if (req.getParameter("submit").equals("addUser")) {
-            userData.addNewUser(req.getParameter("firstName"), req.getParameter("lastName"), req.getParameter("username"),
-                    req.getParameter("email"), req.getParameter("password"));
+        try {
+            if (req.getParameter("submit").equals("addUser")) {
+                userData.addNewUser(req.getParameter("firstName"), req.getParameter("lastName"), req.getParameter("username"),
+                        req.getParameter("email"), req.getParameter("password"));
+            }
+        } catch (ErrorException exception) {
+            req.setAttribute("message", exception.getMessage());
+            RequestDispatcher dispatcher = req.getRequestDispatcher("/error.jsp");
+            dispatcher.forward(req, resp);
         }
-
         RequestDispatcher dispatcher = req.getRequestDispatcher("/LoginServlet");
         dispatcher.forward(req, resp);
     }

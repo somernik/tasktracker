@@ -25,7 +25,7 @@ public class UserData {
      * @param password users password
      * @return execution of adding a new user
      */
-    public boolean addNewUser(String firstName, String lastName, String username, String email, String password) {
+    public boolean addNewUser(String firstName, String lastName, String username, String email, String password) throws ErrorException {
         String sql = "INSERT INTO user (firstName, lastName, username, email, password) VALUES (?, ?, ?, ?, ?)";
         return executeAddUser(sql, lastName, firstName, username, email, password);
     }
@@ -40,7 +40,8 @@ public class UserData {
      * @param password users password
      * @return boolean if user inserted properly
      */
-    private boolean executeAddUser(String sql, String lastName, String firstName, String username, String email, String password) {
+    private boolean executeAddUser(String sql, String lastName, String firstName, String username, String email,
+                                   String password) throws ErrorException {
         logger.info("In executeAddUser");
         logger.error("Demonstrating error level");
         Database database = Database.getInstance();
@@ -59,12 +60,12 @@ public class UserData {
             return true;
         } catch (SQLException e) {
             logger.error("UserData.executeAddUser()...SqlException: ", e);
-            return false;
+            throw new ErrorException();
 
         } catch (Exception e) {
             System.out.println("UserData.executeAddUser()...Exception: " + e);
             e.printStackTrace();
-            return false;
+            throw new ErrorException();
         }
     }
 
@@ -125,7 +126,7 @@ public class UserData {
      * @param userEmail the users email
      * @return User
      */
-    public User getUser(Object userEmail) {
+    public User getUser(Object userEmail) throws ErrorException {
         User user;
         String sql = "SELECT * FROM user WHERE email = '" + userEmail + "'";
         user = executeQuery(sql);
@@ -137,7 +138,7 @@ public class UserData {
      * @param sqlStatement the sql query to execute
      * @return User
      */
-    private User executeQuery(String sqlStatement) {
+    private User executeQuery(String sqlStatement) throws ErrorException {
 
         User user = new User();
         Database database = Database.getInstance();
@@ -151,9 +152,11 @@ public class UserData {
             database.disconnect();
         } catch (SQLException e) {
             System.out.println("ExecuteQuery Sql exception: task " + e);
+            throw new ErrorException();
         } catch (Exception e) {
             System.out.println("ExecuteQuery Exception: task " + e);
             e.printStackTrace();
+            throw new ErrorException();
         }
         return user;
     }
@@ -187,7 +190,7 @@ public class UserData {
      * @return boolean if the execution went successfully
      * @throws Exception a general exception
      */
-    public boolean editUser(String username, String email, String firstName, String lastName, String password, String oldEmail) throws Exception {
+    public boolean editUser(String username, String email, String firstName, String lastName, String password, String oldEmail) throws ErrorException {
 
         String sql = "UPDATE user SET username = '" + username + "', email = '" + email + "', firstName = '" + firstName
                 + "', lastName = '" + lastName + "', password = '" + password + "' WHERE email = '" + oldEmail + "'";

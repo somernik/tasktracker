@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 import com.sarah.entity.User;
+import com.sarah.persistence.ErrorException;
 import com.sarah.persistence.UserData;
 
 
@@ -37,7 +38,15 @@ public class EditUser extends HttpServlet {
         isValid = userData.validateUser(oldEmail, request.getParameter("passwordOld"));
 
         if (isValid) {
-            editUserValues(request, session, userData, oldEmail);
+
+            try {
+                editUserValues(request, session, userData, oldEmail);
+            } catch (ErrorException exception){
+                request.setAttribute("message", exception.getMessage());
+                RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
+                dispatcher.forward(request, response);
+            }
+
         } else {
             request.setAttribute("error", "Problem accessing information");
         }
@@ -53,31 +62,28 @@ public class EditUser extends HttpServlet {
      * @param userData the user data object
      * @param oldEmail the current email
      */
-    private void editUserValues(HttpServletRequest request, HttpSession session, UserData userData, String oldEmail) {
+    private void editUserValues(HttpServletRequest request, HttpSession session, UserData userData, String oldEmail) throws ErrorException {
         User user;
-        try {
-            String password;
+        String password;
 
-            // Changes user password if new one has been entered
-            // pull if into its own method
-            if (request.getParameter("password").equals(request.getParameter("passwordCheck")) && request.getParameter("passwordOld").length() > 0
-                    && request.getParameter("password").length() > 0 && request.getParameter("passwordCheck").length() > 0) {
-                password = request.getParameter("password");
-            } else {
-                // This wont write an empty password to the database
-                password = request.getParameter("passwordOld");
-            }
-
-            userData.editUser(request.getParameter("username"), request.getParameter("email"), request.getParameter("firstName"),
-                    request.getParameter("lastName"), password, oldEmail);
-
-
-            user = userData.getUser(request.getParameter("email"));
-            session.setAttribute("user", user);
-
-        } catch (Exception exception) {
-            exception.printStackTrace();
+        // Changes user password if new one has been entered
+        // pull if into its own method
+        if (request.getParameter("password").equals(request.getParameter("passwordCheck")) && request.getParameter("passwordOld").length() > 0
+                && request.getParameter("password").length() > 0 && request.getParameter("passwordCheck").length() > 0) {
+            password = request.getParameter("password");
+        } else {
+            // This wont write an empty password to the database
+            password = request.getParameter("passwordOld");
         }
+
+        userData.editUser(request.getParameter("username"), request.getParameter("email"), request.getParameter("firstName"),
+                request.getParameter("lastName"), password, oldEmail);
+
+
+        user = userData.getUser(request.getParameter("email"));
+        session.setAttribute("user", user);
+
+
     }
 
     @Override
