@@ -53,11 +53,12 @@ public class LoginServlet extends HttpServlet {
      * @param email the users email
      * @param userData the users data
      * @throws IOException
+     * @throws ServletException
      */
     private void setUpUserSession(HttpServletRequest request, HttpServletResponse response, String email, UserData userData) throws IOException, ServletException {
         TaskData taskData = new TaskData();
         HttpSession session = request.getSession();
-        
+
         try {
             User user = userData.getUser(email);
 
