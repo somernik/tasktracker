@@ -94,8 +94,8 @@ public class SaveTaskEdits extends HttpServlet {
         TaskData taskData = new TaskData();
         TaskEntryData taskEntryData = new TaskEntryData();
 
-        taskEntryData.addTime(req.getParameter("timeAdded"), req.getParameter("id"));
         try {
+            taskEntryData.addTime(req.getParameter("timeAdded"), req.getParameter("id"));
             taskData.updateTimeSpent(req.getParameter("id"));
             session.setAttribute("tasks", taskData.getUserTasks(session.getAttribute("email"), "taskId = taskId"));
         } catch (ErrorException exception) {

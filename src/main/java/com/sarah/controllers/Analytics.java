@@ -40,16 +40,6 @@ public class Analytics extends HttpServlet {
         Map<String, Double> percentagePerType = new HashMap<String, Double>();
         Map<String, Double> percentagePerCategory = new HashMap<String, Double>();
         List<Task> tasks = new ArrayList<Task>();
-
-        try {
-            tasks = taskData.getUserTasks(email, searchCriteria);
-        } catch (ErrorException exception) {
-            request.setAttribute("message", exception.getMessage());
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
-            dispatcher.forward(request, response);
-
-        }
-
         Map<String, Double> totalPerType = new HashMap<String, Double>();
         Map<String, Double> totalPerCategory = new HashMap<String, Double>();
         Double total = 0.0;
@@ -57,12 +47,21 @@ public class Analytics extends HttpServlet {
         timePerDayOfWeek = Calculations.dayOfWeekSetUp(timePerDayOfWeek);
         String mostCommonDay = Calculations.getMostCommonDay(timePerDayOfWeek);
 
-        for (Task task : tasks) {
-            total += task.getTimeSpent();
-            timePerDayOfWeek = Calculations.calculateDaysOfWeek(task, timePerDayOfWeek);
-            totalPerType = Calculations.updateTotalPerSomeSortingFactor(task, totalPerType, "type");
-            totalPerCategory = Calculations.updateTotalPerSomeSortingFactor(task, totalPerCategory, "category");
-            types.add(task.getTaskType());
+        try {
+            tasks = taskData.getUserTasks(email, searchCriteria);
+            for (Task task : tasks) {
+                total += task.getTimeSpent();
+                timePerDayOfWeek = Calculations.calculateDaysOfWeek(task, timePerDayOfWeek);
+                totalPerType = Calculations.updateTotalPerSomeSortingFactor(task, totalPerType, "type");
+                totalPerCategory = Calculations.updateTotalPerSomeSortingFactor(task, totalPerCategory, "category");
+                types.add(task.getTaskType());
+            }
+
+        } catch (ErrorException exception) {
+            request.setAttribute("message", exception.getMessage());
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
+            dispatcher.forward(request, response);
+
         }
 
         percentagePerType = Calculations.calculatePercentages(percentagePerType, totalPerType, total);
