@@ -69,7 +69,8 @@
                         Estimated Time Left not available. Please add an estimate of how long this task will take.
                         <form method="post" action="/saveTask">
                           <input type="hidden" name="id" value="${task.taskId}">
-                          <input type="text" class="form-control table-input dashboard-input" name="estimation" placeholder="Minutes" required />
+                          <input type="text" class="form-control table-input dashboard-input" name="estimation"
+                                 pattern="^([0-9]+)[/.]?([0-9]+)$" title="Please only enter numbers" placeholder="Minutes" required />
                           <button type="submit" name="submit" value="addEstimation" class="btn btn-success">Add Estimation</button>
                         </form>
                       </td>
@@ -77,7 +78,8 @@
                     <td>
                       <form method="post" action="/saveTask">
                         <input type="hidden" name="id" value="${task.taskId}">
-                        <input type="text" class="form-control table-input dashboard-input" name="timeAdded" placeholder="Minutes" required />
+                        <input type="text" class="form-control table-input dashboard-input" name="timeAdded"
+                               pattern="^([0-9]+)[/.]?([0-9]+)$" title="Please only enter numbers" placeholder="Minutes" required />
                         <button type="submit" name="submit" value="addTime" class="btn btn-success">Add Time</button>
                       </form>
                     </td>
