@@ -12,5 +12,5 @@
 <body>
 <h3>${message}</h3>
 <p><a href="index.jsp">Home</a></p>
-<p><a href="indes.jsp">Dashboard</a></p>
+<p><a href="dashboard.jsp">Dashboard</a></p>
 </body>

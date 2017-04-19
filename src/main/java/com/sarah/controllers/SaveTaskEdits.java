@@ -35,18 +35,26 @@ public class SaveTaskEdits extends HttpServlet {
         try {
             dispatchRequests(req, resp);
 
-        } catch (Exception exception) {
-            exception.printStackTrace();
+        } catch (ErrorException exception) {
+            req.setAttribute("message", exception.getMessage());
+            RequestDispatcher dispatcher = req.getRequestDispatcher("/error.jsp");
+            dispatcher.forward(req, resp);
         }
 
     }
 
-    private void dispatchRequests(HttpServletRequest req, HttpServletResponse resp)  throws Exception {
-
-        switch (req.getParameter("submit")) {
-            case "addTime" : addTime(req, resp);
-            case "saveEdits" : saveEdits(req, resp);
-            case "addEstimation" : addEstimation(req, resp);
+    private void dispatchRequests(HttpServletRequest req, HttpServletResponse resp) throws ErrorException {
+        try {
+            switch (req.getParameter("submit")) {
+                case "addTime":
+                    addTime(req, resp);
+                case "saveEdits":
+                    saveEdits(req, resp);
+                case "addEstimation":
+                    addEstimation(req, resp);
+            }
+        } catch (Exception exception) {
+            throw new ErrorException();
         }
     }
 

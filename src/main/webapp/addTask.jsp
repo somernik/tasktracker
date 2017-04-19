@@ -43,7 +43,7 @@
             <div class="form-group">
 
                 <input id="taskName" class="form-control" name="taskName" type="text" placeholder="Name"
-                       pattern="^([A-Za-z]{1}[A-Za-z-]+[ ]?)+$" title="Task Name must contain only letters or dashes"
+                       pattern="^([A-Za-z0-9]{1}[A-Za-z-0-9.]*[ ]?)+$" title="Task Name must contain only letters, dashes or numbers"
                        required autofocus /><br />
 
                 <div id="categoryDrop">
@@ -60,7 +60,7 @@
 
                 <div id="newCategoryLocation" class="hidden">
                     <input id="category" class="form-control" name="newCategory" type="text" placeholder="New Category"
-                           pattern="^([A-Za-z]{1}[A-Za-z-]+[ ]?)+$" title="Category must contain only letters or dashes"
+                           pattern="^([A-Za-z0-9]{1}[A-Za-z-0-9.]*[ ]?)+$" title="Category must contain only letters, dashes, or numbers"
                            value="New Category" required /><br />
                 </div>
 
@@ -78,7 +78,7 @@
 
                 <div id="newTypeLocation" class="hidden">
                     <input id="taskType" class="form-control" name="newType" type="text" placeholder="New Type"
-                           pattern="^([A-Za-z]{1}[A-Za-z-]+[ ]?)+$" title="Type must contain only letters or dashes"
+                           pattern="^([A-Za-z0-9]{1}[A-Za-z-0-9.]*[ ]?)+$" title="Type must contain only letters, dashes, or numbers"
                            value="New Type" required /><br />
                 </div>
 

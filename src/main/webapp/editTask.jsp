@@ -36,10 +36,12 @@
 </script>
 <body>
 <c:if test="${loggedIn}">
+
 <div class="mainContent">
     <div class="container-fluid">
         <div class="row">
             <%@include file="templates/sideNav.jsp"%>
+            <c:if test="${not empty singleTask}">
 
             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 
@@ -47,7 +49,7 @@
                     <h2 class="form-signin-heading formHeader">Edit Task</h2>
                         <label for="taskName">Name</label>
                         <input id="taskName" class="form-control" name="taskName" type="text" placeholder="Name"
-                               pattern="^([A-Za-z]{1}[A-Za-z-]+[ ]?)+$" title="Task Name must contain only letters or dashes"
+                               pattern="^([A-Za-z0-9]{1}[A-Za-z-0-9.]*[ ]?)+$" title="Task Name must contain only, dashes, or numbers"
                                autofocus value="${singleTask.taskName}" required /><br />
 
 
@@ -65,28 +67,28 @@
 
                         <div id="newCategoryLocation" class="hidden">
                             <input id="category" class="form-control" name="newCategory" type="text" placeholder="New Category"
-                                   pattern="^([A-Za-z]{1}[A-Za-z-]+[ ]?)+$" title="Category must contain only letters or dashes"
+                                   pattern="^([A-Za-z0-9]{1}[A-Za-z-0-9.]*[ ]?)+$" title="Category must contain only letters, dashes, or numbers"
                                    value="New Category" required /><br />
                         </div>
 
 
-                    <div id="taskDrop">
-                        <select name="type" class="form-control" id="typeSelection">
-                            <option name="taskType" value="new">Select Type</option>
-                            <c:forEach var="entry" items="${types}">
-                                <option name="taskType" value="${entry.key}" <c:if test="${singleTask.taskType == entry.value}">selected</c:if>>${entry.value}</option>
-                            </c:forEach>
-                        </select>
-                    </div>
+                        <div id="taskDrop">
+                            <select name="type" class="form-control" id="typeSelection">
+                                <option name="taskType" value="new">Select Type</option>
+                                <c:forEach var="entry" items="${types}">
+                                    <option name="taskType" value="${entry.key}" <c:if test="${singleTask.taskType == entry.value}">selected</c:if>>${entry.value}</option>
+                                </c:forEach>
+                            </select>
+                        </div>
 
-                    <label for="addNewType">Add New Type?</label>
-                    <input type="checkbox" id="addNewType" name="addNewType" onclick="addNewTask();" /><br /><br />
+                        <label for="addNewType">Add New Type?</label>
+                        <input type="checkbox" id="addNewType" name="addNewType" onclick="addNewTask();" /><br /><br />
 
-                    <div id="newTypeLocation" class="hidden">
-                        <input id="taskType" class="form-control" name="newType" type="text" placeholder="New Type"
-                               pattern="^([A-Za-z]{1}[A-Za-z-]+[ ]?)+$" title="Type must contain only letters or dashes"
-                               value="New Type" required /><br />
-                    </div>
+                        <div id="newTypeLocation" class="hidden">
+                            <input id="taskType" class="form-control" name="newType" type="text" placeholder="New Type"
+                                   pattern="^([A-Za-z0-9]{1}[A-Za-z-0-9.]*[ ]?)+$" title="Type must contain only letters, dashes, or numbers"
+                                   value="New Type" required /><br />
+                        </div>
 
                         <label for="taskDescription">Description</label>
                         <textarea id="taskDescription" class="form-control" name="taskDescription" type="text"
@@ -122,9 +124,12 @@
                         <button type="submit" name="submit" value="saveEdits" class="btn btn-success">Save Changes</button>
 
                 </form>
-            </div>
 
             </div>
+            </c:if>
+            <c:if test="${empty singleTask}">
+                <h3>Please a select a task from the <a href="/dashboard">Dashboard</a> or <a href="/searchTasks">search</a> for a task.</h3>
+            </c:if>
         </div>
     </div>
 </div>
