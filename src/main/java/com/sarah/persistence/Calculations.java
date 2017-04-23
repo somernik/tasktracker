@@ -146,9 +146,9 @@ public class Calculations {
 
         double averageEntriesPerDay = totalEntries / numberOfDaysDifference; // ex. 0.71 entries / day
 
-        double numberOfEntriesRemaining = timeLeft / averageTimePerEntry; // ex. 75min left / 0.71 =
+        double numberOfEntriesRemaining = timeLeft / averageTimePerEntry; // ex. 75min left / 25 =3
 
-        double numberOfDays = numberOfEntriesRemaining / averageEntriesPerDay;
+        double numberOfDays = numberOfEntriesRemaining / averageEntriesPerDay; // 3 / 0.71 = 4.5days
 
         // for day in days
         // if day is no work -> +1 day
