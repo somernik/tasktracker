@@ -14,6 +14,7 @@ import java.util.List;
 
 import com.sarah.entity.Task;
 import com.sarah.entity.TaskEntry;
+import com.sarah.persistence.ErrorException;
 import com.sarah.persistence.TaskData;
 import com.sarah.persistence.TaskEntryData;
 
@@ -34,23 +35,30 @@ public class SaveTaskEdits extends HttpServlet {
         try {
             dispatchRequests(req, resp);
 
-        } catch (Exception exception) {
-            exception.printStackTrace();
+        } catch (ErrorException exception) {
+            req.setAttribute("message", exception.getMessage());
+            RequestDispatcher dispatcher = req.getRequestDispatcher("/error.jsp");
+            dispatcher.forward(req, resp);
         }
 
     }
 
-    private void dispatchRequests(HttpServletRequest req, HttpServletResponse resp)  throws Exception {
-
-        switch (req.getParameter("submit")) {
-            case "addTime" : addTime(req, resp);
-            case "saveEdits" : saveEdits(req, resp);
-            case "addEstimation" : addEstimation(req, resp);
+    private void dispatchRequests(HttpServletRequest req, HttpServletResponse resp) throws ErrorException {
+        try {
+            switch (req.getParameter("submit")) {
+                case "addTime":
+                    addTime(req, resp);
+                case "saveEdits":
+                    saveEdits(req, resp);
+                case "addEstimation":
+                    addEstimation(req, resp);
+            }
+        } catch (Exception exception) {
+            throw new ErrorException();
         }
     }
 
     private void addEstimation(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        RequestDispatcher dispatcher;
         Task task = new Task();
         TaskData taskData = new TaskData();
         HttpSession session = req.getSession();
@@ -59,10 +67,16 @@ public class SaveTaskEdits extends HttpServlet {
         int id = Integer.parseInt(req.getParameter("id"));
         task.setEstimatedCompletionTime(estimate);
         task.setTaskId(id);
-        taskData.updateEstimatedCompletionTime(task, estimate);
+        try {
+            taskData.updateEstimatedCompletionTime(task, estimate);
 
-        session.setAttribute("tasks", taskData.getUserTasks(session.getAttribute("email"), "taskId = taskId"));
-        dispatcher = req.getRequestDispatcher("/dashboard.jsp");
+            session.setAttribute("tasks", taskData.getUserTasks(session.getAttribute("email"), "taskId = taskId"));
+        } catch (ErrorException exception) {
+            req.setAttribute("message", exception.getMessage());
+            RequestDispatcher dispatcher = req.getRequestDispatcher("/error.jsp");
+            dispatcher.forward(req, resp);
+        }
+        RequestDispatcher dispatcher = req.getRequestDispatcher("/dashboard.jsp");
         dispatcher.forward(req, resp);
     }
 
@@ -72,8 +86,23 @@ public class SaveTaskEdits extends HttpServlet {
         TaskData taskData = new TaskData();
         TaskEntryData taskEntryData = new TaskEntryData();
 
+        String type = req.getParameter("type");
+        String category = req.getParameter("taskCategory");
+
+        if (req.getParameter("submit").equals("saveEdits")) {
+            if (type.equals("new")) {
+
+                // add type & get type id
+                type = taskData.addType(req.getParameter("newType"), (String) session.getAttribute("email"));
+            }
+
+            if (category.equals("new")) {
+                category = req.getParameter("newCategory");
+            }
+        }
+
         taskData.editSingleTask(req.getParameter("id"),
-                req.getParameter("taskName"), req.getParameter("taskCategory"), req.getParameter("taskType"),
+                req.getParameter("taskName"), category, type,
                 req.getParameter("taskDescription"), req.getParameter("taskDueDate"), req.getParameter("completion"),
                 req.getParameter("taskStartDate"), req.getParameter("timeAdded"));
         session.setAttribute("singleTask", taskData.getSingleTask(req.getParameter("id")));
@@ -83,15 +112,21 @@ public class SaveTaskEdits extends HttpServlet {
     }
 
     private void addTime(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        RequestDispatcher dispatcher;
+
         HttpSession session = req.getSession();
         TaskData taskData = new TaskData();
         TaskEntryData taskEntryData = new TaskEntryData();
 
-        taskEntryData.addTime(req.getParameter("timeAdded"), req.getParameter("id"));
-        taskData.updateTimeSpent(req.getParameter("id"));
-        session.setAttribute("tasks", taskData.getUserTasks(session.getAttribute("email"), "taskId = taskId"));
-        dispatcher = req.getRequestDispatcher("/dashboard.jsp");
+        try {
+            taskEntryData.addTime(req.getParameter("timeAdded"), req.getParameter("id"));
+            taskData.updateTimeSpent(req.getParameter("id"));
+            session.setAttribute("tasks", taskData.getUserTasks(session.getAttribute("email"), "taskId = taskId"));
+        } catch (ErrorException exception) {
+            req.setAttribute("message", exception.getMessage());
+            RequestDispatcher dispatcher = req.getRequestDispatcher("/error.jsp");
+            dispatcher.forward(req, resp);
+        }
+        RequestDispatcher dispatcher = req.getRequestDispatcher("/dashboard.jsp");
         dispatcher.forward(req, resp);
     }
 

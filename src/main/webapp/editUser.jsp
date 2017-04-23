@@ -21,16 +21,22 @@
                     <h2 class="form-signin-heading formHeader">Edit User</h2>
 
                     <label for="username">Username</label>
-                    <input id="username" class="form-control" name="username" type="text" placeholder="Username" required autofocus value="${user.username}" /><br />
+                    <input id="username" class="form-control" name="username" type="text" placeholder="Username"
+                           pattern="^[A-Za-z]{1}[A-Za-z0-9_-]+$" title="Username must start with a letter and contain only letters, numbers, or dashes"
+                           required autofocus value="${user.username}" /><br />
 
                     <label for="email">Email</label>
-                    <input id="email" class="form-control" name="email" type="email" placeholder="Email" required value="${user.email}" /><br />
+                    <input id="email" class="form-control" name="email" type="email" placeholder="Email" value="${user.email}" required /><br />
 
                     <label for="firstName">First Name</label>
-                    <input id="firstName" class="form-control" name="firstName" type="text" placeholder="First Name" required value="${user.firstName}" /><br />
+                    <input id="firstName" class="form-control" name="firstName" type="text" placeholder="First Name"
+                           pattern="^([A-Za-z]{1}[A-Za-z-]+[ ]?)+$" title="First Name must contain only letters or dashes"
+                            value="${user.firstName}" required /><br />
 
                     <label for="lastName">Last Name</label>
-                    <input id="lastName" class="form-control" name="lastName" type="text" placeholder="Last Name" required value="${user.lastName}" /><br />
+                    <input id="lastName" class="form-control" name="lastName" type="text" placeholder="Last Name"
+                           pattern="^([A-Za-z]{1}[A-Za-z-]+[ ]?)+$" title="Last Name must contain only letters or dashes"
+                           value="${user.lastName}" required  /><br />
 
                     <label for="password">Change Password</label>
                     <input type="password" class="form-control" id="password" name="password" aria-describedby="searchTermHelp" placeholder="New Password"><br />
@@ -38,6 +44,8 @@
 
                     <label for="passwordOld">Enter Password to Confirm Changes</label>
                     <input type="password" class="form-control" id="passwordOld" name="passwordOld" aria-describedby="searchTermHelp" placeholder="Password" required><br />
+
+                    <!-- TODO: make cancel button work -->
                     <input type="button" href="profile.jsp" value="Cancel" class="btn btn-success btn-block" /><br />
                     <button type="submit" name="submit" value="editUser" class="btn btn-success btn-block">Save Changes</button>
                 </form>

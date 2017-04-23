@@ -1,10 +1,12 @@
 package com.sarah.controllers;
 
+import com.sarah.persistence.ErrorException;
 import com.sarah.persistence.TaskData;
 import com.sarah.persistence.UserData;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -31,7 +33,13 @@ public class DashboardServlet extends HttpServlet {
         LoggedIn.checkLoggedIn(request, response);
 
         TaskData taskData = new TaskData();
-        session.setAttribute("tasks", taskData.getUserTasks(session.getAttribute("email"), "active"));
+        try {
+            session.setAttribute("tasks", taskData.getUserTasks(session.getAttribute("email"), "active"));
+        } catch (ErrorException exception) {
+            request.setAttribute("message", exception.getMessage());
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
+            dispatcher.forward(request, response);
+        }
         request.getRequestDispatcher("/dashboard.jsp").include(request, response);
 
     }

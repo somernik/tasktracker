@@ -4,6 +4,7 @@ import com.sarah.entity.Task;
 import com.sarah.entity.TaskEntry;
 import com.sarah.utility.DateUtility;
 
+import javax.servlet.RequestDispatcher;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -40,9 +41,11 @@ public class Calculations {
      * @param timePerDayOfWeek the map with total time worked per day of week
      * @return timePerDayOfWeek
      */
-    public static Map<String, Double> calculateDaysOfWeek(Task task, Map<String, Double> timePerDayOfWeek) {
+    public static Map<String, Double> calculateDaysOfWeek(Task task, Map<String, Double> timePerDayOfWeek)
+            throws ErrorException {
         TaskEntryData taskEntryData = new TaskEntryData();
         List<TaskEntry> taskEntries = taskEntryData.getUserTaskEntries(String.valueOf(task.getTaskId()));
+
         for (TaskEntry entry : taskEntries) {
             String day = DateUtility.getDayFromLocalDate(entry.getDateEntered());
             timePerDayOfWeek = addValuesToDayMap(timePerDayOfWeek, entry, day);

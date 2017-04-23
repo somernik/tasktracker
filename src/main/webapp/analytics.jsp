@@ -16,6 +16,7 @@
 
 <%@include file="templates/sideNav.jsp"%>
 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+    <c:if test="${not empty typePercentages && not empty categoryPercentages && not empty timePerDay}">
     <div>
         <h2 class="formHeader">% of Time Spent by <span id="value">Type</span></h2>
         Category
@@ -32,7 +33,14 @@
         <p>${mostCommonDay} is the day you are most likely to work on tasks!</p>
     </div>
     <div id="barChart"></div>
+    </c:if>
+    <c:if test="${(empty typePercentages) || (empty categoryPercentages) || (empty timePerDay)}">
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <h3>Please <a href="/analytics">reload</a> this page.</h3>
+        </div>
+    </c:if>
 </div>
+
 <script>
     function changeDonutChart() {
         if (document.getElementById("chartSwitch").checked) {

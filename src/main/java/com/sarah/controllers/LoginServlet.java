@@ -1,6 +1,7 @@
 package com.sarah.controllers;
 
 import com.sarah.entity.User;
+import com.sarah.persistence.ErrorException;
 import com.sarah.persistence.TaskData;
 import com.sarah.persistence.UserData;
 
@@ -52,16 +53,25 @@ public class LoginServlet extends HttpServlet {
      * @param email the users email
      * @param userData the users data
      * @throws IOException
+     * @throws ServletException
      */
     private void setUpUserSession(HttpServletRequest request, HttpServletResponse response, String email, UserData userData) throws IOException, ServletException {
         TaskData taskData = new TaskData();
         HttpSession session = request.getSession();
-        User user = userData.getUser(email);
 
-        session.setAttribute("user", user);
-        session.setAttribute("email", email);
-        session.setAttribute("loggedIn", true);
-        session.setAttribute("tasks", taskData.getUserTasks(session.getAttribute("email"), "active"));
+        try {
+            User user = userData.getUser(email);
+
+            session.setAttribute("user", user);
+            session.setAttribute("email", email);
+            session.setAttribute("loggedIn", true);
+
+            session.setAttribute("tasks", taskData.getUserTasks(session.getAttribute("email"), "active"));
+        } catch (ErrorException exception) {
+            request.setAttribute("message", exception.getMessage());
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
+            dispatcher.forward(request, response);
+        }
 
         RequestDispatcher dispatcher = request.getRequestDispatcher("/dashboard.jsp");
         dispatcher.forward(request, response);

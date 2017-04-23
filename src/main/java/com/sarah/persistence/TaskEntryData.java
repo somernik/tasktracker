@@ -19,7 +19,7 @@ public class TaskEntryData {
      * @param taskId the id of the task
      * @return that tasks entries
      */
-    public List<TaskEntry> getUserTaskEntries(String taskId) {
+    public List<TaskEntry> getUserTaskEntries(String taskId) throws ErrorException {
         List<TaskEntry> taskEntries;
         String sql = "SELECT * FROM taskEntry WHERE taskId = '" + taskId + "'";
         taskEntries = executeQuery(sql);
@@ -31,7 +31,7 @@ public class TaskEntryData {
      * @param sql The statement to get entries from the database.
      * @return a list of entries
      */
-    private List<TaskEntry> executeQuery(String sql) {
+    private List<TaskEntry> executeQuery(String sql) throws ErrorException {
 
         List<TaskEntry> taskEntries = new ArrayList<TaskEntry>();
         Database database = Database.getInstance();
@@ -45,9 +45,11 @@ public class TaskEntryData {
             database.disconnect();
         } catch (SQLException e) {
             System.out.println("ExecuteQuery TaskEntryData Sql exception: task " + e);
+            throw new ErrorException();
         } catch (Exception e) {
             System.out.println("ExecuteQuery TaskEntryData Exception: task " + e);
             e.printStackTrace();
+            throw new ErrorException();
         }
         return taskEntries;
     }
@@ -87,7 +89,7 @@ public class TaskEntryData {
      * @param taskId the id of the task this entry is associated with
      * @return boolean if the entry was added
      */
-    public boolean addTime(String timeToAdd, String taskId) {
+    public boolean addTime(String timeToAdd, String taskId) throws ErrorException {
         String sql = "INSERT INTO taskEntry (taskId, dateEntered, timeEnteredAmount) VALUES (?, ?, ?)";
         return executeAddTimeQuery(sql, timeToAdd, taskId);
     }
@@ -99,7 +101,7 @@ public class TaskEntryData {
      * @param taskId the id of the task this entry is associated with
      * @return boolean if the entry was added
      */
-    private boolean executeAddTimeQuery(String sql, String timeToAdd, String taskId) {
+    private boolean executeAddTimeQuery(String sql, String timeToAdd, String taskId) throws ErrorException {
         Database database = Database.getInstance();
         Connection connection = null;
         try {
@@ -114,11 +116,11 @@ public class TaskEntryData {
             return true;
         } catch (SQLException e) {
             System.out.println("executeAddTimeQuery Sql exception: task " + e);
-            return false;
+            throw new ErrorException();
         } catch (Exception e) {
             System.out.println("executeAddTimeQuery Exception: task " + e);
             e.printStackTrace();
-            return false;
+            throw new ErrorException();
         }
 
     }

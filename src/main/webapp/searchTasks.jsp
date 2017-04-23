@@ -46,7 +46,8 @@
                     <option value="greaterThan" <c:if test="${timeOperator == 'greaterThan'}">selected</c:if>>>=</option>
                     <option value="lessThan" <c:if test="${timeOperator == 'lessThan'}">selected</c:if>><=</option>
                 </select>
-                <input type="text" class="form-control filterForm" id="minutes" name="timeSpent" value="${time}" /> minutes
+                <input type="text" class="form-control filterForm" id="minutes" name="timeSpent" value="${time}"
+                       pattern="^([0-9]+)[/.]?([0-9]+)$" title="Please only enter numbers" /> minutes
                 <br /><br />
                 <button type="submit" name="submit" value="searchInfo" class="btn btn-success btn-block">Search</button>
             </form>
@@ -77,7 +78,8 @@
                                 <c:if test="${task.completed == false}">
                                     <form method="post" action="/saveTask">
                                         <input type="hidden" name="id" value="${task.taskId}">
-                                        <input type="text" class="form-control table-input dashboard-input" name="timeAdded" placeholder="Minutes" required />
+                                        <input type="text" class="form-control table-input dashboard-input" name="timeAdded"
+                                               pattern="^([0-9]+)[/.]?([0-9]+)$" title="Please only enter numbers" placeholder="Minutes" required />
                                         <button type="submit" name="submit" value="addTime" class="btn btn-success">Add Time</button>
                                     </form>
                                 </c:if>

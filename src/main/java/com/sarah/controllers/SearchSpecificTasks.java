@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.lang.Exception;
 import java.util.*;
 
+import com.sarah.persistence.ErrorException;
 import com.sarah.persistence.TaskData;
 
 /**
@@ -26,26 +27,48 @@ public class SearchSpecificTasks extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         LoggedIn.checkLoggedIn(request, response);
 
+        try {
+            startSearch(request);
+
+            request.setAttribute("completion", request.getParameter("completion"));
+            request.setAttribute("timeOperator", request.getParameter("timeOperator"));
+            request.setAttribute("time", request.getParameter("timeSpent"));
+
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/searchTasks.jsp");
+            dispatcher.forward(request, response);
+
+        } catch (ErrorException exception) {
+            request.setAttribute("message", exception.getMessage());
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
+            dispatcher.forward(request, response);
+        }
+
+    }
+
+    /**
+     * Start search by getting search criteria
+     * @param request the request object
+     * @throws ErrorException
+     */
+    private void startSearch(HttpServletRequest request) throws ErrorException {
         TaskData taskData = new TaskData();
         HttpSession session=request.getSession();
         String searchCriteria = "taskId = taskId";
-        Map<String, String> types = taskData.getTypes((String) session.getAttribute("email"));
-        List<String> categories = taskData.getCategories((String) session.getAttribute("email"));
 
-        if (request.getParameter("submit").equals("searchInfo")){
-            searchCriteria = determineSearchCriteria(request, searchCriteria);
+        try {
+            Map<String, String> types = taskData.getTypes((String) session.getAttribute("email"));
+
+            List<String> categories = taskData.getCategories((String) session.getAttribute("email"));
+            request.setAttribute("categories", categories);
+            if (request.getParameter("submit").equals("searchInfo")) {
+                searchCriteria = determineSearchCriteria(request, searchCriteria);
+            }
+
+            session.setAttribute("tasks", taskData.getUserTasks(session.getAttribute("email"), searchCriteria));
+            request.setAttribute("types", types);
+        } catch (Exception exception) {
+            throw new ErrorException();
         }
-
-        session.setAttribute("tasks", taskData.getUserTasks(session.getAttribute("email"), searchCriteria));
-        request.setAttribute("types", types);
-        request.setAttribute("categories", categories);
-
-        request.setAttribute("completion", request.getParameter("completion"));
-        request.setAttribute("timeOperator", request.getParameter("timeOperator"));
-        request.setAttribute("time", request.getParameter("timeSpent"));
-
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/searchTasks.jsp");
-        dispatcher.forward(request, response);
     }
 
     /**

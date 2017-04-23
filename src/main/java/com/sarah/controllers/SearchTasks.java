@@ -12,6 +12,7 @@ import java.lang.Exception;
 import java.util.List;
 import java.util.Map;
 
+import com.sarah.persistence.ErrorException;
 import com.sarah.persistence.TaskData;
 
 /**
@@ -30,16 +31,26 @@ public class SearchTasks extends HttpServlet {
         HttpSession session=request.getSession();
         String searchCriteria = "taskId = taskId";
 
-        session.setAttribute("tasks", taskData.getUserTasks(session.getAttribute("email"), searchCriteria));
+       try {
+           session.setAttribute("tasks", taskData.getUserTasks(session.getAttribute("email"), searchCriteria));
 
-        Map<String, String> types = taskData.getTypes((String) session.getAttribute("email"));
-        List<String> categories = taskData.getCategories((String) session.getAttribute("email"));
+           Map<String, String> types = taskData.getTypes((String) session.getAttribute("email"));
 
-        request.setAttribute("types", types);
-        request.setAttribute("categories", categories);
+           List<String> categories = taskData.getCategories((String) session.getAttribute("email"));
+           request.setAttribute("categories", categories);
 
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/searchTasks.jsp");
+           request.setAttribute("types", types);
+
+
+           RequestDispatcher dispatcher = request.getRequestDispatcher("/searchTasks.jsp");
+           dispatcher.forward(request, response);
+
+    } catch (ErrorException exception) {
+        request.setAttribute("message", exception.getMessage());
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
         dispatcher.forward(request, response);
+    }
+
     }
 
 }

@@ -15,6 +15,7 @@ import java.util.List;
 import com.sarah.entity.Task;
 import com.sarah.entity.TaskEntry;
 import com.sarah.persistence.Calculations;
+import com.sarah.persistence.ErrorException;
 import com.sarah.persistence.TaskData;
 import com.sarah.persistence.TaskEntryData;
 
@@ -31,28 +32,38 @@ public class TaskDetails extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         LoggedIn.checkLoggedIn(req, resp);
 
-        TaskData taskData = new TaskData();
-        TaskEntryData taskEntryData = new TaskEntryData();
-        HttpSession session = req.getSession();
-        RequestDispatcher dispatcher;
-
         try {
-            session.setAttribute("singleTask", taskData.getSingleTask(req.getParameter("id")));
-            List<TaskEntry> entries = new ArrayList<TaskEntry>();
-            entries = taskEntryData.getUserTaskEntries(req.getParameter("id"));
+            getTaskInformation(req, resp);
+
+        } catch (ErrorException exception) {
+            req.setAttribute("message", exception.getMessage());
+            RequestDispatcher dispatcher = req.getRequestDispatcher("/error.jsp");
+            dispatcher.forward(req, resp);
+        }
+
+    }
+
+    private void getTaskInformation(HttpServletRequest req, HttpServletResponse resp) throws ErrorException, ServletException, IOException {
+        try {
+            TaskData taskData = new TaskData();
+            TaskEntryData taskEntryData = new TaskEntryData();
+            HttpSession session = req.getSession();
+
+            session.setAttribute("id", req.getParameter("id"));
+            session.setAttribute("singleTask", taskData.getSingleTask((String) session.getAttribute("id")));
+            List<TaskEntry> entries = taskEntryData.getUserTaskEntries(req.getParameter("id"));
 
             List<Double> increasingEntries = Calculations.getEntries(entries);
             session.setAttribute("plotPoints", increasingEntries);
 
             session.setAttribute("taskEntries", entries);
 
+
+            RequestDispatcher dispatcher = req.getRequestDispatcher("/taskDetail.jsp");
+            dispatcher.forward(req, resp);
         } catch (Exception exception) {
-            exception.printStackTrace();
+            throw new ErrorException();
         }
-
-        dispatcher = req.getRequestDispatcher("/taskDetail.jsp");
-        dispatcher.forward(req, resp);
-
     }
 
 
