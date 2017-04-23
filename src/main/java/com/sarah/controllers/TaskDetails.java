@@ -51,8 +51,7 @@ public class TaskDetails extends HttpServlet {
 
             session.setAttribute("id", req.getParameter("id"));
             session.setAttribute("singleTask", taskData.getSingleTask((String) session.getAttribute("id")));
-            List<TaskEntry> entries = new ArrayList<TaskEntry>();
-            entries = taskEntryData.getUserTaskEntries(req.getParameter("id"));
+            List<TaskEntry> entries = taskEntryData.getUserTaskEntries(req.getParameter("id"));
 
             List<Double> increasingEntries = Calculations.getEntries(entries);
             session.setAttribute("plotPoints", increasingEntries);
