@@ -45,11 +45,11 @@ public class SearchTasks extends HttpServlet {
            RequestDispatcher dispatcher = request.getRequestDispatcher("/searchTasks.jsp");
            dispatcher.forward(request, response);
 
-    } catch (ErrorException exception) {
-        request.setAttribute("message", exception.getMessage());
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
-        dispatcher.forward(request, response);
-    }
+        } catch (ErrorException exception) {
+            request.setAttribute("message", exception.getMessage());
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
+            dispatcher.forward(request, response);
+        }
 
     }
 

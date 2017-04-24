@@ -35,12 +35,14 @@ public class DashboardServlet extends HttpServlet {
         TaskData taskData = new TaskData();
         try {
             session.setAttribute("tasks", taskData.getUserTasks(session.getAttribute("email"), "active"));
+            request.getRequestDispatcher("/dashboard.jsp").include(request, response);
+
         } catch (ErrorException exception) {
             request.setAttribute("message", exception.getMessage());
             RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
             dispatcher.forward(request, response);
         }
-        request.getRequestDispatcher("/dashboard.jsp").include(request, response);
+
 
     }
 }

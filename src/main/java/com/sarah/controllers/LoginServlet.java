@@ -67,13 +67,15 @@ public class LoginServlet extends HttpServlet {
             session.setAttribute("loggedIn", true);
 
             session.setAttribute("tasks", taskData.getUserTasks(session.getAttribute("email"), "active"));
+
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/dashboard.jsp");
+            dispatcher.forward(request, response);
+
         } catch (ErrorException exception) {
             request.setAttribute("message", exception.getMessage());
             RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
             dispatcher.forward(request, response);
         }
 
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/dashboard.jsp");
-        dispatcher.forward(request, response);
     }
 }

@@ -49,7 +49,7 @@ public class TaskData {
      * @throws Exception general exception
      */
     public boolean editSingleTask(String taskId, String name, String category, String type, String description,
-                                  String dueDate, String completed, String startDate, String timeAdded) throws Exception {
+                                  String dueDate, String completed, String startDate, String timeAdded) throws ErrorException {
 
         TaskEntryData taskEntryData = new TaskEntryData();
         String sql = "UPDATE task SET name = '" + name + "', typeId = (SELECT typeId FROM type WHERE"

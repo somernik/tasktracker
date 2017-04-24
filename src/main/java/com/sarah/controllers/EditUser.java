@@ -41,6 +41,8 @@ public class EditUser extends HttpServlet {
 
             try {
                 editUserValues(request, session, userData, oldEmail);
+                RequestDispatcher dispatcher = request.getRequestDispatcher("/profile.jsp");
+                dispatcher.forward(request, response);
             } catch (ErrorException exception){
                 request.setAttribute("message", exception.getMessage());
                 RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
@@ -51,8 +53,7 @@ public class EditUser extends HttpServlet {
             request.setAttribute("error", "Problem accessing information");
         }
 
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/profile.jsp");
-        dispatcher.forward(request, response);
+
     }
 
     /**
