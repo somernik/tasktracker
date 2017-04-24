@@ -6,10 +6,16 @@ package com.sarah.persistence;
  */
 public class ErrorException extends Exception {
 
+    private String errorMessage;
+
     public ErrorException() {
     }
 
+    public ErrorException(String errorMessage) {
+        this.errorMessage = errorMessage;
+    }
+
     public String getMessage() {
-        return "There was a problem accessing your data. Please try again later.";
+        return errorMessage;
     }
 }

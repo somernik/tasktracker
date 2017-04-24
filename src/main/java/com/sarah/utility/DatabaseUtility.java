@@ -4,6 +4,7 @@ import com.sarah.persistence.Database;
 import com.sarah.persistence.ErrorException;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -35,5 +36,37 @@ public class DatabaseUtility {
             throw new ErrorException();
         }
 
+    }
+
+
+    /**
+     * Executes single query and gets its return value
+     * @param sql the query to execute
+     * @param columnName the name of column to count
+     * @return value returned from query
+     */
+    public static double executeSingleQuery(String sql, String columnName) throws ErrorException {
+        ResultSet resultSet;
+        double value = 0;
+        Database database = Database.getInstance();
+        Connection connection = null;
+        try {
+            database.connect();
+            connection = database.getConnection();
+            Statement selectStatement = connection.createStatement();
+            resultSet = selectStatement.executeQuery(sql);
+            resultSet.next();
+            value = resultSet.getDouble(columnName);
+            database.disconnect();
+        } catch (SQLException e) {
+            System.out.println("ExecuteQuery Sql exception: task " + e);
+            throw new ErrorException();
+        } catch (Exception e) {
+            System.out.println("ExecuteQuery Exception: task " + e);
+            e.printStackTrace();
+            throw new ErrorException();
+        }
+
+        return value;
     }
 }

@@ -215,41 +215,11 @@ public class TaskData {
         double totalTime;
 
         String sql = "SELECT " + columnName + " FROM task JOIN type ON task.typeId=type.typeId WHERE typeName='" + type + "' AND category='" + category + "' AND completed=1";
-        totalTime = executeSingleQuery(sql, columnName);
+        totalTime = DatabaseUtility.executeSingleQuery(sql, columnName);
 
         return totalTime;
     }
 
-    /**
-     * Executes single query and gets its return value
-     * @param sql the query to execute
-     * @param columnName the name of column to count
-     * @return value returned from query
-     */
-    private double executeSingleQuery(String sql, String columnName) throws ErrorException {
-        ResultSet resultSet;
-        double value = 0;
-        Database database = Database.getInstance();
-        Connection connection = null;
-        try {
-            database.connect();
-            connection = database.getConnection();
-            Statement selectStatement = connection.createStatement();
-            resultSet = selectStatement.executeQuery(sql);
-            resultSet.next();
-            value = resultSet.getDouble(columnName);
-            database.disconnect();
-        } catch (SQLException e) {
-            System.out.println("ExecuteQuery Sql exception: task " + e);
-            throw new ErrorException();
-        } catch (Exception e) {
-            System.out.println("ExecuteQuery Exception: task " + e);
-            e.printStackTrace();
-            throw new ErrorException();
-        }
-
-        return value;
-    }
 
     /**
      * Gets 1 task from database
@@ -277,7 +247,7 @@ public class TaskData {
 
         // get types id
         String findTypeId = "SELECT typeId FROM type WHERE typeName='" + typeName + "'";
-        Double typeId = executeSingleQuery(findTypeId, "typeId");
+        Double typeId = DatabaseUtility.executeSingleQuery(findTypeId, "typeId");
 
         return typeId.toString();
     }

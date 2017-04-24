@@ -69,7 +69,7 @@ public class TaskDetails extends HttpServlet {
         } catch (Exception exception) {
             String error = "getTaskInfo Exception: task " + exception;
             exception.printStackTrace();
-            throw new ErrorException();
+            throw new ErrorException(error);
 
         }
     }

@@ -140,19 +140,43 @@ public class Calculations {
      * @param timeLeft amount of time left
      * @param taskId the tasks id
      */
-    public static double calculateFinishDate(String email, double timeLeft, int taskId) {
-
+    public static double calculateFinishDate(String email, double timeLeft, int taskId) throws ErrorException
+    {
+        // For specific task
         TaskEntryData data = new TaskEntryData();
         double averageTimePerEntry = data.getAverageOfTimeAdded(email); // ex. 25min
         double totalEntries = data.getTotalEntriesForTask(email, taskId); // ex. 10
         double numberOfDaysDifference = data.getDayDifferenceFromTaskStart(taskId); // ex. 14
 
+        // For all user tasks
+        double numberOfDaysDifferenceAll = data.getDayDifferenceForEntryAverages(email); // ex. 14
+        double allEntries = data.getTotalEntriesForUser(email); // ex. 14
+
+        System.out.println(averageTimePerEntry);
+        System.out.println(totalEntries);
+        System.out.println(numberOfDaysDifference);
+
+        System.out.println(" for all user ");
+        System.out.println(numberOfDaysDifferenceAll);
+        System.out.println(allEntries);
+
+
+
+        // days based on entries for 1 task
         double averageEntriesPerDay = totalEntries / numberOfDaysDifference; // ex. 0.71 entries / day
 
         double numberOfEntriesRemaining = timeLeft / averageTimePerEntry; // ex. 75min left / 25 =3
 
         double numberOfDays = numberOfEntriesRemaining / averageEntriesPerDay; // 3 / 0.71 = 4.5days
 
+
+        // days based on all entries
+        double averageEntriesPerDayAllTasks = allEntries / numberOfDaysDifferenceAll; // ex. 0.71 entries / day
+
+
+        double numberOfDaysAllTasks = numberOfEntriesRemaining / averageEntriesPerDayAllTasks; // 3 / 0.71 = 4.5days
+
+        System.out.println(numberOfDaysAllTasks);
         // for day in days
         // if day is no work -> +1 day
         // if day is much work -> -1day

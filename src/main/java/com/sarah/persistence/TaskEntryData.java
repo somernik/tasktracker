@@ -1,6 +1,7 @@
 package com.sarah.persistence;
 
 import com.sarah.entity.TaskEntry;
+import com.sarah.utility.DatabaseUtility;
 import com.sarah.utility.DateUtility;
 
 import java.sql.*;
@@ -125,38 +126,47 @@ public class TaskEntryData {
 
     }
 
-    public double getAverageOfTimeAdded(String email) {
+    // For all tasks of a user
+    public double getAverageOfTimeAdded(String email) throws ErrorException {
         String sql = "SELECT AVG(timeEnteredAmount) FROM taskentry INNER JOIN task ON task.taskId=taskentry.taskId INNER" +
                 " JOIN user ON task.userId=user.userId WHERE user.email ='" + email + "'";
-        return 10.0;
+
+        double averageEntryTime = DatabaseUtility.executeSingleQuery(sql, "AVG(timeEnteredAmount)");
+        return averageEntryTime;
     }
 
-    public double getTotalEntriesForUser(String email) {
+    public double getTotalEntriesForUser(String email) throws ErrorException {
         String sql = "SELECT COUNT(*) FROM taskentry WHERE taskentry.taskid IN (SELECT task.taskId FROM task INNER JOIN " +
                 "user ON task.userId=user.userId WHERE user.email='" + email + "')";
 
-        return 15.0;
+        double countOfAllEntriesForUser = DatabaseUtility.executeSingleQuery(sql, "COUNT(*)");
+
+        return countOfAllEntriesForUser;
     }
 
-    public double getDayDifferenceForEntryAverages(String email) {
-        String sql = "SELECT DATEDIFF(NOW(), (SELECT MIN(dateentered) WHERE taskentry.taskid IN (SELECT task.taskId FROM task INNER JOIN " +
-                "user ON task.userId=user.userId WHERE user.email='" + email + "'))";
+    public double getDayDifferenceForEntryAverages(String email) throws ErrorException {
+        String sql = "SELECT DATEDIFF(NOW(), (SELECT MIN(dateentered) FROM taskentry WHERE taskentry.taskid IN (SELECT task.taskId FROM task INNER JOIN " +
+                "user ON task.userId=user.userId WHERE user.email='" + email + "'))) AS datediff";
 
-        return 45.0;
+        double diffOfAllTasks = DatabaseUtility.executeSingleQuery(sql, "datediff");
+        return diffOfAllTasks;
     }
 
-    public double getTotalEntriesForTask(String email, int taskId) {
-        String sql = "SELECT COUNT(*) FROM taskentry INNER JOIN task ON task.taskId=taskentry.taskId INNER JOIN "
-                + "user ON task.userId=user.userId WHERE taskentry.taskId=" + taskId + " AND user.email='" + email + "')";
 
-        return 15.0;
+    // For specific task
+    public double getTotalEntriesForTask(String email, int taskId) throws ErrorException {
+        String sql = "SELECT COUNT(*) as count FROM taskentry INNER JOIN task ON task.taskId=taskentry.taskId INNER JOIN "
+                + "user ON task.userId=user.userId WHERE taskentry.taskId=" + taskId + " AND user.email='" + email + "'";
+        double countOfEntriesForSingleTask = DatabaseUtility.executeSingleQuery(sql, "count");
+
+        return countOfEntriesForSingleTask;
     }
 
-    public double getDayDifferenceFromTaskStart(int taskId) {
+    public double getDayDifferenceFromTaskStart(int taskId) throws ErrorException {
         String sql = "SELECT DATEDIFF(NOW(), (SELECT MIN(dateentered) FROM taskentry INNER JOIN task ON "
-                + "task.taskId=taskentry.taskId WHERE task.taskid=" + taskId + "))";
-
-        return 45.0;
+                + "task.taskId=taskentry.taskId WHERE task.taskid=" + taskId + ")) AS datediff";
+        double diffOfDays = DatabaseUtility.executeSingleQuery(sql, "datediff");
+        return diffOfDays;
     }
 
 }
