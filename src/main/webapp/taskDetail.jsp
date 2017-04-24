@@ -17,6 +17,7 @@
         <%@include file="templates/sideNav.jsp"%>
             <c:if test="${not empty singleTask}">
             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+                <p>${numberOfDays}</p>
                 <div class="panel panel-success">
                     <div class="panel-heading">
                         <h2 class="formHeader">Time Entry Burn Up</h2>

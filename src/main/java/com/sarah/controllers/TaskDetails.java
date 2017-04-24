@@ -50,19 +50,27 @@ public class TaskDetails extends HttpServlet {
             HttpSession session = req.getSession();
 
             session.setAttribute("id", req.getParameter("id"));
-            session.setAttribute("singleTask", taskData.getSingleTask((String) session.getAttribute("id")));
+            Task task = taskData.getSingleTask((String) session.getAttribute("id"));
+
+            session.setAttribute("singleTask", task);
             List<TaskEntry> entries = taskEntryData.getUserTaskEntries(req.getParameter("id"));
 
             List<Double> increasingEntries = Calculations.getEntries(entries);
-            session.setAttribute("plotPoints", increasingEntries);
+            double numberOfDaysToCompletion = Calculations.calculateFinishDate((String)session.getAttribute("email"), task.getTimeLeft(), task.getTaskId());
 
+            session.setAttribute("plotPoints", increasingEntries);
+            session.setAttribute("numberOfDays", numberOfDaysToCompletion);
             session.setAttribute("taskEntries", entries);
 
 
             RequestDispatcher dispatcher = req.getRequestDispatcher("/taskDetail.jsp");
             dispatcher.forward(req, resp);
+
         } catch (Exception exception) {
+            String error = "getTaskInfo Exception: task " + exception;
+            exception.printStackTrace();
             throw new ErrorException();
+
         }
     }
 

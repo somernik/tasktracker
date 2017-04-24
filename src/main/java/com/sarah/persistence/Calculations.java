@@ -140,7 +140,7 @@ public class Calculations {
      * @param timeLeft amount of time left
      * @param taskId the tasks id
      */
-    public static void calculateFinishDate(String email, double timeLeft, String taskId) {
+    public static double calculateFinishDate(String email, double timeLeft, int taskId) {
 
         TaskEntryData data = new TaskEntryData();
         double averageTimePerEntry = data.getAverageOfTimeAdded(email); // ex. 25min
@@ -158,6 +158,7 @@ public class Calculations {
         // if day is much work -> -1day
 
         // If task is new... get average of category/type/all
+        return numberOfDays;
     }
 
     /**
