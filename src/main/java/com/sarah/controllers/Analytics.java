@@ -57,6 +57,19 @@ public class Analytics extends HttpServlet {
                 types.add(task.getTaskType());
             }
 
+            percentagePerType = Calculations.calculatePercentages(percentagePerType, totalPerType, total);
+            percentagePerCategory = Calculations.calculatePercentages(percentagePerCategory, totalPerCategory, total);
+
+            // Set maps to be used
+            request.setAttribute("mostCommonDay", mostCommonDay);
+            request.setAttribute("types", types);
+            request.setAttribute("timePerDay", timePerDayOfWeek);
+            request.setAttribute("typePercentages", percentagePerType);
+            request.setAttribute("categoryPercentages", percentagePerCategory);
+
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/analytics.jsp");
+            dispatcher.forward(request, response);
+
         } catch (ErrorException exception) {
             request.setAttribute("message", exception.getMessage());
             RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
@@ -64,18 +77,6 @@ public class Analytics extends HttpServlet {
 
         }
 
-        percentagePerType = Calculations.calculatePercentages(percentagePerType, totalPerType, total);
-        percentagePerCategory = Calculations.calculatePercentages(percentagePerCategory, totalPerCategory, total);
-
-        // Set maps to be used
-        request.setAttribute("mostCommonDay", mostCommonDay);
-        request.setAttribute("types", types);
-        request.setAttribute("timePerDay", timePerDayOfWeek);
-        request.setAttribute("typePercentages", percentagePerType);
-        request.setAttribute("categoryPercentages", percentagePerCategory);
-
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/analytics.jsp");
-        dispatcher.forward(request, response);
     }
 
 }

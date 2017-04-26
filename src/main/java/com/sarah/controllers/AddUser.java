@@ -32,13 +32,14 @@ public class AddUser extends HttpServlet {
                 userData.addNewUser(req.getParameter("firstName"), req.getParameter("lastName"), req.getParameter("username"),
                         req.getParameter("email"), req.getParameter("password"));
             }
+            RequestDispatcher dispatcher = req.getRequestDispatcher("/LoginServlet");
+            dispatcher.forward(req, resp);
         } catch (ErrorException exception) {
             req.setAttribute("message", exception.getMessage());
             RequestDispatcher dispatcher = req.getRequestDispatcher("/error.jsp");
             dispatcher.forward(req, resp);
         }
-        RequestDispatcher dispatcher = req.getRequestDispatcher("/LoginServlet");
-        dispatcher.forward(req, resp);
+
     }
 
     @Override

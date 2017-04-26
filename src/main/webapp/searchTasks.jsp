@@ -76,7 +76,7 @@
                             <td>
                                 <c:if test="${task.completed == true}">Completed</c:if>
                                 <c:if test="${task.completed == false}">
-                                    <form method="post" action="/saveTask">
+                                    <form method="post" action="/addTime">
                                         <input type="hidden" name="id" value="${task.taskId}">
                                         <input type="text" class="form-control table-input dashboard-input" name="timeAdded"
                                                pattern="^([0-9]+)[/.]?([0-9]+)$" title="Please only enter numbers" placeholder="Minutes" required />

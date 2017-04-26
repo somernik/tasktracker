@@ -24,42 +24,24 @@ import com.sarah.persistence.TaskEntryData;
  */
 
 @WebServlet(
-        urlPatterns = {"/saveTask"}
+        urlPatterns = {"/addTime"}
 )
-public class SaveTaskEdits extends HttpServlet {
+public class AddTaskTime extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         LoggedIn.checkLoggedIn(req, resp);
 
         // make in functions or new controllers
         try {
-            RequestDispatcher dispatcher;
             HttpSession session = req.getSession();
             TaskData taskData = new TaskData();
             TaskEntryData taskEntryData = new TaskEntryData();
 
-            String type = req.getParameter("type");
-            String category = req.getParameter("taskCategory");
+            taskEntryData.addTime(req.getParameter("timeAdded"), req.getParameter("id"));
+            taskData.updateTimeSpent(req.getParameter("id"));
+            session.setAttribute("tasks", taskData.getUserTasks(session.getAttribute("email"), "taskId = taskId"));
 
-            if (type.equals("new")) {
-
-                // add type & get type id
-                type = taskData.addType(req.getParameter("newType"), (String) session.getAttribute("email"));
-            }
-
-            if (category.equals("new")) {
-                category = req.getParameter("newCategory");
-            }
-
-
-            taskData.editSingleTask(req.getParameter("id"),
-                    req.getParameter("taskName"), category, type,
-                    req.getParameter("taskDescription"), req.getParameter("taskDueDate"), req.getParameter("completion"),
-                    req.getParameter("taskStartDate"), req.getParameter("timeAdded"));
-
-            session.setAttribute("singleTask", taskData.getSingleTask(req.getParameter("id")));
-            session.setAttribute("taskEntries", taskEntryData.getUserTaskEntries(req.getParameter("id")));
-            dispatcher = req.getRequestDispatcher("/taskDetail.jsp");
+            RequestDispatcher dispatcher = req.getRequestDispatcher("/dashboard.jsp");
             dispatcher.forward(req, resp);
 
         } catch (ErrorException exception) {

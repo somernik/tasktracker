@@ -17,7 +17,7 @@
         <%@include file="templates/sideNav.jsp"%>
             <c:if test="${not empty singleTask}">
             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-                <p>${numberOfDays}</p>
+                <h1>${numberOfDays}</h1><h2> Days To Completion!</h2>
                 <div class="panel panel-success">
                     <div class="panel-heading">
                         <h2 class="formHeader">Time Entry Burn Up</h2>
@@ -41,7 +41,7 @@
                         <h3>Start Date: ${singleTask.startDate}</h3>
                         <h3>Due Date: ${singleTask.taskDueDate}</h3>
                         <h3>Total Time Spent: ${singleTask.timeSpent} minutes </h3>
-                        <h3>Estimated Completion Time: ${singleTask.estimatedCompletionTime}</h3>
+                        <h3>Estimated Completion Time: ${singleTask.estimatedCompletionTime} minutes</h3>
                         <h3>Completion:
                             <c:if test="${singleTask.completed == true}">Completed</c:if>
                             <c:if test="${singleTask.completed == false}">Not Completed</c:if></h3>

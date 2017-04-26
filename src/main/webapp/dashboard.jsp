@@ -67,7 +67,7 @@
                     <c:if test="${task.timeLeft <= 0}">
                       <td>
                         Estimated Time Left not available. Please add an estimate of how long this task will take.
-                        <form method="post" action="/saveTask">
+                        <form method="post" action="/addEstimation">
                           <input type="hidden" name="id" value="${task.taskId}">
                           <input type="text" class="form-control table-input dashboard-input" name="estimation"
                                  pattern="^([0-9]+)[/.]?([0-9]+)$" title="Please only enter numbers" placeholder="Minutes" required />
@@ -76,7 +76,7 @@
                       </td>
                     </c:if>
                     <td>
-                      <form method="post" action="/saveTask">
+                      <form method="post" action="/addTime">
                         <input type="hidden" name="id" value="${task.taskId}">
                         <input type="text" class="form-control table-input dashboard-input" name="timeAdded"
                                pattern="^([0-9]+)[/.]?([0-9]+)$" title="Please only enter numbers" placeholder="Minutes" required />

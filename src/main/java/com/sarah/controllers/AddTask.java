@@ -51,7 +51,8 @@ public class AddTask extends HttpServlet {
                 taskData.addNewTask(request.getParameter("taskName"), category, type,
                         request.getParameter("taskDescription"), request.getParameter("taskDueDate"), session.getAttribute("email"));
                 session.setAttribute("tasks", taskData.getUserTasks(session.getAttribute("email"), "completed=0"));
-
+                RequestDispatcher dispatcher = request.getRequestDispatcher("/dashboard.jsp");
+                dispatcher.forward(request, response);
             } catch (ErrorException exception) {
                 request.setAttribute("message", exception.getMessage());
                 RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
@@ -60,9 +61,6 @@ public class AddTask extends HttpServlet {
                 exception.printStackTrace();
             }
 
-
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/dashboard.jsp");
-            dispatcher.forward(request, response);
 
         }
     }
@@ -83,15 +81,13 @@ public class AddTask extends HttpServlet {
             request.setAttribute("types", types);
 
             session.setAttribute("tasks", taskData.getUserTasks(session.getAttribute("email"), "completed=0"));
-
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/addTask.jsp");
+            dispatcher.forward(request, response);
         } catch (ErrorException exception) {
             request.setAttribute("message", exception.getMessage());
             RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
             dispatcher.forward(request, response);
         }
-
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/addTask.jsp");
-        dispatcher.forward(request, response);
 
     }
 }
