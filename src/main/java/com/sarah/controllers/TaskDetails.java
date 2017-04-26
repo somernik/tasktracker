@@ -56,7 +56,8 @@ public class TaskDetails extends HttpServlet {
             List<TaskEntry> entries = taskEntryData.getUserTaskEntries(req.getParameter("id"));
 
             List<Double> increasingEntries = Calculations.getEntries(entries);
-            double numberOfDaysToCompletion = Calculations.calculateFinishDate((String)session.getAttribute("email"), task.getTimeLeft(), task.getTaskId(), task.getTaskCategory(), task.getTaskType());
+            double numberOfDaysToCompletion = Calculations.calculateFinishDate((String)session.getAttribute("email"),
+                    task.getTimeLeft(), task.getTaskId(), task.getTaskCategory(), task.getTaskType(), task.getEstimatedCompletionTime());
 
             session.setAttribute("plotPoints", increasingEntries);
             session.setAttribute("numberOfDays", numberOfDaysToCompletion);

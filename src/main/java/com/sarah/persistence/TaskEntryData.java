@@ -130,8 +130,7 @@ public class TaskEntryData {
     public double getAverageOfTimeAdded(String email) throws ErrorException {
         String sql = "SELECT AVG(timeEnteredAmount) FROM taskentry INNER JOIN task ON task.taskId=taskentry.taskId INNER" +
                 " JOIN user ON task.userId=user.userId WHERE user.email ='" + email + "'";
-        System.out.println("all tasks");
-        System.out.println(sql);
+
         double averageEntryTime = DatabaseUtility.executeSingleQuery(sql, "AVG(timeEnteredAmount)");
         return averageEntryTime;
     }
@@ -139,8 +138,7 @@ public class TaskEntryData {
     public double getTotalEntriesForUser(String email) throws ErrorException {
         String sql = "SELECT COUNT(*) FROM taskentry WHERE taskentry.taskid IN (SELECT task.taskId FROM task INNER JOIN "
                 + "user ON task.userId=user.userId WHERE user.email='" + email + "')";
-        System.out.println("all tasks");
-        System.out.println(sql);
+
         double countOfAllEntriesForUser = DatabaseUtility.executeSingleQuery(sql, "COUNT(*)");
 
         return countOfAllEntriesForUser;
@@ -149,8 +147,7 @@ public class TaskEntryData {
     public double getDayDifferenceForEntryAverages(String email) throws ErrorException {
         String sql = "SELECT DATEDIFF(NOW(), (SELECT MIN(dateentered) FROM taskentry WHERE taskentry.taskid IN (SELECT task.taskId FROM task INNER JOIN "
                 + "user ON task.userId=user.userId WHERE user.email='" + email + "'))) AS datediff";
-        System.out.println("all tasks");
-        System.out.println(sql);
+
         double diffOfAllTasks = DatabaseUtility.executeSingleQuery(sql, "datediff");
         return diffOfAllTasks;
     }
@@ -161,8 +158,7 @@ public class TaskEntryData {
         String sql = "SELECT AVG(timeEnteredAmount) FROM taskentry INNER JOIN task ON task.taskId=taskentry.taskId INNER"
                 +" JOIN user ON task.userId=user.userId WHERE user.email ='" + email + "' AND task.category='" + category
                 + "' AND typeId = (SELECT typeId FROM type WHERE typeName='" + type + "')";
-        System.out.println("type");
-        System.out.println(sql);
+
         double averageEntryTime = DatabaseUtility.executeSingleQuery(sql, "AVG(timeEnteredAmount)");
         return averageEntryTime;
     }
@@ -171,8 +167,7 @@ public class TaskEntryData {
         String sql = "SELECT DATEDIFF(NOW(), (SELECT MIN(dateentered) FROM taskentry WHERE taskentry.taskid IN (SELECT task.taskId FROM task INNER JOIN "
                 + "user ON task.userId=user.userId WHERE user.email='" + email + "' AND task.category='" + category
                 + "' AND typeId = (SELECT typeId FROM type WHERE typeName='" + type + "')))) AS datediff";
-        System.out.println("type");
-        System.out.println(sql);
+
         double diffOfAllTasks = DatabaseUtility.executeSingleQuery(sql, "datediff");
         return diffOfAllTasks;
     }
@@ -181,8 +176,7 @@ public class TaskEntryData {
         String sql = "SELECT COUNT(*) FROM taskentry WHERE taskentry.taskid IN (SELECT task.taskId FROM task INNER JOIN "
                 + "user ON task.userId=user.userId WHERE user.email='" + email + "' AND task.category='" + category
                 + "' AND typeId = (SELECT typeId FROM type WHERE typeName='" + type + "'))";
-        System.out.println("type");
-        System.out.println(sql);
+
         double countOfAllEntriesForType = DatabaseUtility.executeSingleQuery(sql, "COUNT(*)");
 
         return countOfAllEntriesForType;
@@ -192,8 +186,7 @@ public class TaskEntryData {
     public double getAverageOfTimeAddedForTask(String email, int taskId) throws ErrorException {
         String sql = "SELECT AVG(timeEnteredAmount) FROM taskentry INNER JOIN task ON task.taskId=taskentry.taskId INNER" +
                 " JOIN user ON task.userId=user.userId WHERE user.email ='" + email + "' AND taskentry.taskId = " + taskId;
-        System.out.println("single");
-        System.out.println(sql);
+
         double averageEntryTime = DatabaseUtility.executeSingleQuery(sql, "AVG(timeEnteredAmount)");
         return averageEntryTime;
     }
@@ -202,16 +195,14 @@ public class TaskEntryData {
         String sql = "SELECT COUNT(*) as count FROM taskentry INNER JOIN task ON task.taskId=taskentry.taskId INNER JOIN "
                 + "user ON task.userId=user.userId WHERE taskentry.taskId=" + taskId + " AND user.email='" + email + "'";
         double countOfEntriesForSingleTask = DatabaseUtility.executeSingleQuery(sql, "count");
-        System.out.println("single");
-        System.out.println(sql);
+
         return countOfEntriesForSingleTask;
     }
 
     public double getDayDifferenceFromTaskStart(int taskId) throws ErrorException {
         String sql = "SELECT DATEDIFF(NOW(), (SELECT MIN(dateentered) FROM taskentry INNER JOIN task ON "
                 + "task.taskId=taskentry.taskId WHERE task.taskid=" + taskId + ")) AS datediff";
-        System.out.println("single");
-        System.out.println(sql);
+
         double diffOfDays = DatabaseUtility.executeSingleQuery(sql, "datediff");
         return diffOfDays;
     }

@@ -17,7 +17,23 @@
         <%@include file="templates/sideNav.jsp"%>
             <c:if test="${not empty singleTask}">
             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-                <h1>${numberOfDays}</h1><h2> Days To Completion!</h2>
+                <c:choose>
+                    <c:when test="${singleTask.estimatedCompletionTime <= 0}">
+                        Estimated Time Left not available. Please add an estimate of how long this task will take.
+                        <form method="post" action="/addEstimation">
+                            <input type="hidden" name="id" value="${task.taskId}">
+                            <input type="text" class="form-control table-input dashboard-input" name="estimation"
+                                   pattern="^([0-9]+)[/.]?([0-9]+)$" title="Please only enter numbers" placeholder="Minutes" required />
+                            <button type="submit" name="submit" value="addEstimation" class="btn btn-success">Add Estimation</button>
+                        </form>
+                    </c:when>
+                    <c:when test="${singleTask.completed == true}">
+                        <h2>This task has been completed!</h2>
+                    </c:when>
+                    <c:otherwise>
+                        <h1>${numberOfDays} Days To Completion!</h1>
+                    </c:otherwise>
+                </c:choose>
                 <div class="panel panel-success">
                     <div class="panel-heading">
                         <h2 class="formHeader">Time Entry Burn Up</h2>
