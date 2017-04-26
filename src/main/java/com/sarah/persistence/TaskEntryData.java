@@ -154,6 +154,14 @@ public class TaskEntryData {
 
 
     // For specific task
+    public double getAverageOfTimeAddedForTask(String email, int taskId) throws ErrorException {
+        String sql = "SELECT AVG(timeEnteredAmount) FROM taskentry INNER JOIN task ON task.taskId=taskentry.taskId INNER" +
+                " JOIN user ON task.userId=user.userId WHERE user.email ='" + email + "' AND taskentry.taskId = " + taskId;
+
+        double averageEntryTime = DatabaseUtility.executeSingleQuery(sql, "AVG(timeEnteredAmount)");
+        return averageEntryTime;
+    }
+
     public double getTotalEntriesForTask(String email, int taskId) throws ErrorException {
         String sql = "SELECT COUNT(*) as count FROM taskentry INNER JOIN task ON task.taskId=taskentry.taskId INNER JOIN "
                 + "user ON task.userId=user.userId WHERE taskentry.taskId=" + taskId + " AND user.email='" + email + "'";

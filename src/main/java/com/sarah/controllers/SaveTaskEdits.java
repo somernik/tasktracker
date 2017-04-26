@@ -41,17 +41,16 @@ public class SaveTaskEdits extends HttpServlet {
             String type = req.getParameter("type");
             String category = req.getParameter("taskCategory");
 
-            if (req.getParameter("submit").equals("saveEdits")) {
-                if (type.equals("new")) {
+            if (type.equals("new")) {
 
-                    // add type & get type id
-                    type = taskData.addType(req.getParameter("newType"), (String) session.getAttribute("email"));
-                }
-
-                if (category.equals("new")) {
-                    category = req.getParameter("newCategory");
-                }
+                // add type & get type id
+                type = taskData.addType(req.getParameter("newType"), (String) session.getAttribute("email"));
             }
+
+            if (category.equals("new")) {
+                category = req.getParameter("newCategory");
+            }
+
 
             taskData.editSingleTask(req.getParameter("id"),
                     req.getParameter("taskName"), category, type,
