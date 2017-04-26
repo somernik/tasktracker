@@ -12,7 +12,7 @@
     </ol>
     <div class="carousel-inner" role="listbox">
         <div class="item active">
-            <img class="first-slide" src="images/cat1.jpg" alt="First slide">
+            <img class="first-slide" src="images/estimation.PNG" alt="First slide">
             <div class="container">
                 <div class="carousel-caption">
                     <h1>Accurate Task Estimation</h1>
@@ -22,12 +22,12 @@
             </div>
         </div>
         <div class="item">
-            <img class="second-slide" src="images/cat2.jpg" alt="Second slide">
+            <img class="second-slide" src="images/search.PNG" alt="Second slide">
             <div class="container">
                 <div class="carousel-caption">
                     <h1>Another example headline.</h1>
                     <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-                    <p><a class="btn btn-lg btn-primary btn-success" href="addTask.jsp" role="button">Add a Task</a></p>
+                    <p><a class="btn btn-lg btn-primary btn-success" href="addTask.jsp" role="button">Search Through Tasks</a></p>
                 </div>
             </div>
         </div>
@@ -51,6 +51,7 @@
         <span class="sr-only">Next</span>
     </a>
 </div><!-- /.carousel -->
-</div>
+<%@include file="featurettes.jsp"%>
+
 </body>
 </html>
