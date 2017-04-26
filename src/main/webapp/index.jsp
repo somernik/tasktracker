@@ -17,7 +17,7 @@
                 <div class="carousel-caption">
                     <h1>Accurate Task Estimation</h1>
                     <p>Every task you complete makes the estimation more accurate!</p>
-                    <p><a class="btn btn-lg btn-primary btn-success" href="signUp.jsp" role="button">Sign up today</a></p>
+                    <p><a class="btn btn-lg btn-primary btn-success" href="signUp.jsp" role="button">Sign up today!</a></p>
                 </div>
             </div>
         </div>
@@ -25,9 +25,9 @@
             <img class="second-slide" src="images/search.PNG" alt="Second slide">
             <div class="container">
                 <div class="carousel-caption">
-                    <h1>Another example headline.</h1>
-                    <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-                    <p><a class="btn btn-lg btn-primary btn-success" href="addTask.jsp" role="button">Search Through Tasks</a></p>
+                    <h1>Search Through Tasks</h1>
+                    <p>Search by type, name, amount of time spent and other options.</p>
+                    <p><a class="btn btn-lg btn-primary btn-success" href="addTask.jsp" role="button">Sign up today!</a></p>
                 </div>
             </div>
         </div>
@@ -35,9 +35,9 @@
             <img class="third-slide" src="images/cat3.jpg" alt="Third slide">
             <div class="container">
                 <div class="carousel-caption">
-                    <h1>Cool Dashboard</h1>
-                    <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-                    <p><a class="btn btn-lg btn-primary btn-success" href="dashboard-sample.jsp" role="button">Check it Out!</a></p>
+                    <h1>User Dashboard</h1>
+                    <p>Shows active tasks you are working on completing with easy access to other features.</p>
+                    <p><a class="btn btn-lg btn-primary btn-success" href="dashboard-sample.jsp" role="button">Check out an example dashboard!</a></p>
                 </div>
             </div>
         </div>
