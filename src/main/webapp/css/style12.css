@@ -62,3 +62,7 @@
 #minutes {
     width: 5em;
 }
+
+.dark {
+    color: black !important;
+}
