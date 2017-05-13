@@ -40,7 +40,7 @@ CREATE TABLE `task` (
   KEY `fk_task_type1_idx` (`typeId`),
   CONSTRAINT `fk_task_type1` FOREIGN KEY (`typeId`) REFERENCES `type` (`typeId`),
   CONSTRAINT `fk_task_user` FOREIGN KEY (`userId`) REFERENCES `user` (`userId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -49,7 +49,7 @@ CREATE TABLE `task` (
 
 LOCK TABLES `task` WRITE;
 /*!40000 ALTER TABLE `task` DISABLE KEYS */;
-INSERT INTO `task` VALUES (6,1,'Chapter 6',3,'PHP',81,'Read ch. 6 in Head First PHP','2017-02-28',80.5,'2017-03-01',1),(7,1,'Resume',3,'Business Writing',45,'Write resume','2017-03-10',120,'2017-03-07',0),(12,1,'Persausive Speech',3,'Speech',80,'Create a speech to convince people!','2017-03-25',80,'2017-03-07',1),(13,1,'Project 1',1,'PHP',200,'Mad Libs','2017-02-17',200,'2017-03-07',1),(14,1,'Chapter 7',3,'PHP',80,'Sessions and cookies','2017-02-27',80.5,'2017-03-07',1),(15,4,'Enviro. Paper',3,'Writing 102',0,'Research environmentally friendly practices for business','2017-04-14',0,'2017-03-08',0),(16,1,'Informative Speech',3,'Speech',65,'Inform people about an unknown topic','2017-04-29',80,'2017-03-18',0),(17,1,'Project 3',1,'PHP',0,'Website with blog capabilities','2017-04-19',200,'2017-03-29',0),(19,1,'Final Speech',3,'Speech',0,'Speech about topic of my choice','2017-05-09',80,'2017-03-29',0),(20,1,'Servlet Redirection Lab',3,'Java',0,'Servlet that using redirection instead of forwarding','2017-04-11',0,'2017-03-29',0);
+INSERT INTO `task` VALUES (6,1,'Chapter 6',3,'PHP',81,'Read ch. 6 in Head First PHP','2017-02-28',80.5,'2017-03-01',1),(7,1,'Resume',3,'Business Writing',80,'Write resume','2017-03-10',120,'2017-03-07',0),(12,1,'Persausive Speech',3,'Speech',80,'Create a speech to convince people!','2017-03-25',86.6667,'2017-03-07',1),(13,1,'Project 1',1,'PHP',200,'Mad Libs','2017-02-17',200,'2017-03-07',1),(14,1,'Chapter 7',3,'PHP',80,'Sessions and cookies','2017-02-27',80.5,'2017-03-07',1),(15,4,'Enviro. Paper',3,'Writing 102',0,'Research environmentally friendly practices for business','2017-04-14',0,'2017-03-08',0),(16,1,'Informative Speech',3,'Speech',80,'Inform people about an unknown topic','2017-04-29',86.6667,'2017-03-18',1),(17,1,'Project 3',1,'PHP',50,'Website with blog capabilities','2017-04-19',200,'2017-03-29',0),(19,1,'Introduction Speech',3,'Speech',100,'introduce myself to the class','2017-05-09',86.6667,'2017-03-29',1),(20,1,'Servlet Redirection Lab',3,'Java',0,'Servlet that using redirection instead of forwarding','2017-04-11',0,'2017-03-29',0),(21,1,'Project 4',1,'Java',150,'Add analyzer to web part','2017-05-05',164.5,'2017-04-12',1),(22,1,'Spring Cleaning',4,'Housework',0,'Clean everything for spring cleaning','2017-04-16',120,'2017-04-12',0),(23,1,'Java Final Project',1,'Java',179,'finish this now!','2017-05-24',164.5,'2017-05-01',1),(24,1,'Final Speech',3,'Speech',0,'last speech','2017-05-17',86.6667,'2017-05-05',0);
 /*!40000 ALTER TABLE `task` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -69,7 +69,7 @@ CREATE TABLE `taskentry` (
   UNIQUE KEY `taskEntryId_UNIQUE` (`taskEntryId`),
   KEY `fk_taskEntry_task1_idx` (`taskId`),
   CONSTRAINT `fk_taskEntry_type1` FOREIGN KEY (`taskId`) REFERENCES `task` (`taskId`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -78,7 +78,7 @@ CREATE TABLE `taskentry` (
 
 LOCK TABLES `taskentry` WRITE;
 /*!40000 ALTER TABLE `taskentry` DISABLE KEYS */;
-INSERT INTO `taskentry` VALUES (1,6,'2017-02-28 00:00:00',15),(2,6,'2017-03-01 11:15:09',30),(3,6,'2017-03-01 12:10:32',2),(4,6,'2017-03-01 12:15:21',2),(5,6,'2017-03-01 12:15:33',2),(6,6,'2017-03-07 21:03:06',0),(7,6,'2017-03-08 13:42:20',1),(8,6,'2017-03-08 17:35:21',4),(9,6,'2017-03-12 12:00:14',10),(10,12,'2017-03-12 12:01:07',10),(11,12,'2017-03-12 14:41:36',70),(12,6,'2017-03-12 15:02:18',15),(13,7,'2017-03-18 20:17:19',45),(14,16,'2017-03-18 20:23:13',50),(15,16,'2017-03-29 15:00:38',15);
+INSERT INTO `taskentry` VALUES (1,6,'2017-02-28 00:00:00',15),(2,6,'2017-03-01 11:15:09',30),(3,6,'2017-03-01 12:10:32',2),(4,6,'2017-03-01 12:15:21',2),(5,6,'2017-03-01 12:15:33',2),(6,6,'2017-03-07 21:03:06',0),(7,6,'2017-03-08 13:42:20',1),(8,6,'2017-03-08 17:35:21',4),(9,6,'2017-03-12 12:00:14',10),(10,12,'2017-03-12 12:01:07',10),(11,12,'2017-03-12 14:41:36',70),(12,6,'2017-03-12 15:02:18',15),(13,7,'2017-03-18 20:17:19',45),(14,16,'2017-03-18 20:23:13',50),(15,16,'2017-03-29 15:00:38',15),(16,19,'2017-04-12 17:05:26',20),(17,19,'2017-04-12 17:05:27',20),(18,19,'2017-05-01 08:40:40',20),(19,19,'2017-05-01 14:39:52',10),(20,17,'2017-05-03 13:04:33',20),(21,16,'2017-05-05 15:35:32',15),(22,19,'2017-05-05 15:48:54',30),(23,7,'2017-05-05 16:18:01',25),(24,7,'2017-05-05 18:39:05',10),(25,21,'2017-05-07 15:15:06',150),(26,23,'2017-05-07 15:15:39',179),(27,17,'2017-05-07 15:18:41',30);
 /*!40000 ALTER TABLE `taskentry` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -94,7 +94,7 @@ CREATE TABLE `type` (
   `typeName` varchar(45) NOT NULL,
   PRIMARY KEY (`typeId`),
   UNIQUE KEY `typeId_UNIQUE` (`typeId`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -103,7 +103,7 @@ CREATE TABLE `type` (
 
 LOCK TABLES `type` WRITE;
 /*!40000 ALTER TABLE `type` DISABLE KEYS */;
-INSERT INTO `type` VALUES (1,'Project'),(2,'Reading'),(3,'Assignment');
+INSERT INTO `type` VALUES (1,'Project'),(2,'Reading'),(3,'Assignment'),(4,'Chore');
 /*!40000 ALTER TABLE `type` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -155,7 +155,7 @@ CREATE TABLE `usertype` (
   KEY `fk_userType_type1_idx` (`typeId`),
   CONSTRAINT `fk_userType_user1` FOREIGN KEY (`userId`) REFERENCES `user` (`userId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_usertype_type1` FOREIGN KEY (`typeId`) REFERENCES `type` (`typeId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -164,6 +164,7 @@ CREATE TABLE `usertype` (
 
 LOCK TABLES `usertype` WRITE;
 /*!40000 ALTER TABLE `usertype` DISABLE KEYS */;
+INSERT INTO `usertype` VALUES (1,4,1);
 /*!40000 ALTER TABLE `usertype` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -176,4 +177,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-04-02 18:20:21
+-- Dump completed on 2017-05-12 22:35:27
