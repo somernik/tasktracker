@@ -126,7 +126,12 @@ public class TaskEntryData {
 
     }
 
-    // For all tasks of a user
+    /**
+     * Gets average time spent on all user tasks.
+     * @param email user email
+     * @return value of average
+     * @throws ErrorException if error
+     */
     public double getAverageOfTimeAdded(String email) throws ErrorException {
         String sql = "SELECT AVG(timeEnteredAmount) FROM taskentry INNER JOIN task ON task.taskId=taskentry.taskId INNER" +
                 " JOIN user ON task.userId=user.userId WHERE user.email ='" + email + "'";
@@ -135,6 +140,12 @@ public class TaskEntryData {
         return averageEntryTime;
     }
 
+    /**
+     * Get # of entries for user
+     * @param email user email
+     * @return value of total
+     * @throws ErrorException if error
+     */
     public double getTotalEntriesForUser(String email) throws ErrorException {
         String sql = "SELECT COUNT(*) FROM taskentry WHERE taskentry.taskid IN (SELECT task.taskId FROM task INNER JOIN "
                 + "user ON task.userId=user.userId WHERE user.email='" + email + "')";
@@ -144,6 +155,12 @@ public class TaskEntryData {
         return countOfAllEntriesForUser;
     }
 
+    /**
+     * Get difference between today and start of all tasks
+     * @param email user email
+     * @return value of difference
+     * @throws ErrorException if error
+     */
     public double getDayDifferenceForEntryAverages(String email) throws ErrorException {
         String sql = "SELECT DATEDIFF(NOW(), (SELECT MIN(dateentered) FROM taskentry WHERE taskentry.taskid IN (SELECT task.taskId FROM task INNER JOIN "
                 + "user ON task.userId=user.userId WHERE user.email='" + email + "'))) AS datediff";
@@ -152,8 +169,14 @@ public class TaskEntryData {
         return diffOfAllTasks;
     }
 
-
-    // for category and type
+    /**
+     * Gets average time based on category and type
+     * @param email user email
+     * @param type item type
+     * @param category item category
+     * @return value of average
+     * @throws ErrorException if error
+     */
     public double getAverageTimePerEntryType(String email, String type, String category) throws ErrorException {
         String sql = "SELECT AVG(timeEnteredAmount) FROM taskentry INNER JOIN task ON task.taskId=taskentry.taskId INNER"
                 +" JOIN user ON task.userId=user.userId WHERE user.email ='" + email + "' AND task.category='" + category
@@ -163,6 +186,14 @@ public class TaskEntryData {
         return averageEntryTime;
     }
 
+    /**
+     * Gets difference from today to start of type/category entries
+     * @param email user email
+     * @param type item type
+     * @param category item category
+     * @return value of difference
+     * @throws ErrorException if error
+     */
     public double getNumberOfDaysDifferenceType(String email, String type, String category) throws ErrorException {
         String sql = "SELECT DATEDIFF(NOW(), (SELECT MIN(dateentered) FROM taskentry WHERE taskentry.taskid IN (SELECT task.taskId FROM task INNER JOIN "
                 + "user ON task.userId=user.userId WHERE user.email='" + email + "' AND task.category='" + category
@@ -172,6 +203,14 @@ public class TaskEntryData {
         return diffOfAllTasks;
     }
 
+    /**
+     * Gets count of all entries of type/category
+     * @param email user email
+     * @param type item type
+     * @param category item category
+     * @return value of count
+     * @throws ErrorException if error
+     */
     public double getAllEntriesCategoryType(String email, String type, String category) throws ErrorException {
         String sql = "SELECT COUNT(*) FROM taskentry WHERE taskentry.taskid IN (SELECT task.taskId FROM task INNER JOIN "
                 + "user ON task.userId=user.userId WHERE user.email='" + email + "' AND task.category='" + category
@@ -182,7 +221,13 @@ public class TaskEntryData {
         return countOfAllEntriesForType;
     }
 
-    // For specific task
+    /**
+     * Get average of time for this task
+     * @param email user email
+     * @param taskId task id
+     * @return value of average
+     * @throws ErrorException if error
+     */
     public double getAverageOfTimeAddedForTask(String email, int taskId) throws ErrorException {
         String sql = "SELECT AVG(timeEnteredAmount) FROM taskentry INNER JOIN task ON task.taskId=taskentry.taskId INNER" +
                 " JOIN user ON task.userId=user.userId WHERE user.email ='" + email + "' AND taskentry.taskId = " + taskId;
@@ -191,6 +236,13 @@ public class TaskEntryData {
         return averageEntryTime;
     }
 
+    /**
+     * Get # of entries for this task.
+     * @param email user email
+     * @param taskId the task id
+     * @return value of count
+     * @throws ErrorException if error
+     */
     public double getTotalEntriesForTask(String email, int taskId) throws ErrorException {
         String sql = "SELECT COUNT(*) as count FROM taskentry INNER JOIN task ON task.taskId=taskentry.taskId INNER JOIN "
                 + "user ON task.userId=user.userId WHERE taskentry.taskId=" + taskId + " AND user.email='" + email + "'";
@@ -199,6 +251,12 @@ public class TaskEntryData {
         return countOfEntriesForSingleTask;
     }
 
+    /**
+     * Gets difference from today to start of this task
+     * @param taskId task id
+     * @return value of difference
+     * @throws ErrorException if error
+     */
     public double getDayDifferenceFromTaskStart(int taskId) throws ErrorException {
         String sql = "SELECT DATEDIFF(NOW(), (SELECT MIN(dateentered) FROM taskentry INNER JOIN task ON "
                 + "task.taskId=taskentry.taskId WHERE task.taskid=" + taskId + ")) AS datediff";
