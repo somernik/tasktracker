@@ -24,7 +24,7 @@ import javax.servlet.annotation.WebServlet;
 )
 public class DashboardServlet extends HttpServlet {
 
-
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
@@ -42,8 +42,6 @@ public class DashboardServlet extends HttpServlet {
             RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
             dispatcher.forward(request, response);
         }
-
-
     }
 }
 

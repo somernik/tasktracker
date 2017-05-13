@@ -41,6 +41,7 @@ public class SaveTaskEdits extends HttpServlet {
             String type = req.getParameter("type");
             String category = req.getParameter("taskCategory");
 
+
             if (type.equals("new")) {
 
                 // add type & get type id
@@ -67,7 +68,6 @@ public class SaveTaskEdits extends HttpServlet {
             RequestDispatcher dispatcher = req.getRequestDispatcher("/error.jsp");
             dispatcher.forward(req, resp);
         }
-
     }
 
     @Override

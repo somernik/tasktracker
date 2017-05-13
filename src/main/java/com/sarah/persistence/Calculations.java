@@ -142,8 +142,8 @@ public class Calculations {
      */
     public static double calculateFinishDate(String email, double timeLeft, int taskId, String category, String type, double estimatedCompletionTime) throws ErrorException
     {
-        // TODO check for NaN  v != v  (Double.isNaN(doubleValue)
         /*
+            DESCRIPTION OF CALCULATION
             avg = average time per entry // how much time is spent working in one entry
             total = # of entries // how many entries have already been made
             diff = # of days // how many days has task been worked on
@@ -216,10 +216,6 @@ public class Calculations {
 
             numberOfDays = numberOfDaysAllTasks;
         }
-
-        // for day in days
-        // if day is no work -> +1 day
-        // if day is much work -> -1day
 
         float wholeDays = (float)Math.round(numberOfDays);
 

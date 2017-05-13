@@ -80,10 +80,8 @@ public class EditUser extends HttpServlet {
         userData.editUser(request.getParameter("username"), request.getParameter("email"), request.getParameter("firstName"),
                 request.getParameter("lastName"), password, oldEmail);
 
-
         user = userData.getUser(request.getParameter("email"));
         session.setAttribute("user", user);
-
 
     }
 

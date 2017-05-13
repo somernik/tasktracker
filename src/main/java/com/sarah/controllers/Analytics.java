@@ -36,7 +36,7 @@ public class Analytics extends HttpServlet {
 
         // Create maps to display on jsp
         List<String> types = new ArrayList<String>();
-        Map<String, Double> timePerDayOfWeek = new HashMap<String, Double>();
+        Map<String, Double> timePerDayOfWeek = new LinkedHashMap<String, Double>();
         Map<String, Double> percentagePerType = new HashMap<String, Double>();
         Map<String, Double> percentagePerCategory = new HashMap<String, Double>();
         List<Task> tasks = new ArrayList<Task>();

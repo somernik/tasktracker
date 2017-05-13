@@ -41,7 +41,6 @@ public class SearchTasks extends HttpServlet {
 
            request.setAttribute("types", types);
 
-
            RequestDispatcher dispatcher = request.getRequestDispatcher("/searchTasks.jsp");
            dispatcher.forward(request, response);
 
@@ -50,7 +49,5 @@ public class SearchTasks extends HttpServlet {
             RequestDispatcher dispatcher = request.getRequestDispatcher("/error.jsp");
             dispatcher.forward(request, response);
         }
-
     }
-
 }

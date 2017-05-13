@@ -43,6 +43,14 @@ public class TaskDetails extends HttpServlet {
 
     }
 
+    /**
+     * Retrieves information for a single task.
+     * @param req The request object.
+     * @param resp The response object.
+     * @throws ErrorException If an error is thrown.
+     * @throws ServletException If a servlet error is thrown.
+     * @throws IOException If an i/o error is thrown.
+     */
     private void getTaskInformation(HttpServletRequest req, HttpServletResponse resp) throws ErrorException, ServletException, IOException {
         try {
             TaskData taskData = new TaskData();
@@ -63,7 +71,6 @@ public class TaskDetails extends HttpServlet {
             session.setAttribute("numberOfDays", numberOfDaysToCompletion);
             session.setAttribute("taskEntries", entries);
 
-
             RequestDispatcher dispatcher = req.getRequestDispatcher("/taskDetail.jsp");
             dispatcher.forward(req, resp);
 
@@ -71,7 +78,6 @@ public class TaskDetails extends HttpServlet {
             String error = "getTaskInfo Exception: task " + exception;
             exception.printStackTrace();
             throw new ErrorException(error);
-
         }
     }
 

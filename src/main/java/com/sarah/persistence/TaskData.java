@@ -52,8 +52,8 @@ public class TaskData {
                                   String dueDate, String completed, String startDate, String timeAdded) throws ErrorException {
 
         TaskEntryData taskEntryData = new TaskEntryData();
-        String sql = "UPDATE task SET name = '" + name + "', typeId = (SELECT typeId FROM type WHERE"
-                + " typeName='" + type + "'), category = '" + category + "', description = '" + description
+        String sql = "UPDATE task SET name = '" + name + "', typeId = '" + type + "', category = '"
+                + category + "', description = '" + description
                 + "', dueDate = '" + dueDate + "', completed = '" + completed + "', startDate= '" + startDate
                 + "' WHERE taskId = '" + taskId + "'";
         if (timeAdded.matches("-?\\d+(\\.\\d+)?")) {
@@ -236,7 +236,13 @@ public class TaskData {
         return task;
     }
 
-
+    /**
+     * Adds new type to database.
+     * @param typeName Name of the type.
+     * @param email User email
+     * @return The value of the type id.
+     * @throws ErrorException If error is thrown.
+     */
     public String addType(String typeName, String email) throws ErrorException {
 
         String typeSql = "INSERT INTO type (typeName) VALUES ('" + typeName + "')";
@@ -252,6 +258,12 @@ public class TaskData {
         return typeId.toString();
     }
 
+    /**
+     * Get types based on user.
+     * @param email user email
+     * @return Map of types.
+     * @throws ErrorException If error is thrown.
+     */
     public Map<String, String> getTypes(String email) throws ErrorException {
         Map<String, String> types = new HashMap<String, String>();
         String sql = "SELECT * FROM type WHERE NOT EXISTS (SELECT usertype.typeId FROM usertype WHERE type.typeId=usertype.typeId)";
@@ -266,7 +278,13 @@ public class TaskData {
         return types;
     }
 
-
+    /**
+     * Executes query.
+     * @param sqlStatement The sql to run.
+     * @param types The map of types.
+     * @return The map of types.
+     * @throws ErrorException If error is thrown.
+     */
     private Map<String, String> executeTypesQuery(String sqlStatement, Map<String, String> types) throws ErrorException {
 
         Database database = Database.getInstance();
@@ -289,12 +307,24 @@ public class TaskData {
         return types;
     }
 
+    /**
+     * Add types to map.
+     * @param types The map of types.
+     * @param results The result set.
+     * @throws SQLException If there is an sql error.
+     */
     private void retrieveTypes(Map<String, String> types, ResultSet results) throws SQLException {
         while (results.next()) {
             types.put(results.getString("typeId"), results.getString("typeName"));
         }
     }
 
+    /**
+     * Gets categories based on user.
+     * @param email User email.
+     * @return List of categories.
+     * @throws ErrorException In case error is thrown.
+     */
     public List<String> getCategories(String email) throws ErrorException {
         List<String> categories = new ArrayList<String>();
         String sql = "SELECT DISTINCT category FROM task INNER JOIN user ON task.userId=user.userID WHERE user.email='" + email + "'";
@@ -304,6 +334,13 @@ public class TaskData {
         return categories;
     }
 
+    /**
+     * Executes category query.
+     * @param sql Statement to execute.
+     * @param categories List of categories.
+     * @return List of categories returned.
+     * @throws ErrorException If error is thrown.
+     */
     private List<String> executeCategoriesQuery(String sql, List<String> categories) throws ErrorException {
         Database database = Database.getInstance();
         Connection connection = null;
@@ -325,6 +362,12 @@ public class TaskData {
         return categories;
     }
 
+    /**
+     * Adds categories to list.
+     * @param categories The list of categories.
+     * @param results The result set.
+     * @throws SQLException If there is an sql error.
+     */
     private void retrieveCategories(List<String> categories, ResultSet results) throws SQLException {
         while (results.next()) {
             categories.add(results.getString("category"));
